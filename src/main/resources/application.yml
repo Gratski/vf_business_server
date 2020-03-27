@@ -1,0 +1,21 @@
+# Spring properties
+spring:
+  application:
+    name: elastic-service
+
+# Discovery Server Access
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+
+# HTTP Server
+server:
+  port: 2222   # HTTP (Tomcat) port
+
+logging:
+  level:
+    com.netflix.discovery: INFO
+    com.netflix.eureka: INFO
