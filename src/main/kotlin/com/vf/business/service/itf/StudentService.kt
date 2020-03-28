@@ -6,4 +6,6 @@ interface StudentService : UsersService {
 
     fun createStudent(Student: StudentDTO): Int
 
+    fun getStudent(id: Int): StudentDTO
+
 }

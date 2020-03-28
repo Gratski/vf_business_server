@@ -12,4 +12,8 @@ class StudentController ( val studentService: StudentService ) {
     fun createStudent( @RequestBody dto: StudentDTO ) =
         studentService.createStudent(dto)
 
+    @GetMapping("/{id}")
+    fun getStudent( @PathVariable("id") id: Int ) =
+        studentService.getStudent(id)
+
 }
