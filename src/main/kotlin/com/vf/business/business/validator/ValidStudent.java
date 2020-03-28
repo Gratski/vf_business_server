@@ -1,4 +1,4 @@
-package com.vf.business.service.validator;
+package com.vf.business.business.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = StudentValidator.class)
 public @interface ValidStudent {
 
-    String message() default "{com.vf.business.dto.user.validator.ValidStudent." + "message}";
+    String message() default "{com.vf.business.business.dto.user.validator.ValidStudent." + "message}";
 
     Class<?>[] groups() default { };
 

@@ -1,6 +1,6 @@
-package com.vf.business.service.itf
+package com.vf.business.business.service.itf
 
-import com.vf.business.dto.user.StudentDTO
+import com.vf.business.business.dto.user.StudentDTO
 
 interface StudentService : UsersService {
 

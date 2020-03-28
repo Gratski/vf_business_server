@@ -1,4 +1,4 @@
-package com.vf.business.dto.user
+package com.vf.business.business.dto.user
 
 import java.util.Date
 

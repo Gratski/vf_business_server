@@ -1,6 +1,6 @@
-package com.vf.business.service.itf
+package com.vf.business.business.service.itf
 
-import com.vf.business.dao.models.User
+import com.vf.business.business.dao.models.User
 import java.util.*
 
 /**

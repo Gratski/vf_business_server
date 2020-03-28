@@ -2,21 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f18c405b-af4f-4ff0-94da-2e3e9b8b75a8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/controller/advice/ValidationExceptionHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/validator/StudentValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/validator/ValidStudent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/AppClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/AppClient.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/controller/StudentController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/controller/StudentController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/StudentDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/StudentDTO.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/exception/ResourceNotFoundException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/exception/ResourceNotFoundException.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/StudentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/StudentServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/controller/StudentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/controller/StudentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/dto/user/StudentDTO$ModelMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/dto/user/StudentDTO$ModelMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/dto/user/StudentDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/dto/user/StudentDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/service/exception/ResourceNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/service/exception/ResourceNotFoundException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/service/impl/StudentServiceImpl$createStudent$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/service/impl/StudentServiceImpl$createStudent$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/service/impl/StudentServiceImpl$createStudent$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/service/impl/StudentServiceImpl$createStudent$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vf/business/service/impl/StudentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vf/business/service/impl/StudentServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/controller/advice/ValidationExceptionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/controller/advice/ValidationExceptionHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/models/Professor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dao/models/Professor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/models/Student.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dao/models/Student.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/models/User.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dao/models/User.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/repo/StudentRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dao/repo/StudentRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/repo/UsersRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dao/repo/UsersRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/ProfessorDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dto/user/ProfessorDTO.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/StudentDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dto/user/StudentDTO.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/UserDTO.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/dto/user/UserDTO.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/exception/ResourceConflictException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/exception/ResourceConflictException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/exception/ResourceNotFoundException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/exception/ResourceNotFoundException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/StudentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/service/impl/StudentServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/UsersServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/service/impl/UsersServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/itf/StudentService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/service/itf/StudentService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/itf/UsersService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/service/itf/UsersService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/validator/StudentValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/validator/StudentValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/validator/ValidStudent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/validator/ValidStudent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/validator/ValidationMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/validator/ValidationMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/utils/mapper/MappingUtils.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,10 +149,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="507" y="184" key="#com.intellij.ide.util.MemberChooser/0.23.1440.877@0.23.1440.877" timestamp="1585358025323" />
-    <state x="313" y="394" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1585355758250">
+    <state x="313" y="394" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1585423942329">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="313" y="394" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1440.877@0.23.1440.877" timestamp="1585355758250" />
+    <state x="313" y="394" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1440.877@0.23.1440.877" timestamp="1585423942329" />
     <state x="360" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1585000574797">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -163,22 +169,22 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="483" y="172" key="#xdebugger.evaluate/0.23.1440.877@0.23.1440.877" timestamp="1585359453787" />
-    <state width="1398" height="257" key="GridCell.Tab.0.bottom" timestamp="1585422807914">
+    <state width="1398" height="257" key="GridCell.Tab.0.bottom" timestamp="1585423894043">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="257" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1585422807914" />
-    <state width="1398" height="257" key="GridCell.Tab.0.center" timestamp="1585422807912">
+    <state width="1398" height="257" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1585423894043" />
+    <state width="1398" height="257" key="GridCell.Tab.0.center" timestamp="1585423894041">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="257" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1585422807912" />
-    <state width="1398" height="257" key="GridCell.Tab.0.left" timestamp="1585422807911">
+    <state width="1398" height="257" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1585423894041" />
+    <state width="1398" height="257" key="GridCell.Tab.0.left" timestamp="1585423894039">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="257" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1585422807911" />
-    <state width="1398" height="257" key="GridCell.Tab.0.right" timestamp="1585422807913">
+    <state width="1398" height="257" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1585423894039" />
+    <state width="1398" height="257" key="GridCell.Tab.0.right" timestamp="1585423894042">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="257" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1585422807913" />
+    <state width="1398" height="257" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1585423894042" />
     <state width="1398" height="285" key="GridCell.Tab.1.bottom" timestamp="1585359896546">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -216,12 +222,12 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/StudentServiceImpl.kt</url>
+          <url>file://$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/service/impl/StudentServiceImpl.kt</url>
           <line>18</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/StudentServiceImpl.kt</url>
+          <url>file://$PROJECT_DIR$/src/main/kotlin/com/vf/business/business/service/impl/StudentServiceImpl.kt</url>
           <line>17</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>

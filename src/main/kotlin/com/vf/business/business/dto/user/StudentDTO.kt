@@ -1,8 +1,8 @@
-package com.vf.business.dto.user
+package com.vf.business.business.dto.user
 
-import com.vf.business.dao.models.Student
-import com.vf.business.service.validator.ValidStudent
-import com.vf.business.service.validator.ValidationMode
+import com.vf.business.business.dao.models.Student
+import com.vf.business.business.validator.ValidStudent
+import com.vf.business.business.validator.ValidationMode
 import java.util.Date
 
 @ValidStudent(ValidationMode.REQUIRED_FIELDS)

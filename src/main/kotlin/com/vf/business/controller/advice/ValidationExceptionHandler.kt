@@ -1,6 +1,6 @@
 package com.vf.business.controller.advice
 
-import com.vf.business.service.exception.ResourceNotFoundException
+import com.vf.business.business.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice

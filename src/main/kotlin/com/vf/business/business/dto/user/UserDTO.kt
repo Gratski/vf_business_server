@@ -1,6 +1,5 @@
-package com.vf.business.dto.user
+package com.vf.business.business.dto.user
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Date
 
 open class UserDTO (

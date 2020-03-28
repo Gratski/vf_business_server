@@ -1,10 +1,9 @@
 package com.vf.business.controller
 
-import com.vf.business.dto.user.StudentDTO
-import com.vf.business.service.exception.ResourceNotFoundException
-import com.vf.business.service.itf.StudentService
-import com.vf.business.service.validator.ValidStudent
-import com.vf.business.service.validator.ValidationMode
+import com.vf.business.business.dto.user.StudentDTO
+import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.service.itf.StudentService
+import com.vf.business.business.validator.ValidStudent
 import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid

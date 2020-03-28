@@ -1,4 +1,4 @@
-package com.vf.business.service.exception
+package com.vf.business.business.exception
 
 import java.lang.RuntimeException
 

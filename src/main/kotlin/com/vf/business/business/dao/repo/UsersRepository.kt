@@ -1,6 +1,6 @@
-package com.vf.business.dao.repo
+package com.vf.business.business.dao.repo
 
-import com.vf.business.dao.models.User
+import com.vf.business.business.dao.models.User
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import java.util.*

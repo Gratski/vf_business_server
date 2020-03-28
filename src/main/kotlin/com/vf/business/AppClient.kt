@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @SpringBootApplication
 @ComponentScan
-@EnableJpaRepositories(basePackages = ["com.vf.business.dao.repo"])
+@EnableJpaRepositories(basePackages = ["com.vf.business.business.dao.repo"])
 class Application
 
 fun main(args: Array<String>) {

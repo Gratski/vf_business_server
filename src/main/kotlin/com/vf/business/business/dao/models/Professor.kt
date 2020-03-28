@@ -1,4 +1,4 @@
-package com.vf.business.dao.models
+package com.vf.business.business.dao.models
 
 import java.util.Date
 import javax.persistence.Entity

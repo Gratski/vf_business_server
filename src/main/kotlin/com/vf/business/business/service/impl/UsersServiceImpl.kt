@@ -1,9 +1,9 @@
-package com.vf.business.service.impl
+package com.vf.business.business.service.impl
 
-import com.vf.business.dao.models.User
-import com.vf.business.dao.repo.UsersRepository
-import com.vf.business.service.exception.ResourceNotFoundException
-import com.vf.business.service.itf.UsersService
+import com.vf.business.business.dao.models.User
+import com.vf.business.business.dao.repo.UsersRepository
+import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.service.itf.UsersService
 import java.util.Optional
 
 open class UsersServiceImpl<T: User>(val userRepo: UsersRepository) : UsersService {

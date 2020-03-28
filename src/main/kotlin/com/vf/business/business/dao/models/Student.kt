@@ -1,7 +1,6 @@
-package com.vf.business.dao.models
+package com.vf.business.business.dao.models
 
-import com.vf.business.dto.user.StudentDTO
-import org.springframework.data.annotation.PersistenceConstructor
+import com.vf.business.business.dto.user.StudentDTO
 import java.util.Date
 import javax.persistence.Entity
 import javax.persistence.Table
