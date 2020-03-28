@@ -1,8 +1,11 @@
 package com.vf.business.dto.user
 
 import com.vf.business.dao.models.Student
+import com.vf.business.service.validator.ValidStudent
+import com.vf.business.service.validator.ValidationMode
 import java.util.Date
 
+@ValidStudent(ValidationMode.REQUIRED_FIELDS)
 class StudentDTO(id: Int? = null,
                  firstName: String?,
                  lastName: String?,

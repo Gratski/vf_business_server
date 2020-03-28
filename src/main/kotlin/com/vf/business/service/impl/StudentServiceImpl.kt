@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service
 import com.vf.business.service.exception.ResourceConflictException
 import com.vf.business.service.exception.ResourceNotFoundException
 import com.vf.business.service.itf.StudentService
-import org.dozer.DozerBeanMapper
 import java.util.*
 
 @Service
 class StudentServiceImpl(userRepo: UsersRepository, val studentRepo: StudentRepository) : UsersServiceImpl<Student>(userRepo), StudentService {
 
     override fun createStudent(s: StudentDTO): Int {
-        //TODO: validate required fields
+
         var studentId: Int = -1
         this.getUserByEmail(s.email!!).ifPresentOrElse({
             throw ResourceConflictException()
@@ -33,14 +32,6 @@ class StudentServiceImpl(userRepo: UsersRepository, val studentRepo: StudentRepo
         var result: StudentDTO = StudentDTO(firstName = "", lastName =  "", email =  "")
         val opt = studentRepo.findById(id)
         if (opt.isPresent) return Student.ModelMapper.from(opt.get()) else throw ResourceNotFoundException()
-    }
-
-    fun abd(s: Student) {
-        println("*********************************")
-    }
-
-    fun a() {
-        println("----------------------------------")
     }
 
 }
