@@ -20,6 +20,7 @@ class StudentServiceImpl(userRepo: UsersRepository, val studentRepo: StudentRepo
             val now = Date()
             val student = Student(firstName = s.firstName, lastName = s.lastName, email = s.email, pwd = s.pwd,
                     createdAt = now, updatedAt = now)
+            studentRepo.save(student)
             studentId = student.id!!
         })
         return studentId;

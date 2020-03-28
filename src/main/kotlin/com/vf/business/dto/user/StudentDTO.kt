@@ -9,5 +9,5 @@ class StudentDTO(id: Int,
                  pwd: String?,
                  active: Boolean = false,
                  enabled: Boolean = true,
-                 createdAt: Date,
-                 updatedAt: Date) : UserDTO(id, firstName, lastName, email, pwd, active, enabled, createdAt, updatedAt)
+                 createdAt: Date?,
+                 updatedAt: Date?) : UserDTO(id, firstName, lastName, email, pwd, active, enabled, createdAt, updatedAt)

@@ -9,13 +9,13 @@ import javax.persistence.*
 @Inheritance(strategy = InheritanceType.JOINED)
 abstract class User (
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         open var id: Int?,
         @Column(name = "first_name")
         open var firstName: String,
         @Column(name = "last_name")
         open var lastName: String,
-        @Column(name = "email_name")
+        @Column(name = "email")
         open var email: String,
         @Column(name = "pwd")
         open var password: String?,
