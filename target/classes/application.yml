@@ -1,7 +1,11 @@
 # Spring properties
 spring:
   application:
-    name: elastic-service
+    name: elastic-com.vf.business.service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/docker
+    username: docker
+    password: docker
 
 # Discovery Server Access
 eureka:

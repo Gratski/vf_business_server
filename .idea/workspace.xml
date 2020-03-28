@@ -1,7 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f18c405b-af4f-4ff0-94da-2e3e9b8b75a8" name="Default Changelist" comment="" />
+    <list default="true" id="f18c405b-af4f-4ff0-94da-2e3e9b8b75a8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/models/Professor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/models/Student.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/models/User.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/repo/StudentRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dao/repo/UsersRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/ProfessorDTO.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/StudentDTO.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/dto/user/UserDTO.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/exception/ResourceConflictException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/exception/ResourceNotFoundException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/StudentServiceImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/impl/UsersServiceImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/itf/StudentService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/service/itf/UsersService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/utils/mapper/MappingUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/AppClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/vf/business/AppClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/controller/ClassesController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/controller/ElasticController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/controller/UserController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dao/UsersRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dao/models/UserModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dto/DTODataClass.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/dto/ElasticDataClasses.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/service/impl/ElasticServiceImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/service/impl/MongoServiceImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/service/itf/IElasticService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/service/itf/IMongoService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AppClientKt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Application.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/kotlin_maven.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/ElasticController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/RunnnnnnKt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/UsersRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dao/models/UserModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dto/BusinessApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dto/ElasticStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dto/TestCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dto/TestRun.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dto/TestScenario.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dto/Version.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/service/impl/ElasticServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/service/impl/MongoServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/service/itf/IElasticService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/service/itf/IMongoService.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,8 +62,12 @@
       <list>
         <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -28,6 +82,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1ZXhS14pS1hgBPiSCjHFBRNLMwC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -35,38 +90,57 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="dto.user" />
+      <recent name="dao.repo" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/kotlin/com/vf/business" />
       <recent name="$PROJECT_DIR$/src/main/kotlin/service/impl" />
       <recent name="$PROJECT_DIR$/src/main/kotlin" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.controller.RunnnnnnKt">
-    <configuration name="AppClientKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Kotlin.AppClientKt (1)">
+    <configuration name="AppClientKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="kotlin_maven" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="AppClientKt" />
+      <option name="MAIN_CLASS_NAME" value="com.vf.business.AppClientKt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="controller.RunnnnnnKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+    <configuration name="AppClientKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.vf.business.AppClientKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RunnnnnnKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="kotlin_maven" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="controller.RunnnnnnKt" />
+      <option name="MAIN_CLASS_NAME" value="com.vf.business.controller.RunnnnnnKt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -74,6 +148,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.AppClientKt (1)" />
         <item itemvalue="Kotlin.controller.RunnnnnnKt" />
         <item itemvalue="Kotlin.AppClientKt" />
       </list>
@@ -93,30 +168,42 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="507" y="184" key="#com.intellij.ide.util.MemberChooser" timestamp="1585003346976">
+    <state x="507" y="184" key="#com.intellij.ide.util.MemberChooser" timestamp="1585353305574">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="507" y="184" key="#com.intellij.ide.util.MemberChooser/0.23.1440.877@0.23.1440.877" timestamp="1585003346976" />
+    <state x="507" y="184" key="#com.intellij.ide.util.MemberChooser/0.23.1440.877@0.23.1440.877" timestamp="1585353305574" />
+    <state x="313" y="394" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1585355758250">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="313" y="394" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1440.877@0.23.1440.877" timestamp="1585355758250" />
     <state x="360" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1585000574797">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="360" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1440.877@0.23.1440.877" timestamp="1585000574797" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1585094645008">
+    <state x="429" y="127" key="#controller.RunnnnnnKt" timestamp="1585344433761">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1585094645008" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1585094644992">
+    <state x="429" y="127" key="#controller.RunnnnnnKt/0.23.1440.877@0.23.1440.877" timestamp="1585344433761" />
+    <state x="494" y="121" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog" timestamp="1585345813175">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1585094644992" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1585094644989">
+    <state x="494" y="121" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.23.1440.877@0.23.1440.877" timestamp="1585345813175" />
+    <state width="1398" height="350" key="GridCell.Tab.0.bottom" timestamp="1585356281555">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1585094644989" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1585094645003">
+    <state width="1398" height="350" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1585356281555" />
+    <state width="1398" height="350" key="GridCell.Tab.0.center" timestamp="1585356281553">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1585094645003" />
+    <state width="1398" height="350" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1585356281553" />
+    <state width="1398" height="350" key="GridCell.Tab.0.left" timestamp="1585356281552">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="350" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1585356281552" />
+    <state width="1398" height="350" key="GridCell.Tab.0.right" timestamp="1585356281554">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="350" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1585356281554" />
     <state x="258" y="123" key="Maven.ArtifactSearchDialog" timestamp="1584999730535">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
