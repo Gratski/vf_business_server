@@ -15,11 +15,13 @@ open class UsersServiceImpl<T: User>(val userRepo: UsersRepository) : UsersServi
         userRepo.findByEmail(email)
 
     override fun deleteUser(id: Int) {
-        getUser(id).ifPresentOrElse( {u -> {
-            userRepo.delete(u)
-        }}, {
-            throw ResourceNotFoundException()
-        })
+        val userOpt = getUser(id)
+        userOpt.ifPresent { u ->
+            run {
+                userRepo.delete(u)
+            }
+        }
+        throw ResourceNotFoundException()
     }
 
 }

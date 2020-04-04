@@ -3,9 +3,12 @@ spring:
   application:
     name: elastic-com.vf.business.service
   datasource:
-    url: jdbc:postgresql://localhost:5432/docker
-    username: docker
-    password: docker
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+api:
+  version: v1
 
 # Discovery Server Access
 eureka:

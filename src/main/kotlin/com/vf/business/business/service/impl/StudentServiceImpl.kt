@@ -16,15 +16,16 @@ class StudentServiceImpl(userRepo: UsersRepository, val studentRepo: StudentRepo
     override fun createStudent(s: StudentDTO): Int {
 
         var studentId: Int = -1
-        this.getUserByEmail(s.email!!).ifPresentOrElse({
+        this.getUserByEmail(s.email!!).ifPresent {
             throw ResourceConflictException()
-        }, {
-            val now = Date()
-            val student = Student(firstName = s.firstName, lastName = s.lastName, email = s.email, pwd = s.pwd,
-                    createdAt = now, updatedAt = now)
-            studentRepo.save(student)
-            studentId = student.id!!
-        })
+        }
+
+        val now = Date()
+        val student = Student(firstName = s.firstName, lastName = s.lastName, email = s.email, pwd = s.pwd,
+                createdAt = now, updatedAt = now)
+        studentRepo.save(student)
+        studentId = student.id!!
+
         return studentId;
     }
 
