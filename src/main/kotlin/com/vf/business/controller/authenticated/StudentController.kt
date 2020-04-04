@@ -1,4 +1,4 @@
-package com.vf.business.controller
+package com.vf.business.controller.authenticated
 
 import com.vf.business.business.dto.user.StudentDTO
 import com.vf.business.business.exception.ResourceNotFoundException
