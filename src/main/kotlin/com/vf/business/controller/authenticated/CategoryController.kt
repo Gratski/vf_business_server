@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("\${api.version}/category")
+@RequestMapping("\${api.version}/categories")
 class CategoryController (val categoryService: CategoryService) {
 
     @GetMapping("")
