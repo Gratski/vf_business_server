@@ -7,6 +7,9 @@ import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
+/**
+ * Service that holds the category business logic
+ */
 interface CategoryService {
 
     /**
@@ -29,5 +32,10 @@ interface CategoryService {
      * Gets a page of active classes for a given category
      */
     fun getActiveClasses(id: Int, page: Int, size: Int): Page<VFClassDTO>
+
+    /**
+     * Gets a page of disciplines for a given category for a given period of day
+     */
+    fun getCategoryDisciplinesByPeriodOfDay(id: Int, period: PeriodEnum, page: Pageable): Page<DisciplineDTO>
 
 }
