@@ -24,3 +24,13 @@ CREATE TABLE discipline_repetition (
     created_at timestamp,
 	updated_at timestamp
 );
+
+ALTER TABLE "class" ADD COLUMN started_at timestamp not null;
+ALTER TABLE "class" ADD COLUMN ended_at timestamp;
+ALTER TABLE "class" ADD COLUMN created_at timestamp;
+ALTER TABLE "class" ADD COLUMN updated_at timestamp;
+
+ALTER TABLE discipline ADD COLUMN enabled boolean default false;
+
+ALTER TABLE class_attendant ADD COLUMN updated_at timestamp;
+ALTER TABLE class_attendant ADD COLUMN left_at timestamp;

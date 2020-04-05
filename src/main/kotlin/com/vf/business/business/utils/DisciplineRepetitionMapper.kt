@@ -7,22 +7,22 @@ class DisciplineRepetitionMapper {
 
     object Mapper {
 
-        fun map(input: DisciplineRepetition): DisciplineRepetitionDTO =
+        fun map(input: DisciplineRepetition?): DisciplineRepetitionDTO =
                 DisciplineRepetitionDTO(
-                        id = input.id,
-                        professor = ProfessorMapper.Mapper.map(input.professor),
-                        discipline = DisciplineMapper.Mapper.map(input.discipline),
-                        startsAt = input.startsAt,
-                        endsAt = input.endsAt,
-                        enabled = input.enabled,
-                        approved = input.approved,
-                        createdAt = input.createdAt,
-                        updatedAt = input.updatedAt
+                        id = input?.id,
+                        professor = ProfessorMapper.Mapper.map(input?.professor),
+                        discipline = DisciplineMapper.Mapper.map(input?.discipline),
+                        startsAt = input?.startsAt,
+                        endsAt = input?.endsAt,
+                        enabled = input?.enabled,
+                        approved = input?.approved,
+                        createdAt = input?.createdAt,
+                        updatedAt = input?.updatedAt
                 )
 
-        fun map(inputList: Collection<DisciplineRepetition>): Collection<DisciplineRepetitionDTO> {
+        fun map(inputList: Collection<DisciplineRepetition>?): Collection<DisciplineRepetitionDTO> {
             val resultList = arrayListOf<DisciplineRepetitionDTO>()
-            inputList.forEach {
+            inputList?.forEach {
                 resultList.add(map(it))
             }
             return resultList

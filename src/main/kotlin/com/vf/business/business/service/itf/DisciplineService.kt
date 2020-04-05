@@ -10,4 +10,6 @@ interface DisciplineService {
 
     fun getDisciplinesByCategory(category: Category, page: Pageable): Collection<DisciplineDTO>
 
+    fun enableDisable(id: Int, isEnabled: Boolean)
+
 }

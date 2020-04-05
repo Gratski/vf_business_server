@@ -19,6 +19,8 @@ class Discipline (
 
         open var designation: String?,
         open var description: String?,
+        open var active: Boolean?,
+        open var enabled: Boolean?,
 
         @OneToMany(fetch = FetchType.LAZY)
         open var repetitions: Collection<DisciplineRepetition>,

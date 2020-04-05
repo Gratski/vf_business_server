@@ -31,4 +31,15 @@ class DisciplineServiceImpl(
         return result
     }
 
+    override fun enableDisable(id: Int, isEnabled: Boolean) {
+        //TODO: implement validation to check if the current user can change this
+        val dOpt = disciplineRepo.findById(id)
+        dOpt.orElseThrow {
+            throw ResourceNotFoundException()
+        }
+        val discipline = dOpt.get()
+        discipline.enabled = isEnabled
+        disciplineRepo.save(discipline)
+    }
+
 }

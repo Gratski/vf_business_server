@@ -12,6 +12,7 @@ class DisciplineDTO(
         designation: String?,
         description: String?,
         repetitions: Collection<DisciplineRepetitionDTO>?,
+        enabled: Boolean?,
         createdAt: Date?,
         updatedAt: Date?
 ) : AbstractDTO(

@@ -8,16 +8,16 @@ class CategoryMapper {
 
     object Mapper {
 
-        fun map(input: Category): CategoryDTO {
+        fun map(input: Category?): CategoryDTO {
                 return CategoryDTO(
-                        id = input.id,
-                        designation =  input.designation,
-                        description =  input.description,
-                        subCategories = map(input.subCategories),
-                        icon = input.icon,
-                        picture =  PictureMapper.Mapper.map(input.picture),
-                        createdAt = input.createdAt,
-                        updatedAt = input.updatedAt
+                        id = input?.id,
+                        designation =  input?.designation,
+                        description =  input?.description,
+                        subCategories = map(input?.subCategories),
+                        icon = input?.icon,
+                        picture =  PictureMapper.Mapper.map(input?.picture),
+                        createdAt = input?.createdAt,
+                        updatedAt = input?.updatedAt
                 )
         }
 
