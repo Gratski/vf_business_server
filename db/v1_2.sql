@@ -34,3 +34,6 @@ ALTER TABLE discipline ADD COLUMN enabled boolean default false;
 
 ALTER TABLE class_attendant ADD COLUMN updated_at timestamp;
 ALTER TABLE class_attendant ADD COLUMN left_at timestamp;
+
+ALTER TABLE category DROP COLUMN parent;
+ALTER TABLE category ADD COLUMN parent_id int references category(id);

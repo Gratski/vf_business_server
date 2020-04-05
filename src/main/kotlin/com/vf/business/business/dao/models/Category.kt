@@ -1,26 +1,26 @@
 package com.vf.business.business.dao.models
 
 import com.vf.business.business.dao.models.documents.Picture
-import java.util.*
+import java.util.Date
 import javax.persistence.*
 
 @Entity
 @Table(name = "category")
 class Category(
-        id: Int?,
+        id: Int? = null,
 
-        @ManyToOne(fetch = FetchType.LAZY, optional=true)
-        @JoinColumn(name="parent")
-        open var parent: Category?,
-        open var designation: String?,
-        open var description: String?,
-        open var icon: String?,
+        @ManyToOne
+        @JoinColumn(name = "parent_id", referencedColumnName="id",nullable=false)
+        open var parent: Category? = null,
+        open var designation: String? = null,
+        open var description: String? = null,
+        open var icon: String? = null,
 
-        @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        open var subCategories: Collection<Category>?,
+        @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL, CascadeType.PERSIST], mappedBy = "parent")
+        open var subCategories: MutableList<Category>? = null,
 
-        @ManyToOne(fetch = FetchType.EAGER, optional = true)
-        open var picture: Picture?,
+        @OneToOne(fetch = FetchType.EAGER, optional = true)
+        open var picture: Picture? = null,
 
         createdAt: Date?,
         updatedAt: Date?
