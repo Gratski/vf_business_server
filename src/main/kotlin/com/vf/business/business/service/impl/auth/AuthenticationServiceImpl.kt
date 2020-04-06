@@ -7,7 +7,7 @@ import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.UsersService
 import com.vf.business.business.service.itf.auth.AuthenticationService
-import com.vf.business.business.utils.auth.CypherUtils
+import com.vf.business.business.utils.auth.AuthUtils
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
 
@@ -26,7 +26,7 @@ class AuthenticationServiceImpl (
         }
 
         val user = userOpt.get()
-        val hashedPassword = CypherUtils.Instance.hashPassword(password, SALT)
+        val hashedPassword = AuthUtils.Instance.hashPassword(password, SALT)
         if ( hashedPassword != null && hashedPassword != user.password) {
             throw BadCredentialsException("This email and password do not match")
         }

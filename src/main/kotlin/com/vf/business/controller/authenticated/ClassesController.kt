@@ -23,7 +23,4 @@ class ClassesController(
             classesService.getActiveClasses(page, size)
 
 
-
-
-
 }

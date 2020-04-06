@@ -1,22 +1,36 @@
 package com.vf.business.controller.permitted
 
+import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.Student
+import com.vf.business.business.dao.models.User
 import com.vf.business.business.dto.auth.SignInRequestDTO
 import com.vf.business.business.dto.auth.SignInResponseDTO
+import com.vf.business.business.dto.user.UserDTO
+import com.vf.business.business.service.itf.UsersService
 import com.vf.business.business.service.itf.auth.AuthenticationService
+import com.vf.business.business.utils.ProfessorMapper
+import com.vf.business.business.utils.StudentMapper
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
 @RequestMapping("\${api.version}/auth")
-class AuthController ( private val authService: AuthenticationService) {
+class AuthController (
+        private val authService: AuthenticationService,
+        private val usersService: UsersService
+        ) {
 
     @PostMapping("/signin")
     fun signin(@RequestBody signInRequest: SignInRequestDTO): SignInResponseDTO =
             authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
 
     @GetMapping("/me")
-    fun getAuthenticatedUser(principal: Principal) {
-        println("Got user!")
+    fun getAuthenticatedUser(principal: Principal): UserDTO {
+        val user = usersService.getUser(principal)
+        return if( user is Student )
+            StudentMapper.Mapper.map(user as Student)
+        else
+            ProfessorMapper.Mapper.map(user as Professor)
     }
 
 }

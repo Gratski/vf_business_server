@@ -4,7 +4,6 @@ import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.service.itf.CategoryService
-import com.vf.business.business.service.itf.ClassesService
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -16,15 +15,24 @@ class CategoryController (
         val categoryService: CategoryService
         ) {
 
+    /**
+     * Gets all existing categories
+     */
     @GetMapping("")
     fun getAllCategories(): Collection<CategoryDTO> =
         categoryService.getAllCategories()
 
+    /**
+     * Gets a single category based on the given ID
+     */
     @GetMapping("/{id}")
     fun getCategoryById(@PathVariable("id") id: Int ): CategoryDTO =
             categoryService.getById(id)
 
-    @GetMapping("/{id}/disciplines/all")
+    /**
+     * Gets a page of disciplines of a given category
+     */
+    @GetMapping("/{id}/disciplines")
     fun getAllCategoryDisciplines(
             @PathVariable("id") id: Int,
             pageable: Pageable
