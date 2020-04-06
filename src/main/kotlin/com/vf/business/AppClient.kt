@@ -11,5 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 class Application
 
 fun main(args: Array<String>) {
+
+
+
     SpringApplication.run(Application::class.java, *args)
 }

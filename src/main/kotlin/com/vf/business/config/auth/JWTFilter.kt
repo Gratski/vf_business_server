@@ -1,5 +1,6 @@
 package com.vf.business.config.auth
 
+import com.vf.business.business.service.impl.auth.JwtTokenProvider
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
@@ -8,7 +9,7 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
-class JWTFilter( private val jwtTokenProvider: JwtTokenProvider ) : GenericFilterBean() {
+class JWTFilter( private val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean() {
 
     override fun doFilter(
             req: ServletRequest?, rsp: ServletResponse?,
