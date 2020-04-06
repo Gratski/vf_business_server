@@ -11,7 +11,7 @@ class DisciplineDTO(
         professor: ProfessorDTO,
         designation: String?,
         description: String?,
-        repetitions: Collection<DisciplineRepetitionDTO>?,
+        repetitions: MutableCollection<DisciplineRepetitionDTO>? = mutableListOf<DisciplineRepetitionDTO>(),
         enabled: Boolean?,
         createdAt: Date?,
         updatedAt: Date?

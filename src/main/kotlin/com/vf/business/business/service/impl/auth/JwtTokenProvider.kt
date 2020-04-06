@@ -3,6 +3,7 @@ package com.vf.business.business.service.impl.auth
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
 import com.vf.business.business.service.itf.UsersService
+import com.vf.business.config.auth.AuthRoles
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -64,11 +65,12 @@ class JwtTokenProvider {
 
         val user = userOpt.get()
         val authorities = mutableListOf<GrantedAuthority>()
-        authorities.add(SimpleGrantedAuthority("USER"))
+        authorities.add(SimpleGrantedAuthority(AuthRoles.USER.toString()))
+
         if ( user is Student ) {
-            authorities.add(SimpleGrantedAuthority("STUDENT"))
+            authorities.add(SimpleGrantedAuthority(AuthRoles.STUDENT.toString()))
         } else if ( user is Professor ) {
-            authorities.add(SimpleGrantedAuthority("PROFESSOR"))
+            authorities.add(SimpleGrantedAuthority(AuthRoles.PROFESSOR.toString()))
         }
 
         return UsernamePasswordAuthenticationToken(user, "", authorities)

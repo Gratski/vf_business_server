@@ -1,6 +1,6 @@
 package com.vf.business.business.dto.discipline
 
-class CreateDisciplineDTO (
+data class UpdateDisciplineDTO (
         val categoryId: Int,
         val designation: String,
         val description: String

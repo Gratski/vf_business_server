@@ -20,7 +20,7 @@ class DisciplineRepetitionMapper {
                         updatedAt = input?.updatedAt
                 )
 
-        fun map(inputList: Collection<DisciplineRepetition>?): Collection<DisciplineRepetitionDTO> {
+        fun map(inputList: MutableCollection<DisciplineRepetition>?): MutableCollection<DisciplineRepetitionDTO> {
             val resultList = arrayListOf<DisciplineRepetitionDTO>()
             inputList?.forEach {
                 resultList.add(map(it))

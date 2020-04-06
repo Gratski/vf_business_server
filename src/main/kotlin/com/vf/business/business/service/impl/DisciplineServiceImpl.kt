@@ -1,9 +1,17 @@
 package com.vf.business.business.service.impl
 
 import com.vf.business.business.dao.models.Category
+import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.discipline.Discipline
+import com.vf.business.business.dao.models.discipline.DisciplineRepetition
+import com.vf.business.business.dao.repo.CategoryRepository
 import com.vf.business.business.dao.repo.DisciplineRepository
+import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
+import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
+import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.DisciplineService
 import com.vf.business.business.utils.DisciplineMapper
 import com.vf.business.common.PeriodEnum
@@ -16,7 +24,8 @@ import java.util.*
 
 @Service
 class DisciplineServiceImpl(
-        val disciplineRepo: DisciplineRepository
+        val disciplineRepo: DisciplineRepository,
+        val categoryRepo: CategoryRepository
 ) : DisciplineService {
 
     // hour to consider when getting morning classes
@@ -105,6 +114,30 @@ class DisciplineServiceImpl(
 
     }
 
+    override fun createDiscipline(professor: Professor, newDiscipline: CreateDisciplineDTO): CreateOperationResponseDTO {
+
+        // obtain category
+        val categoryOpt = categoryRepo.findById(newDiscipline.categoryId)
+        categoryOpt.orElseThrow {
+            throw ResourceNotFoundException("The given category does not exist")
+        }
+
+        val now = Date()
+        val discipline = Discipline(
+            category = categoryOpt.get(),
+            professor = professor,
+            designation = newDiscipline.designation,
+            description = newDiscipline.description,
+            enabled = false,
+            repetitions = mutableListOf< DisciplineRepetition>(),
+            createdAt = now,
+            updatedAt = now
+        )
+
+        disciplineRepo.save(discipline)
+        return CreateOperationResponseDTO(discipline.id)
+    }
+
     override fun enableDisable(id: Int, isEnabled: Boolean) {
         //TODO: implement validation to check if the current user can change this
         val dOpt = disciplineRepo.findById(id)
@@ -114,6 +147,33 @@ class DisciplineServiceImpl(
         val discipline = dOpt.get()
         discipline.enabled = isEnabled
         disciplineRepo.save(discipline)
+    }
+
+    override fun updateDiscipline(id: Int, dto: UpdateDisciplineDTO, professor: Professor) {
+        val disciplineOpt = disciplineRepo.findById(id)
+        disciplineOpt.orElseThrow {
+            throw ResourceNotFoundException("The given discipline does not exist")
+        }
+
+        val discipline = disciplineOpt.get()
+
+        // verify if the current user is the owner professor
+        if( professor.id != discipline.professor.id ) {
+            throw UnauthorizedOperationException("This user is not authorized to perform this operation")
+        }
+
+        val newCategoryOpt = categoryRepo.findById(dto.categoryId)
+        newCategoryOpt.orElseThrow {
+            throw ResourceNotFoundException("This category does not exists")
+        }
+        val newCategory = newCategoryOpt.get()
+
+        discipline.category = newCategory
+        discipline.designation = dto.designation
+        discipline.description = dto.description
+
+        disciplineRepo.save(discipline)
+
     }
 
 }

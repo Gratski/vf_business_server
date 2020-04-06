@@ -30,7 +30,19 @@ class SecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/v1/auth/me").authenticated()
+
+                .antMatchers("/swagger-ui.html**").permitAll()
+                .antMatchers("/webjars**").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/v1/auth/signin").permitAll() // login
+                .antMatchers(HttpMethod.GET,"/v1/auth/me").authenticated() // get current user
+
+                .antMatchers(HttpMethod.POST, "/v1/disciplines")
+                    .hasAnyRole(AuthRoles.ADMIN.toString(), AuthRoles.PROFESSOR.toString()) // create disciplines
+                .antMatchers(HttpMethod.PUT, "/v1/disciplines/*")
+                    .hasAnyRole(AuthRoles.ADMIN.toString(), AuthRoles.PROFESSOR.toString()) // update disciplines
+
+
                 .anyRequest().permitAll()
             .and().csrf().disable()
             .apply(JWTConfigurer(jwtTokenProvider))

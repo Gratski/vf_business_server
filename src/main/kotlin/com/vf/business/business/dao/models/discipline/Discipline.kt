@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Entity @Table( name = "discipline" )
 class Discipline (
-        id: Int?,
+        id: Int? = null,
 
         @ManyToOne
         open var category: Category?,
@@ -19,11 +19,11 @@ class Discipline (
 
         open var designation: String?,
         open var description: String?,
-        open var active: Boolean?,
-        open var enabled: Boolean?,
+        open var active: Boolean? = true,
+        open var enabled: Boolean? = false,
 
         @OneToMany(fetch = FetchType.LAZY)
-        open var repetitions: Collection<DisciplineRepetition>,
+        open var repetitions: MutableCollection<DisciplineRepetition>,
 
         createdAt: Date?,
         updatedAt: Date?
