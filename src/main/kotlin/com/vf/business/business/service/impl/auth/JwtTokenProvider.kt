@@ -81,7 +81,7 @@ class JwtTokenProvider {
     fun resolveToken(req: HttpServletRequest): String? {
         val bearerToken = req.getHeader(AUTHORIZATION_HEADER)
         if (bearerToken != null && bearerToken.startsWith(AUTHORIZATION_VALUE_PREFIX)) {
-            return bearerToken.substring(7, AUTHORIZATION_HEADER.length)
+            return bearerToken.substring(AUTHORIZATION_VALUE_PREFIX.length, bearerToken.length)
         }
         return null
     }

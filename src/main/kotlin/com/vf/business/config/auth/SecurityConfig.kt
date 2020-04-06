@@ -3,6 +3,7 @@ package com.vf.business.config.auth
 import com.vf.business.business.service.impl.auth.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -29,6 +30,7 @@ class SecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/v1/auth/me").authenticated()
                 .anyRequest().permitAll()
             .and().csrf().disable()
             .apply(JWTConfigurer(jwtTokenProvider))

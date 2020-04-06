@@ -2,6 +2,7 @@ package com.vf.business.business.service.impl.auth
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
+import com.vf.business.business.dto.auth.AppDomainEnum
 import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.UsersService
@@ -18,7 +19,7 @@ class AuthenticationServiceImpl (
 
     private val SALT = "GRATSKI"
 
-    override fun signin(email: String, password: String): SignInResponseDTO {
+    override fun signin(email: String, password: String, domain: AppDomainEnum): SignInResponseDTO {
         val userOpt = userService.getUserByEmail(email)
         userOpt.orElseThrow {
             throw ResourceNotFoundException("This email is not registered")
@@ -33,10 +34,23 @@ class AuthenticationServiceImpl (
         val roles = mutableListOf<String>()
         roles.add("USER")
 
-        if ( user is Student )
+        // validate the user account domain against the request domain
+        // add the correct role to the granted authorities
+        if ( user is Student ) {
+
+            if( domain != AppDomainEnum.STUDENTS_APP ) {
+                throw BadCredentialsException("This account is not authorized for this Application")
+            }
+            // add the correct role
             roles.add("STUDENT")
-        else if ( user is Professor )
+        } else if ( user is Professor ) {
+
+            if( domain != AppDomainEnum.PROFESSORS_APP ) {
+                throw BadCredentialsException("This account is not authorized for this Application")
+            }
+            // add the correct role
             roles.add("PROFESSOR")
+        }
 
         return SignInResponseDTO(user.id,
             tokenProvider.createToken("${user.id}", roles))
