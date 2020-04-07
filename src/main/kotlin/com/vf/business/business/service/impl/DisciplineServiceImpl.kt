@@ -1,5 +1,8 @@
 package com.vf.business.business.service.impl
 
+import com.amazonaws.AmazonServiceException
+import com.amazonaws.regions.Regions
+import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.discipline.Discipline
@@ -19,8 +22,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
+import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.util.*
+
 
 @Service
 class DisciplineServiceImpl(
@@ -115,8 +120,6 @@ class DisciplineServiceImpl(
     }
 
     override fun createDiscipline(professor: Professor, newDiscipline: CreateDisciplineDTO): CreateOperationResponseDTO {
-
-        // obtain category
         val categoryOpt = categoryRepo.findById(newDiscipline.categoryId)
         categoryOpt.orElseThrow {
             throw ResourceNotFoundException("The given category does not exist")
@@ -129,7 +132,7 @@ class DisciplineServiceImpl(
             designation = newDiscipline.designation,
             description = newDiscipline.description,
             enabled = false,
-            repetitions = mutableListOf< DisciplineRepetition>(),
+            repetitions = arrayListOf(),
             createdAt = now,
             updatedAt = now
         )
@@ -173,6 +176,33 @@ class DisciplineServiceImpl(
         discipline.description = dto.description
 
         disciplineRepo.save(discipline)
+
+    }
+
+    override fun changeDisciplinePicture(id: Int, professor: Professor, file: MultipartFile) {
+        val disciplineOpt = disciplineRepo.findById(id)
+        disciplineOpt.orElseThrow {
+            throw ResourceNotFoundException("This discipline does not exists")
+        }
+
+        val discipline = disciplineOpt.get()
+        if ( discipline.professor.id != professor.id ) {
+            throw UnauthorizedOperationException("This operation is not permitted")
+        }
+
+        // upload image to AWS
+        val s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build()
+        val tempFile = File("random_" + Date().time)
+        try {
+            file.transferTo(tempFile)
+            s3.putObject("virtualfit", "test_name",  tempFile);
+        } catch (e: AmazonServiceException) {
+            e.printStackTrace()
+        } finally {
+            tempFile.delete()
+        }
+
+        // change it on the database to point to the new link
 
     }
 

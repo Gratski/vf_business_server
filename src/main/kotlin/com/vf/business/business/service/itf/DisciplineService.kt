@@ -9,6 +9,7 @@ import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.web.multipart.MultipartFile
 
 interface DisciplineService {
 
@@ -25,5 +26,7 @@ interface DisciplineService {
     fun enableDisable(id: Int, isEnabled: Boolean)
 
     fun updateDiscipline(id: Int, dto: UpdateDisciplineDTO, professor: Professor)
+
+    fun changeDisciplinePicture(id: Int, professor: Professor, file: MultipartFile);
 
 }

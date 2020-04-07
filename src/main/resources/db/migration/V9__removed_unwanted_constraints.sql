@@ -1,0 +1,1 @@
+alter table discipline alter column image_url drop not null;

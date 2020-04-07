@@ -1,5 +1,5 @@
 package com.vf.business.business.dto.general
 
-class CreateOperationResponseDTO (
-        id: Int?
+data class CreateOperationResponseDTO (
+        val id: Int?
 )

@@ -19,12 +19,11 @@ class JWTFilter( private val jwtTokenProvider: JwtTokenProvider) : GenericFilter
 
         try {
             val token = jwtTokenProvider.resolveToken(req as HttpServletRequest);
-
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 val auth: Authentication? = jwtTokenProvider.getAuthentication(token)
                 SecurityContextHolder.getContext().authentication = auth
             }
-            chain?.doFilter(req, rsp);
+            chain?.doFilter(req, rsp)
         } catch (e: RuntimeException) {
             (rsp as HttpServletResponse).status = 401
         }

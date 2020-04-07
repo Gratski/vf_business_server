@@ -7,12 +7,12 @@ import java.util.*
 
 class DisciplineDTO(
         id: Int?,
-        category: CategoryDTO,
-        professor: ProfessorDTO,
-        designation: String?,
-        description: String?,
-        repetitions: MutableCollection<DisciplineRepetitionDTO>? = mutableListOf<DisciplineRepetitionDTO>(),
-        enabled: Boolean?,
+        val category: CategoryDTO,
+        val professor: ProfessorDTO,
+        val designation: String?,
+        val description: String?,
+        val repetitions: MutableCollection<DisciplineRepetitionDTO>?,
+        val enabled: Boolean?,
         createdAt: Date?,
         updatedAt: Date?
 ) : AbstractDTO(

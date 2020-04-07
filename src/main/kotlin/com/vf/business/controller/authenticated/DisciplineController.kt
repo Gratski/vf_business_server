@@ -8,6 +8,7 @@ import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.service.itf.DisciplineService
 import com.vf.business.business.service.itf.UsersService
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 
 @RestController
@@ -28,8 +29,11 @@ class DisciplineController(
     }
 
     @PutMapping("/{id}")
-    fun editDiscipline(@PathVariable("id") id: Int, @RequestBody dto: UpdateDisciplineDTO) =
-        disciplineService.updateDiscipline(id, dto)
+    fun editDiscipline(@PathVariable("id") id: Int,
+                       principal: Principal, @RequestBody dto: UpdateDisciplineDTO) {
+        val professor = (usersService.getUser(principal) as Professor)
+        disciplineService.updateDiscipline(id, dto,professor)
+    }
 
     @PostMapping("/{id}/enable")
     fun enableDiscipline(@PathVariable("id") id: Int) =
@@ -38,5 +42,12 @@ class DisciplineController(
     @PostMapping("/{id}/disable")
     fun disableDiscipline(@PathVariable("id") id: Int) =
             disciplineService.enableDisable(id, false)
+
+    @PutMapping("/{id}/picture")
+    fun changeDisciplinePicture(@PathVariable("id") id: Int,
+                                principal: Principal, @RequestParam file: MultipartFile) {
+        val professor = (usersService.getUser(principal) as Professor)
+        disciplineService.changeDisciplinePicture(id, professor, file)
+    }
 
 }

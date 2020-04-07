@@ -21,7 +21,7 @@ class DisciplineRepetitionMapper {
                 )
 
         fun map(inputList: MutableCollection<DisciplineRepetition>?): MutableCollection<DisciplineRepetitionDTO> {
-            val resultList = arrayListOf<DisciplineRepetitionDTO>()
+            val resultList = mutableListOf<DisciplineRepetitionDTO>()
             inputList?.forEach {
                 resultList.add(map(it))
             }

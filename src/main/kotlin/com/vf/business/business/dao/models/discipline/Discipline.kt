@@ -3,7 +3,7 @@ package com.vf.business.business.dao.models.discipline
 import com.vf.business.business.dao.models.AbstractEntity
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
-import java.util.*
+import java.util.Date
 import javax.persistence.*
 
 @Entity @Table( name = "discipline" )
@@ -11,6 +11,7 @@ class Discipline (
         id: Int? = null,
 
         @ManyToOne
+        @JoinColumn(name = "category")
         open var category: Category?,
 
         @ManyToOne
@@ -22,8 +23,8 @@ class Discipline (
         open var active: Boolean? = true,
         open var enabled: Boolean? = false,
 
-        @OneToMany(fetch = FetchType.LAZY)
-        open var repetitions: MutableCollection<DisciplineRepetition>,
+        @OneToMany(fetch = FetchType.EAGER, mappedBy = "discipline")
+        open var repetitions: MutableCollection<DisciplineRepetition>?,
 
         createdAt: Date?,
         updatedAt: Date?
