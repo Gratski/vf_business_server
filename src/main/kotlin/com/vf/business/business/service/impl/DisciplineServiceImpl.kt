@@ -3,10 +3,10 @@ package com.vf.business.business.service.impl
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import com.amazonaws.services.s3.model.ObjectMetadata
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.discipline.Discipline
-import com.vf.business.business.dao.models.discipline.DisciplineRepetition
 import com.vf.business.business.dao.repo.CategoryRepository
 import com.vf.business.business.dao.repo.DisciplineRepository
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
@@ -191,11 +191,13 @@ class DisciplineServiceImpl(
         }
 
         // upload image to AWS
+
         val s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build()
         val tempFile = File("random_" + Date().time)
         try {
-            file.transferTo(tempFile)
-            s3.putObject("virtualfit", "test_name",  tempFile);
+            val metadata = ObjectMetadata()
+            metadata.contentLength = file.size
+            s3.putObject("virtualfit", "test_name", file.inputStream,  metadata);
         } catch (e: AmazonServiceException) {
             e.printStackTrace()
         } finally {
