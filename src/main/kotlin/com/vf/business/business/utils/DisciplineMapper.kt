@@ -13,6 +13,7 @@ class DisciplineMapper {
                         professor = ProfessorMapper.Mapper.map(input?.professor),
                         designation = input?.designation,
                         description = input?.description,
+                        imageUrl = input?.imageUrl,
                         category = CategoryMapper.Mapper.map(input?.category),
                         repetitions = DisciplineRepetitionMapper.Mapper.map(input?.repetitions),
                         updatedAt = input?.createdAt,

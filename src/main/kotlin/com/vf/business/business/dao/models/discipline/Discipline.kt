@@ -20,6 +20,7 @@ class Discipline (
 
         open var designation: String?,
         open var description: String?,
+        open var imageUrl: String?,
         open var active: Boolean? = true,
         open var enabled: Boolean? = false,
 

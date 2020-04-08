@@ -1,4 +1,5 @@
 package com.vf.business.business.dto.storage
 
-class StorePictureResponse {
-}
+data class StorePictureResponse(
+        val url: String
+)

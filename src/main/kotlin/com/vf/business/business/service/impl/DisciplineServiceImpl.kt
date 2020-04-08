@@ -1,6 +1,8 @@
 package com.vf.business.business.service.impl
 
 import com.amazonaws.AmazonServiceException
+import com.amazonaws.auth.AWSCredentials
+import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.ObjectMetadata
@@ -15,7 +17,9 @@ import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
+import com.vf.business.business.service.impl.aws.VFCredentialsProvider
 import com.vf.business.business.service.itf.DisciplineService
+import com.vf.business.business.service.itf.StorageService
 import com.vf.business.business.utils.DisciplineMapper
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
@@ -23,12 +27,12 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
 import java.util.*
 
 
 @Service
 class DisciplineServiceImpl(
+        val storageService: StorageService,
         val disciplineRepo: DisciplineRepository,
         val categoryRepo: CategoryRepository
 ) : DisciplineService {
@@ -131,6 +135,7 @@ class DisciplineServiceImpl(
             professor = professor,
             designation = newDiscipline.designation,
             description = newDiscipline.description,
+            imageUrl = null,
             enabled = false,
             repetitions = arrayListOf(),
             createdAt = now,
@@ -191,21 +196,11 @@ class DisciplineServiceImpl(
         }
 
         // upload image to AWS
-
-        val s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build()
-        val tempFile = File("random_" + Date().time)
-        try {
-            val metadata = ObjectMetadata()
-            metadata.contentLength = file.size
-            s3.putObject("virtualfit", "test_name", file.inputStream,  metadata);
-        } catch (e: AmazonServiceException) {
-            e.printStackTrace()
-        } finally {
-            tempFile.delete()
-        }
+        val storePictureResponse = storageService.storePicture(file)
 
         // change it on the database to point to the new link
-
+        discipline.imageUrl = storePictureResponse.url
+        disciplineRepo.save(discipline)
     }
 
 }

@@ -1,9 +1,11 @@
-package com.vf.business.business.service.aws
+package com.vf.business.business.service.impl.aws
 
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.AWSCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
+import org.springframework.stereotype.Component
 
+@Component
 class VFCredentialsProvider : AWSCredentialsProvider {
 
     override fun getCredentials(): AWSCredentials =

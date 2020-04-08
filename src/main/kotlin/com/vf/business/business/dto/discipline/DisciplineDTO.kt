@@ -11,6 +11,7 @@ class DisciplineDTO(
         val professor: ProfessorDTO,
         val designation: String?,
         val description: String?,
+        val imageUrl: String?,
         val repetitions: MutableCollection<DisciplineRepetitionDTO>?,
         val enabled: Boolean?,
         createdAt: Date?,
