@@ -38,8 +38,8 @@ class SecurityConfig(
                 .antMatchers(HttpMethod.GET,"/v1/auth/me").authenticated() // get current user
 
                 .antMatchers(HttpMethod.POST, "/v1/disciplines").authenticated() // create disciplines
-                .antMatchers(HttpMethod.PUT, "/v1/disciplines/*")
-                    .hasAnyRole(AuthRoles.ADMIN.toString(), AuthRoles.PROFESSOR.toString()) // update disciplines
+                .antMatchers(HttpMethod.POST, "/v1/disciplines/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/v1/disciplines/**").authenticated() // update disciplines
                 .antMatchers(HttpMethod.PUT, "/v1/disciplines/*/picture")
                     .hasAnyRole(AuthRoles.ADMIN.toString(), AuthRoles.PROFESSOR.toString()) // change discipline picture
 
