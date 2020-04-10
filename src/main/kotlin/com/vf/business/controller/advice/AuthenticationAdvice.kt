@@ -16,6 +16,6 @@ class AuthenticationAdvice {
     @ExceptionHandler(BadCredentialsException::class, UsernameNotFoundException::class, CredentialsExpiredException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     fun handleAuthenticationExceptions(e: AuthenticationException): ErrorResponseDTO =
-            ErrorResponseDTO(status = 401, message = e.message)
+            ErrorResponseDTO(status = HttpStatus.UNAUTHORIZED.value(), message = e.message)
 
 }

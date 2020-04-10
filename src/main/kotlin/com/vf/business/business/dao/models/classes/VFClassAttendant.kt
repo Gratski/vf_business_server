@@ -15,7 +15,7 @@ class VFClassAttendant (
         open var student: Student?,
 
         @ManyToOne
-        open var vfClass: VFClass?,
+        open var vfClass: DisciplineClass?,
 
         open var leftAt: Date?,
         createdAt: Date?,

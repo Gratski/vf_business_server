@@ -22,25 +22,23 @@ interface DisciplineRepository : CrudRepository<Discipline, Int> {
      * Gets a page of disciplines that contain a discipline repetition
      * that start and end time are contained by FROM and UNTIL params
      */
-    @Query( "SELECT d " +
-            "FROM Discipline d " +
-            "WHERE " +
-                "d.category = :category " +
-                "AND d.enabled = true " +
-                "AND d.active = true " +
-                "AND d.id IN ( " +
-                    "SELECT dr.discipline.id " +
-                    "FROM DisciplineRepetition dr " +
-                    "WHERE " +
-                        "dr.discipline = d " +
-                        "AND dr.startsAt >= :from " +
-                        "AND dr.endsAt < :until " +
-                ")"
+    @Query( "SELECT d FROM Discipline d " +
+            "WHERE d.enabled = true AND d.active = true AND d.category = :category " +
+            "AND EXISTS ( " +
+                "SELECT ds FROM DisciplineSlot ds " +
+                        "WHERE   d = ds.discipline " +
+                        "AND ds.startsAtHour >= :periodStartsAt AND ds.startsAtHour < :periodEndsAt " +
+                        "AND EXISTS ( " +
+                        "SELECT dc FROM DisciplineClass dc " +
+                                "WHERE dc.disciplineSlot = ds AND dc.scheduledToDay = :today " +
+                        ")" +
+            ")"
     )
     fun findByCategoryAndPeriodOfTime(
             @Param("category") category: Category,
-            @Param("from") from: Date,
-            @Param("until") until: Date,
+            @Param("periodStartsAt") periodStartsAt: Int,
+            @Param("periodEndsAt") periodEndsAt: Int,
+            @Param("today") today: Date,
             pageable: Pageable): Page<Discipline>
 
 }

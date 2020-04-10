@@ -1,2 +1,2 @@
-ALTER TABLE discipline DROP COLUMN IF EXISTS scheduled_to;
-ALTER TABLE discipline DROP COLUMN IF EXISTS on_repeat;
+ALTER TABLE discipline DROP COLUMN scheduled_to;
+ALTER TABLE discipline DROP COLUMN on_repeat;

@@ -10,12 +10,13 @@ class DisciplineMapper {
         fun map(input: Discipline?): DisciplineDTO =
                 DisciplineDTO(
                         id = input?.id,
+                        category = CategoryMapper.Mapper.map(input?.category),
                         professor = ProfessorMapper.Mapper.map(input?.professor),
+                        slots = DisciplineSlotMapper.Mapper.map(input?.slots),
                         designation = input?.designation,
                         description = input?.description,
+                        duration = input?.duration,
                         imageUrl = input?.imageUrl,
-                        category = CategoryMapper.Mapper.map(input?.category),
-                        repetitions = DisciplineRepetitionMapper.Mapper.map(input?.repetitions),
                         updatedAt = input?.createdAt,
                         createdAt = input?.createdAt,
                         enabled = input?.enabled

@@ -35,6 +35,7 @@ class CategoryRepositoryTest {
     private fun prepareCategory(icon: String, designation: String, description: String,
                                 createdAt: Date, updatedAt: Date) =
             Category(
+                    id = null,
                     icon = icon,
                     designation = designation,
                     description = description,

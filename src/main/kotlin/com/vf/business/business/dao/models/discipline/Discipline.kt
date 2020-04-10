@@ -18,15 +18,18 @@ class Discipline (
         @JoinColumn(name = "professor")
         open var professor: Professor,
 
+        @OneToMany(fetch = FetchType.EAGER, mappedBy = "discipline")
+        open var slots: MutableCollection<DisciplineSlot>?,
+
         open var designation: String?,
         open var description: String?,
         open var imageUrl: String?,
+        open var duration: Int?, //in minutes
+
+        open var reviewsScore: Double? = -1.0,
+
         open var active: Boolean? = true,
         open var enabled: Boolean? = false,
-
-        @OneToMany(fetch = FetchType.EAGER, mappedBy = "discipline")
-        open var repetitions: MutableCollection<DisciplineRepetition>?,
-
         createdAt: Date?,
         updatedAt: Date?
 ) : AbstractEntity(

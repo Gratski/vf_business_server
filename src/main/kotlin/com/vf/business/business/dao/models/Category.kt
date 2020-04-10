@@ -7,7 +7,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "category")
 class Category(
-        id: Int? = null,
+        id: Int?,
 
         @ManyToOne
         @JoinColumn(name = "parent_id", referencedColumnName="id",nullable=false)

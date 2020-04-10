@@ -4,14 +4,14 @@ import com.vf.business.business.dto.AbstractDTO
 import com.vf.business.business.dto.user.ProfessorDTO
 import java.util.*
 
-class DisciplineRepetitionDTO(
+class DisciplineSlotDTO(
         id: Int?,
-        discipline: DisciplineDTO,
-        professor: ProfessorDTO,
-        startsAt: Date?,
-        endsAt: Date?,
-        enabled: Boolean? = false,
-        approved: Boolean? = false,
+        val discipline: DisciplineDTO,
+        val professor: ProfessorDTO,
+        val startsAtHour: Int?,
+        val startsAtMinutes: Int?,
+        val enabled: Boolean? = false,
+        val approved: Boolean? = false,
         createdAt: Date?,
         updatedAt: Date?
 ) : AbstractDTO(

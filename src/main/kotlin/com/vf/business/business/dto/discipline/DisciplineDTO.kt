@@ -12,7 +12,8 @@ class DisciplineDTO(
         val designation: String?,
         val description: String?,
         val imageUrl: String?,
-        val repetitions: MutableCollection<DisciplineRepetitionDTO>?,
+        val duration: Int?,
+        val slots: MutableCollection<DisciplineSlotDTO>?,
         val enabled: Boolean?,
         createdAt: Date?,
         updatedAt: Date?

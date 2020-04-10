@@ -1,13 +1,13 @@
 package com.vf.business.business.utils
 
-import com.vf.business.business.dao.models.classes.VFClass
+import com.vf.business.business.dao.models.classes.DisciplineClass
 import com.vf.business.business.dto.classes.VFClassDTO
 
 class VFClassMapper {
 
     object Mapper {
 
-        fun map(input: VFClass): VFClassDTO =
+        fun map(input: DisciplineClass): VFClassDTO =
                 VFClassDTO(
                         id = input.id,
                         professor = ProfessorMapper.Mapper.map(input.professor),

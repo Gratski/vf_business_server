@@ -1,27 +1,27 @@
 package com.vf.business.business.utils
 
-import com.vf.business.business.dao.models.discipline.DisciplineRepetition
-import com.vf.business.business.dto.discipline.DisciplineRepetitionDTO
+import com.vf.business.business.dao.models.discipline.DisciplineSlot
+import com.vf.business.business.dto.discipline.DisciplineSlotDTO
 
-class DisciplineRepetitionMapper {
+class DisciplineSlotMapper {
 
     object Mapper {
 
-        fun map(input: DisciplineRepetition?): DisciplineRepetitionDTO =
-                DisciplineRepetitionDTO(
+        fun map(input: DisciplineSlot?): DisciplineSlotDTO =
+                DisciplineSlotDTO(
                         id = input?.id,
                         professor = ProfessorMapper.Mapper.map(input?.professor),
                         discipline = DisciplineMapper.Mapper.map(input?.discipline),
-                        startsAt = input?.startsAt,
-                        endsAt = input?.endsAt,
+                        startsAtHour = input?.startsAtHour,
+                        startsAtMinutes = input?.startsAtMinutes,
                         enabled = input?.enabled,
                         approved = input?.approved,
                         createdAt = input?.createdAt,
                         updatedAt = input?.updatedAt
                 )
 
-        fun map(inputList: MutableCollection<DisciplineRepetition>?): MutableCollection<DisciplineRepetitionDTO> {
-            val resultList = mutableListOf<DisciplineRepetitionDTO>()
+        fun map(inputList: MutableCollection<DisciplineSlot>?): MutableCollection<DisciplineSlotDTO> {
+            val resultList = mutableListOf<DisciplineSlotDTO>()
             inputList?.forEach {
                 resultList.add(map(it))
             }

@@ -2,13 +2,12 @@ package com.vf.business.business.dao.models.discipline
 
 import com.vf.business.business.dao.models.AbstractEntity
 import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.classes.DisciplineClass
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity @Table( name = "discipline_repetition" )
-class DisciplineRepetition(
+class DisciplineSlot(
         id: Int?,
 
         @ManyToOne
@@ -17,8 +16,14 @@ class DisciplineRepetition(
         @ManyToOne
         open var professor: Professor,
 
-        open var startsAt: Date,
-        open var endsAt: Date,
+        @Enumerated(EnumType.STRING)
+        open var weekDay: WeekDayEnum,
+
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "disciplineSlot")
+        open var classes: MutableCollection<DisciplineClass>?,
+
+        open var startsAtHour: Int,
+        open var startsAtMinutes: Int,
         open var enabled: Boolean,
         open var approved: Boolean,
 

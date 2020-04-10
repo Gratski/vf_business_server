@@ -1,11 +1,5 @@
 package com.vf.business.business.service.impl
 
-import com.amazonaws.AmazonServiceException
-import com.amazonaws.auth.AWSCredentials
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.regions.Regions
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.amazonaws.services.s3.model.ObjectMetadata
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.discipline.Discipline
@@ -15,13 +9,16 @@ import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
+import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
-import com.vf.business.business.service.impl.aws.VFCredentialsProvider
 import com.vf.business.business.service.itf.DisciplineService
 import com.vf.business.business.service.itf.StorageService
 import com.vf.business.business.utils.DisciplineMapper
 import com.vf.business.common.PeriodEnum
+import com.vf.business.common.i18n.MessageCodes
+import com.vf.business.config.i18n.Translator
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -34,20 +31,21 @@ import java.util.*
 class DisciplineServiceImpl(
         val storageService: StorageService,
         val disciplineRepo: DisciplineRepository,
-        val categoryRepo: CategoryRepository
+        val categoryRepo: CategoryRepository,
+        val translator: Translator
 ) : DisciplineService {
 
     // hour to consider when getting morning classes
     val MORNING_STARTS_AT = 6 // inclusive
-    val MORNING_DURATION = 7 // hours
+    val MORNING_ENDS_AT = 13 // hours
 
     // hour to consider when getting afternoon classes
     val AFTERNOON_STARTS_AT = 13 // inclusive
-    val AFTERNOON_DURATION = 7 // hours
+    val AFTERNOON_ENDS_AT = 20 // hours
 
     // hour to consider when getting evening classes
     val EVENING_STARTS_AT = 20 // inclusive
-    val EVENING_DURATION = 7 // hours
+    val EVENING_ENDS_AT = 7 // hours
 
 
     override fun getDiscipline(id: Int): DisciplineDTO {
@@ -69,48 +67,39 @@ class DisciplineServiceImpl(
 
     override fun getDisciplinesByCategoryAndPeriodOfDay(category: Category, period: PeriodEnum, page: Pageable): Page<DisciplineDTO> {
         var periodStartsAt: Int
-        var periodDuration: Int
+        var periodEndsAt: Int
 
         // assign the correct initial hour and duration
         // to the desired period of time
         when (period) {
             PeriodEnum.MORNING -> {
                 periodStartsAt = MORNING_STARTS_AT
-                periodDuration = MORNING_DURATION
+                periodEndsAt = MORNING_ENDS_AT
             }
             PeriodEnum.AFTERNOON -> {
                 periodStartsAt = AFTERNOON_STARTS_AT
-                periodDuration = AFTERNOON_DURATION
+                periodEndsAt = AFTERNOON_ENDS_AT
             }
             PeriodEnum.EVENING -> {
                 periodStartsAt = EVENING_STARTS_AT
-                periodDuration = EVENING_DURATION
+                periodEndsAt = EVENING_ENDS_AT
             }
             else -> {
-                throw IllegalArgumentException("Missing period attribute")
+                throw IllegalArgumentException(Translator.toLocale(MessageCodes.INVALID_PERIOD_OF_DAY))
             }
         }
 
-        // calculate the time interval to be considered
-        var now = Calendar.getInstance()
-        val from = GregorianCalendar(
+        // get current date with locale
+        var now = Calendar.getInstance(LocaleContextHolder.getLocale())
+        val today = GregorianCalendar(
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH),
-                now.get(periodStartsAt),0, 0).time
-
-        val periodTimeUntil = GregorianCalendar(
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH),
-                now.get(periodStartsAt),0, 0)
-
-        periodTimeUntil.add(Calendar.HOUR_OF_DAY, periodDuration)
-        val until = periodTimeUntil.time
+                0,0, 0).time
 
         // fetch disciplines
         val resultsPage = disciplineRepo.findByCategoryAndPeriodOfTime(
-                category, from, until, page)
+                category, periodStartsAt, periodEndsAt, today, page)
 
         // prepare returning DTOs page
         val resultList = arrayListOf<DisciplineDTO>()
@@ -124,20 +113,26 @@ class DisciplineServiceImpl(
     }
 
     override fun createDiscipline(professor: Professor, newDiscipline: CreateDisciplineDTO): CreateOperationResponseDTO {
+        if( !hasAllRequiredFields(newDiscipline) )
+            throw MissingArgumentsException(Translator.toLocale(MessageCodes.MISSING_ARGUMENTS))
+
         val categoryOpt = categoryRepo.findById(newDiscipline.categoryId)
         categoryOpt.orElseThrow {
-            throw ResourceNotFoundException("The given category does not exist")
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,
+                            arrayOf(Translator.toLocale(MessageCodes.CATEGORY))))
         }
 
         val now = Date()
         val discipline = Discipline(
             category = categoryOpt.get(),
             professor = professor,
+            slots = mutableListOf(),
             designation = newDiscipline.designation,
             description = newDiscipline.description,
             imageUrl = null,
+            duration = newDiscipline.duration,
             enabled = false,
-            repetitions = arrayListOf(),
             createdAt = now,
             updatedAt = now
         )
@@ -158,27 +153,33 @@ class DisciplineServiceImpl(
     }
 
     override fun updateDiscipline(id: Int, dto: UpdateDisciplineDTO, professor: Professor) {
+        if( !hasAllRequiredFields(dto) )
+            throw MissingArgumentsException(Translator.toLocale(MessageCodes.MISSING_ARGUMENTS))
+
         val disciplineOpt = disciplineRepo.findById(id)
         disciplineOpt.orElseThrow {
-            throw ResourceNotFoundException("The given discipline does not exist")
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
         }
 
         val discipline = disciplineOpt.get()
 
         // verify if the current user is the owner professor
         if( professor.id != discipline.professor.id ) {
-            throw UnauthorizedOperationException("This user is not authorized to perform this operation")
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
         }
 
         val newCategoryOpt = categoryRepo.findById(dto.categoryId)
         newCategoryOpt.orElseThrow {
-            throw ResourceNotFoundException("This category does not exists")
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CATEGORY))))
         }
         val newCategory = newCategoryOpt.get()
 
         discipline.category = newCategory
         discipline.designation = dto.designation
         discipline.description = dto.description
+        discipline.duration = dto.duration
 
         disciplineRepo.save(discipline)
 
@@ -203,4 +204,17 @@ class DisciplineServiceImpl(
         disciplineRepo.save(discipline)
     }
 
+    fun hasAllRequiredFields(dto: CreateDisciplineDTO): Boolean {
+        return dto != null && dto.categoryId != null
+                && dto.description != null && dto.description.isNotBlank()
+                && dto.designation != null && dto.designation.isNotBlank()
+                && dto.duration != null && dto.duration > 0
+    }
+
+    fun hasAllRequiredFields(dto: UpdateDisciplineDTO): Boolean {
+        return dto != null && dto.categoryId != null
+                && dto.description != null && dto.description.isNotBlank()
+                && dto.designation != null && dto.designation.isNotBlank()
+                && dto.duration != null && dto.duration > 0
+    }
 }

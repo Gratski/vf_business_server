@@ -1,7 +1,7 @@
 package com.vf.business.business.service.impl
 
 import com.vf.business.business.dao.models.Category
-import com.vf.business.business.dao.models.classes.VFClass
+import com.vf.business.business.dao.models.classes.DisciplineClass
 import com.vf.business.business.dao.repo.ClassesRepository
 import com.vf.business.business.dto.classes.VFClassDTO
 import com.vf.business.business.service.itf.ClassesService
@@ -40,7 +40,7 @@ class ClassesServiceImpl(
 
         val now = Date()
         val pageRequest = PageRequest.of((pageNumber * size), size)
-        val classesPage: Page<VFClass> = classesRepo.findActiveClassesByCategory(category, now, pageRequest)
+        val classesPage: Page<DisciplineClass> = classesRepo.findActiveClassesByCategory(category, now, pageRequest)
         val resultList = arrayListOf<VFClassDTO>()
 
 
