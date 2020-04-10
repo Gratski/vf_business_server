@@ -10,15 +10,18 @@ import javax.persistence.*
 
 @Entity @Table(name = "class")
 class DisciplineClass (
-        id: Int?,
+        id: Int? = null,
 
         @ManyToOne
+        @JoinColumn(name = "discipline")
         open var discipline: Discipline?,
 
         @ManyToOne
+        @JoinColumn(name = "professor")
         open var professor: Professor?,
 
         @ManyToOne
+        @JoinColumn(name = "discipline_repetition")
         open val disciplineSlot: DisciplineSlot,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
@@ -30,8 +33,8 @@ class DisciplineClass (
         open var scheduledToDay: Date, // date of this class but with hour and minutes and milliseconds to 0
         open var scheduledTo: Date, // the actual date of the class
 
-        open var startedAt: Date?,
-        open var endedAt: Date?,
+        open var startedAt: Date? = null,
+        open var endedAt: Date? = null,
         createdAt: Date?,
         updatedAt: Date?
 

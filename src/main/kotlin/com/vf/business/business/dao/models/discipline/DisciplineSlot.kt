@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Entity @Table( name = "discipline_repetition" )
 class DisciplineSlot(
-        id: Int?,
+        id: Int? = null,
 
         @ManyToOne
         open var discipline: Discipline,

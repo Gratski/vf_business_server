@@ -5,6 +5,7 @@ import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
+import com.vf.business.business.dto.discipline.slot.CreateDisciplineSlotDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
@@ -28,5 +29,7 @@ interface DisciplineService {
     fun updateDiscipline(id: Int, dto: UpdateDisciplineDTO, professor: Professor)
 
     fun changeDisciplinePicture(id: Int, professor: Professor, file: MultipartFile);
+
+    fun createDisciplineSlot(id: Int, professor: Professor, dto: CreateDisciplineSlotDTO): CreateOperationResponseDTO
 
 }

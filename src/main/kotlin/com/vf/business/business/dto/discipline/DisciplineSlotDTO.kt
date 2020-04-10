@@ -6,8 +6,6 @@ import java.util.*
 
 class DisciplineSlotDTO(
         id: Int?,
-        val discipline: DisciplineDTO,
-        val professor: ProfessorDTO,
         val startsAtHour: Int?,
         val startsAtMinutes: Int?,
         val enabled: Boolean? = false,

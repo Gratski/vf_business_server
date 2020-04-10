@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface ClassesRepository : CrudRepository< DisciplineClass , Int> {
+interface DisciplineClassesRepository : CrudRepository< DisciplineClass , Int> {
 
     @Query("SELECT c " +
             "FROM DisciplineClass c " +

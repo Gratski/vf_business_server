@@ -2,7 +2,7 @@ package com.vf.business.business.service.impl
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.classes.DisciplineClass
-import com.vf.business.business.dao.repo.ClassesRepository
+import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dto.classes.VFClassDTO
 import com.vf.business.business.service.itf.ClassesService
 import com.vf.business.business.utils.VFClassMapper
@@ -14,7 +14,7 @@ import java.util.*
 
 @Service
 class ClassesServiceImpl(
-        val classesRepo: ClassesRepository
+        val classesRepo: DisciplineClassesRepository
 ) : ClassesService {
 
     override fun getActiveClasses(pageNumber: Int, size: Int): Page<VFClassDTO> {

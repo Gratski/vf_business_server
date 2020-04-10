@@ -10,8 +10,6 @@ class DisciplineSlotMapper {
         fun map(input: DisciplineSlot?): DisciplineSlotDTO =
                 DisciplineSlotDTO(
                         id = input?.id,
-                        professor = ProfessorMapper.Mapper.map(input?.professor),
-                        discipline = DisciplineMapper.Mapper.map(input?.discipline),
                         startsAtHour = input?.startsAtHour,
                         startsAtMinutes = input?.startsAtMinutes,
                         enabled = input?.enabled,

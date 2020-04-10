@@ -1,0 +1,1 @@
+ALTER TABLE "class" ADD COLUMN discipline_repetition int references discipline_repetition(id) not null;

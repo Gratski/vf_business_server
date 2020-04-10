@@ -4,6 +4,7 @@ import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
+import com.vf.business.business.dto.discipline.slot.CreateDisciplineSlotDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.service.itf.DisciplineService
 import com.vf.business.business.service.itf.UsersService
@@ -18,21 +19,11 @@ class DisciplineController(
         val usersService: UsersService
 ) {
 
-    @GetMapping("/{id}")
-    fun getDisciplineById(@PathVariable("id") id: Int): DisciplineDTO =
-            disciplineService.getDiscipline(id)
-
+    // POSTS
     @PostMapping("")
     fun createDiscipline(principal: Principal, @RequestBody dto: CreateDisciplineDTO): CreateOperationResponseDTO {
         val professor = (usersService.getUser(principal) as Professor)
         return disciplineService.createDiscipline(professor, dto)
-    }
-
-    @PutMapping("/{id}")
-    fun editDiscipline(@PathVariable("id") id: Int,
-                       principal: Principal, @RequestBody dto: UpdateDisciplineDTO) {
-        val professor = (usersService.getUser(principal) as Professor)
-        disciplineService.updateDiscipline(id, dto,professor)
     }
 
     @PostMapping("/{id}/enable")
@@ -42,6 +33,25 @@ class DisciplineController(
     @PostMapping("/{id}/disable")
     fun disableDiscipline(@PathVariable("id") id: Int) =
             disciplineService.enableDisable(id, false)
+
+    @PostMapping("/{id}/slot")
+    fun createDisciplineSlot(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateDisciplineSlotDTO): CreateOperationResponseDTO {
+        val professor = (usersService.getUser(principal) as Professor)
+        return disciplineService.createDisciplineSlot(id, professor, dto)
+    }
+
+    // GETS
+    @GetMapping("/{id}")
+    fun getDisciplineById(@PathVariable("id") id: Int): DisciplineDTO =
+            disciplineService.getDiscipline(id)
+
+    // PUTS
+    @PutMapping("/{id}")
+    fun editDiscipline(@PathVariable("id") id: Int,
+                       principal: Principal, @RequestBody dto: UpdateDisciplineDTO) {
+        val professor = (usersService.getUser(principal) as Professor)
+        disciplineService.updateDiscipline(id, dto,professor)
+    }
 
     @PutMapping("/{id}/picture")
     fun changeDisciplinePicture(@PathVariable("id") id: Int,

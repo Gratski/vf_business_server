@@ -2,6 +2,7 @@ package com.vf.business.controller.advice
 
 import com.vf.business.business.dto.error.ErrorResponseDTO
 import com.vf.business.business.exception.MissingArgumentsException
+import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import org.springframework.http.HttpStatus
@@ -28,5 +29,11 @@ class ValidationExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     fun handleForbiddenException(e: UnauthorizedOperationException) =
             ErrorResponseDTO(status = HttpStatus.FORBIDDEN.value(), message = e.message)
+
+    @ExceptionHandler(ResourceConflictException::class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    fun handleConflictException(e: ResourceConflictException) =
+            ErrorResponseDTO(status = HttpStatus.CONFLICT.value(), message = e.message)
+
 
 }

@@ -3,15 +3,18 @@ package com.vf.business.business.service.impl
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.discipline.Discipline
+import com.vf.business.business.dao.models.discipline.DisciplineSlot
 import com.vf.business.business.dao.repo.CategoryRepository
+import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dao.repo.DisciplineRepository
+import com.vf.business.business.dao.repo.DisciplineSlotRepository
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
+import com.vf.business.business.dto.discipline.slot.CreateDisciplineSlotDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
-import com.vf.business.business.exception.MissingArgumentsException
-import com.vf.business.business.exception.ResourceNotFoundException
-import com.vf.business.business.exception.UnauthorizedOperationException
+import com.vf.business.business.exception.*
+import com.vf.business.business.service.itf.DisciplineClassesService
 import com.vf.business.business.service.itf.DisciplineService
 import com.vf.business.business.service.itf.StorageService
 import com.vf.business.business.utils.DisciplineMapper
@@ -25,12 +28,15 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
+import javax.transaction.Transactional
 
 
 @Service
 class DisciplineServiceImpl(
         val storageService: StorageService,
         val disciplineRepo: DisciplineRepository,
+        val disciplineSlotRepo: DisciplineSlotRepository,
+        val disciplineClassesService: DisciplineClassesService,
         val categoryRepo: CategoryRepository,
         val translator: Translator
 ) : DisciplineService {
@@ -47,14 +53,13 @@ class DisciplineServiceImpl(
     val EVENING_STARTS_AT = 20 // inclusive
     val EVENING_ENDS_AT = 7 // hours
 
+    val STARTS_AT_HOUR_LABEL = "startsAtHour"
+    val STARTS_AT_MINUTES_LABEL = "startsAtMinutes"
 
-    override fun getDiscipline(id: Int): DisciplineDTO {
-        val disciplineOpt = disciplineRepo.findById(id)
-        disciplineOpt.orElseThrow {
-            throw ResourceNotFoundException()
-        }
-        return DisciplineMapper.Mapper.map(disciplineOpt.get())
-    }
+
+    override fun getDiscipline(id: Int): DisciplineDTO =
+        DisciplineMapper.Mapper.map(getDisciplineById(id))
+
 
     override fun getDisciplinesByCategory(category: Category, page: Pageable): Collection<DisciplineDTO> {
         val page = disciplineRepo.findByCategory(category, page)
@@ -156,18 +161,10 @@ class DisciplineServiceImpl(
         if( !hasAllRequiredFields(dto) )
             throw MissingArgumentsException(Translator.toLocale(MessageCodes.MISSING_ARGUMENTS))
 
-        val disciplineOpt = disciplineRepo.findById(id)
-        disciplineOpt.orElseThrow {
-            throw ResourceNotFoundException(
-                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
-        }
+        val discipline = getDisciplineById(id)
 
-        val discipline = disciplineOpt.get()
-
-        // verify if the current user is the owner professor
-        if( professor.id != discipline.professor.id ) {
-            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
-        }
+        // check if this discipline belongs to the given professor
+        checkBelongsTo(discipline, professor)
 
         val newCategoryOpt = categoryRepo.findById(dto.categoryId)
         newCategoryOpt.orElseThrow {
@@ -180,8 +177,9 @@ class DisciplineServiceImpl(
         discipline.designation = dto.designation
         discipline.description = dto.description
         discipline.duration = dto.duration
-
         disciplineRepo.save(discipline)
+
+        // TODO: Create all classes depending on the repetition type
 
     }
 
@@ -204,14 +202,122 @@ class DisciplineServiceImpl(
         disciplineRepo.save(discipline)
     }
 
-    fun hasAllRequiredFields(dto: CreateDisciplineDTO): Boolean {
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    override fun createDisciplineSlot(id: Int, professor: Professor, slotDto: CreateDisciplineSlotDTO): CreateOperationResponseDTO {
+        checkRequiredFields(slotDto)
+        val discipline = getDisciplineById(id)
+        checkBelongsTo(discipline, professor)
+
+        // check if there are no other slots that may cause a functional conflict
+        val startsAtDate = Calendar.getInstance()
+        startsAtDate.set(Calendar.DAY_OF_WEEK, slotDto.weekDay.value())
+        startsAtDate.set(Calendar.HOUR_OF_DAY, slotDto.startsAtHour)
+        startsAtDate.set(Calendar.MINUTE, slotDto.startsAtMinutes)
+        startsAtDate.set(Calendar.MILLISECOND, 0)
+
+        val endsAtDate = startsAtDate.clone() as Calendar
+        endsAtDate.add(Calendar.MINUTE, discipline.duration!!)
+
+        discipline.slots?.forEach {
+
+            val innerStartsAtDate = Calendar.getInstance()
+            innerStartsAtDate.set(Calendar.DAY_OF_WEEK, it.weekDay.value())
+            innerStartsAtDate.set(Calendar.HOUR_OF_DAY, it.startsAtHour)
+            innerStartsAtDate.set(Calendar.MINUTE, it.startsAtMinutes)
+            innerStartsAtDate.set(Calendar.MILLISECOND, 0)
+
+            val innerEndsAtDate = innerStartsAtDate.clone() as Calendar
+            innerEndsAtDate.add(Calendar.MINUTE, discipline.duration!!)
+
+            if (
+                    innerStartsAtDate == startsAtDate && innerEndsAtDate == endsAtDate
+                    || innerStartsAtDate.after(startsAtDate) && innerStartsAtDate.before(endsAtDate)
+                    || innerEndsAtDate.after(startsAtDate) && innerEndsAtDate.before(endsAtDate)
+            ) {
+                throw ResourceConflictException(
+                        Translator.toLocale(MessageCodes.DISCIPLINE_SLOT_CONFLICT)
+                )
+            }
+        }
+
+        val now = Calendar.getInstance()
+        val slot = DisciplineSlot(
+                discipline = discipline,
+                professor = professor,
+                weekDay = slotDto.weekDay,
+                classes = mutableListOf(),
+                startsAtHour = slotDto.startsAtHour,
+                startsAtMinutes = slotDto.startsAtMinutes,
+                enabled = false,
+                approved = true,
+                createdAt = now.time,
+                updatedAt = now.time
+        )
+
+        disciplineSlotRepo.save(slot)
+
+        // create classes in advance according to repetition type
+        disciplineClassesService.createClassesUntil(slot, slotDto.repetition, slot.weekDay, slot.startsAtHour,
+                slot.startsAtMinutes, discipline.duration!!, 30)
+
+        return CreateOperationResponseDTO(slot.id)
+
+    }
+
+    // Aux methods
+    /**
+     * Gets a discipline based on the given ID
+     * @throws ResourceNotFoundException if resource does not exist
+     */
+    private fun getDisciplineById(id: Int): Discipline {
+        val disciplineOpt = disciplineRepo.findById(id)
+        disciplineOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
+        }
+        return disciplineOpt.get()
+    }
+
+    /**
+     * Checks if the given discipline belongs to the given professor
+     * @throws UnauthorizedOperationException if the given condition doesn't apply
+     */
+    private fun checkBelongsTo(d: Discipline, p: Professor) {
+        if( p.id != d.professor.id ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
+        }
+    }
+
+    private fun checkRequiredFields(slotDto: CreateDisciplineSlotDTO): Boolean {
+        if ( slotDto == null || slotDto.repetition == null
+                || slotDto.startsAtHour == null || slotDto.startsAtMinutes == null) {
+            throw MissingArgumentsException(Translator.toLocale(MessageCodes.MISSING_ARGUMENTS))
+        }
+
+        if ( slotDto.startsAtHour <= 0 || slotDto.startsAtHour > 23 ) {
+            throw BadFormatException(
+                    Translator.toLocale(MessageCodes.BAD_FORMAT, arrayOf(STARTS_AT_HOUR_LABEL))
+            )
+        }
+
+        if ( slotDto.startsAtMinutes < 0 || slotDto.startsAtMinutes > 59) {
+            throw BadFormatException(
+                    Translator.toLocale(MessageCodes.BAD_FORMAT, arrayOf(STARTS_AT_MINUTES_LABEL))
+            )
+        }
+
+        return true
+    }
+
+    // VALIDATIONS
+    private fun hasAllRequiredFields(dto: CreateDisciplineDTO): Boolean {
         return dto != null && dto.categoryId != null
                 && dto.description != null && dto.description.isNotBlank()
                 && dto.designation != null && dto.designation.isNotBlank()
                 && dto.duration != null && dto.duration > 0
     }
 
-    fun hasAllRequiredFields(dto: UpdateDisciplineDTO): Boolean {
+    private fun hasAllRequiredFields(dto: UpdateDisciplineDTO): Boolean {
         return dto != null && dto.categoryId != null
                 && dto.description != null && dto.description.isNotBlank()
                 && dto.designation != null && dto.designation.isNotBlank()
