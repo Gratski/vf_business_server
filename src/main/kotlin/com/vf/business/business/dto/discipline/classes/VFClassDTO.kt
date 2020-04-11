@@ -1,4 +1,4 @@
-package com.vf.business.business.dto.classes
+package com.vf.business.business.dto.discipline.classes
 
 import com.vf.business.business.dto.AbstractDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO

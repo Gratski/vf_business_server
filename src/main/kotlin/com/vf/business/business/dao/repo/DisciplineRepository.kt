@@ -25,20 +25,15 @@ interface DisciplineRepository : CrudRepository<Discipline, Int> {
     @Query( "SELECT d FROM Discipline d " +
             "WHERE d.enabled = true AND d.active = true AND d.category = :category " +
             "AND EXISTS ( " +
-                "SELECT ds FROM DisciplineSlot ds " +
-                        "WHERE   d = ds.discipline " +
-                        "AND ds.startsAtHour >= :periodStartsAt AND ds.startsAtHour < :periodEndsAt " +
-                        "AND EXISTS ( " +
-                        "SELECT dc FROM DisciplineClass dc " +
-                                "WHERE dc.disciplineSlot = ds AND dc.scheduledToDay = :today " +
-                        ")" +
-            ")"
+                "SELECT dc FROM DisciplineClass dc " +
+                        "WHERE   d = dc.discipline " +
+                        "AND ( dc.scheduledTo BETWEEN :from AND :until )" +
+                ")"
     )
     fun findByCategoryAndPeriodOfTime(
             @Param("category") category: Category,
-            @Param("periodStartsAt") periodStartsAt: Int,
-            @Param("periodEndsAt") periodEndsAt: Int,
-            @Param("today") today: Date,
+            @Param("from") from: Date,
+            @Param("until") until: Date,
             pageable: Pageable): Page<Discipline>
 
 }

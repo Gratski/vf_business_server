@@ -4,7 +4,7 @@ import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
-import com.vf.business.business.dto.discipline.slot.CreateDisciplineSlotDTO
+import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.service.itf.DisciplineService
 import com.vf.business.business.service.itf.UsersService
@@ -34,10 +34,10 @@ class DisciplineController(
     fun disableDiscipline(@PathVariable("id") id: Int) =
             disciplineService.enableDisable(id, false)
 
-    @PostMapping("/{id}/slot")
-    fun createDisciplineSlot(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateDisciplineSlotDTO): CreateOperationResponseDTO {
+    @PostMapping("/{id}/classes")
+    fun createDisciplineClasses(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateDisciplineClassesDTO) {
         val professor = (usersService.getUser(principal) as Professor)
-        return disciplineService.createDisciplineSlot(id, professor, dto)
+        disciplineService.createDisciplineClasses(id, professor, dto)
     }
 
     // GETS

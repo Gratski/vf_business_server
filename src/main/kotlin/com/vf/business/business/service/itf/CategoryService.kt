@@ -1,7 +1,7 @@
 package com.vf.business.business.service.itf
 
 import com.vf.business.business.dto.category.CategoryDTO
-import com.vf.business.business.dto.classes.VFClassDTO
+import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page

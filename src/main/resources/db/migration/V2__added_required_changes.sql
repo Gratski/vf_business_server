@@ -89,13 +89,6 @@ create table IF NOT EXISTS discipline_like (
 	created_at timestamp
 );
 
-create table save_seat (
-	id serial primary key,
-	student integer not null references student(id),
-	"class" integer not null references "class"(id),
-	created_at timestamp
-);
-
 create table class_report (
 	id serial primary key,
 	app_user integer not null references app_user(id),
@@ -135,18 +128,6 @@ ALTER TABLE category ADD COLUMN picture_id int references picture(id);
 ALTER TABLE category ADD COLUMN icon varchar(50);
 ALTER TABLE category ADD COLUMN created_at timestamp;
 ALTER TABLE category ADD COLUMN updated_at timestamp;
-
-CREATE TABLE discipline_repetition (
-    id serial primary key,
-    discipline_id int not null references discipline(id),
-    professor_id int not null references professor(id),
-    starts_at timestamp,
-    ends_at timestamp,
-    enabled boolean default false,
-    approved boolean default false,
-    created_at timestamp,
-	updated_at timestamp
-);
 
 ALTER TABLE "class" ADD COLUMN started_at timestamp not null;
 ALTER TABLE "class" ADD COLUMN ended_at timestamp;

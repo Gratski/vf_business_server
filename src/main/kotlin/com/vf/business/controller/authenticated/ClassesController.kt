@@ -1,6 +1,6 @@
 package com.vf.business.controller.authenticated
 
-import com.vf.business.business.dto.classes.VFClassDTO
+import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.service.itf.ClassesService
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.GetMapping

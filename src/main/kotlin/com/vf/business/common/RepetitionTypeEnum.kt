@@ -1,4 +1,4 @@
-package com.vf.business.business.dao.models.discipline
+package com.vf.business.common
 
 enum class RepetitionTypeEnum {
     NONE, DAILY, WEEKLY

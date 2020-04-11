@@ -12,7 +12,6 @@ class DisciplineMapper {
                         id = input?.id,
                         category = CategoryMapper.Mapper.map(input?.category),
                         professor = ProfessorMapper.Mapper.map(input?.professor),
-                        slots = DisciplineSlotMapper.Mapper.map(input?.slots),
                         designation = input?.designation,
                         description = input?.description,
                         duration = input?.duration,
@@ -21,7 +20,6 @@ class DisciplineMapper {
                         createdAt = input?.createdAt,
                         enabled = input?.enabled
                 )
-
     }
 
 }

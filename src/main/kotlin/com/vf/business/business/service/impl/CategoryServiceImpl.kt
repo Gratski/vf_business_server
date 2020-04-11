@@ -3,7 +3,7 @@ package com.vf.business.business.service.impl
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.repo.CategoryRepository
 import com.vf.business.business.dto.category.CategoryDTO
-import com.vf.business.business.dto.classes.VFClassDTO
+import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.CategoryService
@@ -14,8 +14,6 @@ import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.lang.IllegalArgumentException
-import java.util.*
 
 @Service
 class CategoryServiceImpl(

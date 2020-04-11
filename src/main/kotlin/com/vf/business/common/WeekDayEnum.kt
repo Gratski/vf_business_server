@@ -1,4 +1,4 @@
-package com.vf.business.business.dao.models.discipline
+package com.vf.business.common
 
 /**
  * This enum matches the Days of Week according to Java Calendar

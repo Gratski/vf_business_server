@@ -1,4 +1,4 @@
-package com.vf.business.business.dao.models.classes
+package com.vf.business.business.dao.models.discipline.classes
 
 import com.vf.business.business.dao.models.AbstractEntity
 import com.vf.business.business.dao.models.Student
@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity @Table(name = "class_attendant")
-class VFClassAttendant (
+class ClassAttendant (
         id: Int?,
 
         @ManyToOne
