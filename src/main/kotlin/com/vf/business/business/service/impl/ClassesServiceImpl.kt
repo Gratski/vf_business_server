@@ -22,6 +22,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 import java.util.*
+import kotlin.math.min
 
 @Service
 class ClassesServiceImpl(
@@ -62,10 +63,9 @@ class ClassesServiceImpl(
 
         // if there is no repetition
         if( dto.repetition == RepetitionTypeEnum.NONE ) {
-            val targetDate = prepareCalendar(dto.dateYear,  dto.dateMonth, dto.dateDay, dto.dateHour, dto.dateMinutes)
+            val targetDate = prepareCalendar(dto.dateDay,  dto.dateMonth, dto.dateYear, dto.dateHour, dto.dateMinutes)
             createSingleClass(discipline, targetDate.time)
         }
-
         // if the repetition is daily
         else if ( dto.repetition == RepetitionTypeEnum.DAILY ) {
             var dayNumber = 0
@@ -85,7 +85,9 @@ class ClassesServiceImpl(
                 dayNumber++
             }
 
-        } else if( dto.repetition == RepetitionTypeEnum.WEEKLY ) {
+        }
+        // if the repetition is weekly
+        else if( dto.repetition == RepetitionTypeEnum.WEEKLY ) {
 
             var dayNumber = 0
             var currentDate = prepareCalendar(dto.dateDay, dto.dateMonth, dto.dateYear, dto.dateHour, dto.dateMinutes).time
@@ -114,25 +116,8 @@ class ClassesServiceImpl(
         }
     }
 
-    private fun prepareCalendar(day: Int, month: Int, year: Int, hours: Int = 0, mins: Int = 0): Calendar {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.DAY_OF_YEAR, day)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.HOUR_OF_DAY, hours)
-        calendar.set(Calendar.MINUTE, mins)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return calendar
-    }
-
-    private fun prepareCalendar(date: Date, hours: Int = 0, mins: Int = 0): Calendar {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.set(Calendar.HOUR_OF_DAY, hours)
-        calendar.set(Calendar.MINUTE, mins)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return calendar
-    }
+    private fun prepareCalendar(day: Int, month: Int, year: Int, hours: Int = 0, mins: Int = 0): Calendar =
+        GregorianCalendar(year, convertIntToCalendarMonth(month), day, hours, mins, 0)
 
     private fun createSingleClass(discipline: Discipline, targetDate: Date) {
         val now = Calendar.getInstance()
@@ -166,6 +151,24 @@ class ClassesServiceImpl(
             WeekDayEnum.SATURDAY -> {
                 DayOfWeek.SATURDAY}
             else -> throw BadFormatException(Translator.toLocale(MessageCodes.BAD_FORMAT, arrayOf(Translator.toLocale(MessageCodes.WEEK_DAY))))
+        }
+    }
+
+    private fun convertIntToCalendarMonth(month: Int): Int {
+        return when( month ) {
+            1 -> Calendar.JANUARY
+            2 -> Calendar.FEBRUARY
+            3 -> Calendar.MARCH
+            4 -> Calendar.APRIL
+            5 -> Calendar.MAY
+            6 -> Calendar.JUNE
+            7 -> Calendar.JULY
+            8 -> Calendar.AUGUST
+            9 -> Calendar.SEPTEMBER
+            10 -> Calendar.OCTOBER
+            11 -> Calendar.NOVEMBER
+            12 -> Calendar.DECEMBER
+            else -> Calendar.JANUARY
         }
     }
 
