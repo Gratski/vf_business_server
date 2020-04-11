@@ -60,7 +60,6 @@ class ClassesServiceImpl(
     }
 
     override fun createClassesFromUntil(dto: CreateDisciplineClassesDTO, discipline: Discipline) {
-
         // if there is no repetition
         if( dto.repetition == RepetitionTypeEnum.NONE ) {
             val targetDate = prepareCalendar(dto.dateDay,  dto.dateMonth, dto.dateYear, dto.dateHour, dto.dateMinutes)

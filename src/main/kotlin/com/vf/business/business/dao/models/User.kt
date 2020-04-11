@@ -1,5 +1,6 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.common.CountryCodeEnum
 import java.util.Date
 import javax.persistence.*
 
@@ -18,6 +19,9 @@ abstract class User (
         open var email: String?,
         @Column(name = "pwd")
         open var password: String?,
+        @Column(name = "country_code")
+        @Enumerated(EnumType.STRING)
+        open var countryCode: CountryCodeEnum? = null,
         @Column(name = "active")
         open var active: Boolean? = false,
         @Column(name = "enabled")

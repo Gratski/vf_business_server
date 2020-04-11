@@ -21,7 +21,7 @@ class StudentServiceImpl(userRepo: UsersRepository, val studentRepo: StudentRepo
         }
 
         val now = Date()
-        val student = Student(firstName = s.firstName, lastName = s.lastName, email = s.email, pwd = s.pwd,
+        val student = Student(firstName = s.firstName, lastName = s.lastName, email = s.email, pwd = s.pwd, countryCode = s.countryCode,
                 createdAt = now, updatedAt = now)
         studentRepo.save(student)
         studentId = student.id!!
@@ -30,9 +30,8 @@ class StudentServiceImpl(userRepo: UsersRepository, val studentRepo: StudentRepo
     }
 
     override fun getStudent(id: Int): StudentDTO {
-        var result: StudentDTO = StudentDTO(firstName = "", lastName =  "", email =  "")
         val opt = studentRepo.findById(id)
-        if (opt.isPresent) return Student.ModelMapper.from(opt.get()) else throw ResourceNotFoundException()
+        return if (opt.isPresent) Student.ModelMapper.from(opt.get()) else throw ResourceNotFoundException()
     }
 
 }

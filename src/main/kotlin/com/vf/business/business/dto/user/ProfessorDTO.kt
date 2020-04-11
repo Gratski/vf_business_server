@@ -1,5 +1,6 @@
 package com.vf.business.business.dto.user
 
+import com.vf.business.common.CountryCodeEnum
 import java.util.Date
 
 class ProfessorDTO(id: Int?,
@@ -7,7 +8,8 @@ class ProfessorDTO(id: Int?,
                lastName: String?,
                email: String?,
                pwd: String? = null,
+               countryCode: CountryCodeEnum? = null,
                active: Boolean? = false,
                enabled: Boolean? = true,
                createdAt: Date?,
-               updatedAt: Date?) : UserDTO(id, firstName, lastName, email, pwd, active, enabled, createdAt, updatedAt)
+               updatedAt: Date?) : UserDTO(id, firstName, lastName, email, pwd, countryCode, active, enabled, createdAt, updatedAt)

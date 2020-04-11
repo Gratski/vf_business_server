@@ -14,6 +14,7 @@ class StudentMapper {
                     lastName = input.lastName,
                     email = input.email,
                     pwd = null,
+                    countryCode = input.countryCode,
                     active = input.active,
                     enabled = input.enabled,
                     createdAt = input.createdAt,
