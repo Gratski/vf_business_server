@@ -65,12 +65,23 @@ class StudentServiceImpl(
             )
         }
 
+        // check if the given phone country exists
+        val phoneCountryOpt = countryRepo.findById(s.phoneNumberCountryId)
+        phoneCountryOpt.orElseThrow {
+            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.COUNTRY))))
+        }
+        val phoneNumberCountry = phoneCountryOpt.get()
+
         val now = Date()
         val student = Student(
                 firstName = s.firstName,
                 lastName = s.lastName,
                 email = s.email,
                 pwd = AuthUtils.Instance.hashPassword(s.pwd),
+                gender = s.gender,
+                birthday = s.birthday,
+                phoneNumber = s.phoneNumber,
+                phoneNumberCountry = phoneNumberCountry,
                 livingIn = livingIn,
                 nationality = nationality,
                 spokenLanguages = mutableListOf(),

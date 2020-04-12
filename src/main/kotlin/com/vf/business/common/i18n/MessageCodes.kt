@@ -13,6 +13,7 @@ class MessageCodes {
 
         // COMMON TERMS
         val WEEK_DAY = "week_day"
+        val COUNTRY = "country"
 
         // LANGUAGE CONTEXT RELATED
         val LANGUAGE = "language"

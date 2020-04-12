@@ -1,5 +1,6 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.business.dto.user.Gender
 import java.util.Date
 import javax.persistence.*
 
@@ -16,6 +17,21 @@ abstract class User (
         open var email: String?,
         @Column(name = "pwd")
         open var password: String?,
+
+        @Column(name = "gender")
+        @Enumerated(EnumType.STRING)
+        open var gender: Gender,
+
+        @Column(name = "birthday")
+        open var birthday: Date,
+
+        @ManyToOne
+        @JoinColumn(name = "phone_number_country")
+        open var phoneNumberCountry: Country,
+
+        @Column(name = "phone_number")
+        open var phoneNumber: String? = null,
+        
         @ManyToOne
         @JoinColumn(name = "nationality")
         open var nationality: Country? = null,

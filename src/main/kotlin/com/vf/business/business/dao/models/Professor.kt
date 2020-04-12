@@ -1,5 +1,6 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.business.dto.user.Gender
 import java.util.Date
 import javax.persistence.*
 
@@ -11,9 +12,16 @@ class Professor(
         lastName: String,
         email: String,
         pwd: String?,
+        gender: Gender,
+        birthday: Date,
+        phoneNumberCountry: Country,
+        phoneNumber: String? = null,
         nationality: Country,
         livingIn: Country,
         spokenLanguages: MutableList<UserLanguage>,
+
+        @Column(name = "nif")
+        open var VAT: String,
 
         @OneToMany(mappedBy = "professor")
         open var languageContexts: MutableList<LanguageContext>,
@@ -31,5 +39,5 @@ class Professor(
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, firstName, lastName, email, pwd, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 }

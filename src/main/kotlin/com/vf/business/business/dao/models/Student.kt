@@ -1,5 +1,6 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.business.dto.user.Gender
 import com.vf.business.business.dto.user.student.StudentDTO
 import com.vf.business.business.utils.mapper.CountryMapper
 import com.vf.business.business.utils.mapper.LanguageMapper
@@ -17,6 +18,10 @@ class Student(
         lastName: String?,
         email: String?,
         pwd: String?,
+        gender: Gender,
+        birthday: Date,
+        phoneNumberCountry: Country,
+        phoneNumber: String? = null,
         nationality: Country,
         livingIn: Country,
         spokenLanguages: MutableList<UserLanguage>,
@@ -31,7 +36,7 @@ class Student(
         enabled: Boolean? = true,
         createdAt: Date?,
         updatedAt: Date?
-) : User(id, firstName, lastName, email, pwd, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper {
         fun from(student: Student): StudentDTO =
