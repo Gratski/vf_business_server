@@ -12,10 +12,8 @@ import com.vf.business.business.dao.repo.ClassAttendantRepository
 import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dao.repo.ProfessorRepository
 import com.vf.business.business.dao.repo.StudentRepository
-import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
-import com.vf.business.business.dto.discipline.classes.StudentJoinedClassDTO
-import com.vf.business.business.dto.discipline.classes.StudentLeftClassDTO
-import com.vf.business.business.dto.discipline.classes.VFClassDTO
+import com.vf.business.business.dto.discipline.classes.*
+import com.vf.business.business.dto.notifications.ClassCancelledNotificationDTO
 import com.vf.business.business.events.EventLabelsEnum
 import com.vf.business.business.events.EventTypeEnum
 import com.vf.business.business.exception.BadFormatException
@@ -170,6 +168,43 @@ class ClassesServiceImpl(
 
         // notify all class attendants
         multiCastMessage(disciplineClass, EventTypeEnum.CLASS_ENDED, EventLabelsEnum.CLASS_ENDED, "${disciplineClass.id}")
+    }
+
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    override fun cancelClass(professor: Professor, classId: Int, dto: ClassCancellationDTO) {
+        val disciplineClass = findClassById(classId)
+        checkBelongsTo(disciplineClass, professor)
+
+        // check if this class has already started
+        if( disciplineClass.status != DisciplineClassStatus.CREATED  ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.CLASS_CANNOT_BE_CANCELLED))
+        }
+
+        // check if class has reservations in order to notify them
+        if(disciplineClass.reservations.isNotEmpty()) {
+            // notify all class reservations the class has been cancelled
+            val professorName = "${disciplineClass.discipline.languageContext.professor.firstName} " +
+                    "${disciplineClass.discipline.languageContext.professor.lastName}"
+            val notificationDTO = ClassCancelledNotificationDTO(
+                id = disciplineClass.id,
+                title = disciplineClass.discipline.designation,
+                professorName = professorName,
+                cancellationMsg = dto.informativeMessage,
+                pictureUrl = disciplineClass.discipline.imageUrl,
+                date = Date()
+            )
+            val cancellationDetails = Gson().toJson(notificationDTO)
+
+            // send notification
+            multiCastMessage(disciplineClass, EventTypeEnum.CLASS_CANCELLED, EventLabelsEnum.CLASS_STARTED, cancellationDetails)
+
+            // increment the number of cancellations with reservations for the discipline professor
+            val professor = disciplineClass.discipline.languageContext.professor
+            professor.cancellationsNumber++
+            professorRepo.save(professor)
+        }
+
+        classesRepo.delete(disciplineClass)
     }
 
     override fun muteAll(professor: Professor, classId: Int) {

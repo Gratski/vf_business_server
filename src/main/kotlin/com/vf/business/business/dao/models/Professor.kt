@@ -22,6 +22,9 @@ class Professor(
         @JoinColumn(name = "currently_giving")
         open var currentlyGiving: DisciplineClass,
 
+        @Column(name = "cancellations_number")
+        open var cancellationsNumber: Int,
+
         fcmToken: String? = null,
         pictureUrl: String?,
         active: Boolean = false,

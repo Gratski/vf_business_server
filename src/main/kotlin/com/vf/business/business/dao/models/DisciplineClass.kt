@@ -9,7 +9,7 @@ class DisciplineClass (
 
         @ManyToOne
         @JoinColumn(name = "discipline")
-        open var discipline: Discipline?,
+        open var discipline: Discipline,
 
         @ManyToOne
         @JoinColumn(name = "professor")
@@ -19,7 +19,7 @@ class DisciplineClass (
         open var attendants: MutableCollection<ClassAttendant>,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "disciplineClass")
-        open var reservations: Collection<ClassReservation>?,
+        open var reservations: Collection<ClassReservation>,
 
         @Enumerated(EnumType.STRING)
         open var status: DisciplineClassStatus?,

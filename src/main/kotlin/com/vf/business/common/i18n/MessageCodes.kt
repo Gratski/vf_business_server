@@ -27,7 +27,7 @@ class MessageCodes {
         val DISCIPLINE_CLASS = "discipline_class"
         val CLASS_IS_ALREADY_STARTED = "class_is_already_started"
         val CANNOT_JOIN_CLASS_IS_FULL = "cannot_join_class_is_full"
-        val CLASS_SLOT_CONFLICT = "discipline_slot_conflict"
+        val CLASS_CANNOT_BE_CANCELLED = "class_cannot_be_cancelled"
 
         // USER RELATED
         val USER_UNEXISTING_LIVING_IN = "user_unexisting_living_in"

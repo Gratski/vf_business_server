@@ -2,6 +2,7 @@ package com.vf.business.controller.authenticated
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
+import com.vf.business.business.dto.discipline.classes.ClassCancellationDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.service.itf.internal.ClassesService
 import com.vf.business.business.service.itf.internal.UsersService
@@ -83,6 +84,16 @@ class ClassesController(
     fun getActiveClasses(@RequestParam("page") page: Int,
                          @RequestParam("size") size: Int): Page<VFClassDTO> =
             classesService.getActiveClasses(page, size)
+
+    /**
+     * To cancel a class
+     * Only for Professors
+     */
+    @PostMapping("/{id}/delete")
+    fun deleteClass(principal: Principal, @PathVariable("id") classId: Int, @RequestBody dto: ClassCancellationDTO) {
+        val professor = (usersService.getUser(principal) as Professor)
+        classesService.cancelClass(professor, classId, dto)
+    }
 
 
 }
