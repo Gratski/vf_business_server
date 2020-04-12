@@ -20,4 +20,10 @@ interface ClassesService {
 
     fun startClass(professor: Professor, classId: Int)
 
+    fun endClass(professor: Professor, classId: Int)
+
+    fun muteAll(professor: Professor, classId: Int)
+
+    fun unmuteAll(professor: Professor, classId: Int)
+
 }

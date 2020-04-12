@@ -16,6 +16,7 @@ class MessageCodes {
 
         val CATEGORY = "category"
         val DISCIPLINE = "discipline"
+        val STUDENT = "student"
         val DISCIPLINE_CLASS = "discipline_class"
         val WEEK_DAY = "week_day"
 

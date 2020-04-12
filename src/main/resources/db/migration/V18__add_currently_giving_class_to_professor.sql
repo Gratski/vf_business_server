@@ -1,0 +1,1 @@
+ALTER TABLE professor ADD COLUMN currently_giving int references "class"(id);

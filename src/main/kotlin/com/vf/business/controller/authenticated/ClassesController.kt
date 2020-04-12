@@ -15,10 +15,40 @@ class ClassesController(
         val usersService: UsersService
 ) {
 
+    /**
+     * To start a class
+     */
     @PostMapping("/{id}/start")
     fun startClass(principal: Principal, @PathVariable("id") classId: Int) {
         val professor = (usersService.getUser(principal) as Professor)
         classesService.startClass(professor, classId)
+    }
+
+    /**
+     * To end a class
+     */
+    @PostMapping("/{id}/end")
+    fun endClass(principal: Principal, @PathVariable("id") classId: Int) {
+        val professor = (usersService.getUser(principal) as Professor)
+        classesService.endClass(professor, classId)
+    }
+
+    /**
+     * Mute all class attendants
+     */
+    @PostMapping("/{id}/mute")
+    fun muteAll(principal: Principal, @PathVariable("id") classId: Int) {
+        val professor = (usersService.getUser(principal) as Professor)
+        classesService.muteAll(professor, classId)
+    }
+
+    /**
+     * Unmute all class attendants
+     */
+    @PostMapping("/{id}/mute")
+    fun unmuteAll(principal: Principal, @PathVariable("id") classId: Int) {
+        val professor = (usersService.getUser(principal) as Professor)
+        classesService.unmuteAll(professor, classId)
     }
 
     /**

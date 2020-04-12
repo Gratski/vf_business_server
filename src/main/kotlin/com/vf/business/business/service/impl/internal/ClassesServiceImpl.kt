@@ -6,9 +6,9 @@ import com.vf.business.business.dao.models.discipline.Discipline
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClassStatus
 import com.vf.business.business.dao.repo.DisciplineClassesRepository
+import com.vf.business.business.dao.repo.ProfessorRepository
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
-import com.vf.business.business.events.EventKeyEnum
 import com.vf.business.business.events.EventLabelsEnum
 import com.vf.business.business.events.EventTypeEnum
 import com.vf.business.business.exception.BadFormatException
@@ -21,7 +21,6 @@ import com.vf.business.common.RepetitionTypeEnum
 import com.vf.business.common.WeekDayEnum
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
-import jdk.jfr.EventType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -30,11 +29,12 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 import java.util.*
-import kotlin.collections.HashMap
+import javax.transaction.Transactional
 
 @Service
 class ClassesServiceImpl(
         val classesRepo: DisciplineClassesRepository,
+        val professorRepo: ProfessorRepository,
         val messagingService: MessagingService
 ) : ClassesService {
 
@@ -124,6 +124,7 @@ class ClassesServiceImpl(
         }
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     override fun startClass(professor: Professor, classId: Int) {
         val disciplineClass = findClassById(classId)
         checkBelongsTo(disciplineClass, professor)
@@ -137,25 +138,74 @@ class ClassesServiceImpl(
         disciplineClass.status = DisciplineClassStatus.STARTED
         classesRepo.save(disciplineClass)
 
-        // gather all class attendants messaging tokens
-        val usersTokenList = prepareClassAttendantsMessagingTokens(disciplineClass)
+        // change professor currently giving class
+        professor.currentlyGiving = disciplineClass
+        professorRepo.save(professor)
 
-        // prepare message
-        val msg = HashMap<String, String>()
-        msg[EventKeyEnum.EVENT_TYPE.toString()] = EventTypeEnum.CLASS_ENDED.toString()
-        msg[EventKeyEnum.BODY.toString()] = ""
-
-        // multi cast message to class attendants
-        messagingService.multiCastLabeledMessage(
-                msg, EventLabelsEnum.CLASS_STARTED.toString(), usersTokenList)
+        // notify all class attendants
+        multiCastMessage(disciplineClass, EventTypeEnum.CLASS_STARTED, EventLabelsEnum.CLASS_STARTED, "")
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    override fun endClass(professor: Professor, classId: Int) {
+        val disciplineClass = findClassById(classId)
+        checkBelongsTo(disciplineClass, professor)
+
+        // change discipline class status to ENDED
+        disciplineClass.status = DisciplineClassStatus.ENDED
+        classesRepo.save(disciplineClass)
+
+        // change professor currently giving class
+        professor.currentlyGiving = disciplineClass
+        professorRepo.save(professor)
+
+        // notify all class attendants
+        multiCastMessage(disciplineClass, EventTypeEnum.CLASS_ENDED, EventLabelsEnum.CLASS_ENDED, "${disciplineClass.id}")
+    }
+
+    override fun muteAll(professor: Professor, classId: Int) {
+        val disciplineClass = findClassById(classId)
+        checkBelongsTo(disciplineClass, professor)
+
+        // notify class attendants
+        multiCastMessage(disciplineClass, EventTypeEnum.MUTE, EventLabelsEnum.MUTE_ALL, "ALL")
+    }
+
+    override fun unmuteAll(professor: Professor, classId: Int) {
+        val disciplineClass = findClassById(classId)
+        checkBelongsTo(disciplineClass, professor)
+
+        // notify class attendants
+        multiCastMessage(disciplineClass, EventTypeEnum.UNMUTE, EventLabelsEnum.UNMUTE_ALL, "ALL")
+    }
+
+    /**
+     * Mutes or Unmutes all class attendants depending of the value of eventType attribute
+     * Mutes all if eventType equals MUTE_ALL, otherwise Unmutes all
+     */
+    private fun multiCastMessage(disciplineClass: DisciplineClass, eventType: EventTypeEnum, label: EventLabelsEnum, body: String) {
+        // prepare message to send
+        val attendantTokens = prepareClassAttendantsMessagingTokens(disciplineClass)
+
+        // actual notify class attendants
+        messagingService.multiCastLabeledMessage(eventType, label, body, attendantTokens)
+    }
+
+    /**
+     * Checks if a discipline belongs to a professor
+     * @throws UnauthorizedOperationException if not
+     */
     private fun checkBelongsTo(disciplineClass: DisciplineClass, professor: Professor) {
         if( disciplineClass.professor?.id != professor.id  ) {
             throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
         }
     }
 
+    /**
+     * Finds a class by its ID
+     * @return the corresponding class
+     * @throws ResourceNotFoundException if no class was found
+     */
     private fun findClassById(id: Int): DisciplineClass {
         val classOpt = classesRepo.findById(id)
         classOpt.orElseThrow { throw ResourceNotFoundException(
@@ -164,9 +214,16 @@ class ClassesServiceImpl(
         return classOpt.get()
     }
 
+    /**
+     * Gets a Gergorian Calendar fot the given date
+     * @return a calendar ready to use
+     */
     private fun prepareCalendar(day: Int, month: Int, year: Int, hours: Int = 0, mins: Int = 0): Calendar =
         GregorianCalendar(year, convertIntToCalendarMonth(month), day, hours, mins, 0)
 
+    /**
+     * Creates a single class for the given discpline and date
+     */
     private fun createSingleClass(discipline: Discipline, targetDate: Date) {
         val now = Calendar.getInstance()
         val newClass = DisciplineClass(
@@ -220,6 +277,10 @@ class ClassesServiceImpl(
         }
     }
 
+    /**
+     * Gets all class attendants messaging tokens
+     * @return a list os messaging tokens
+     */
     private fun prepareClassAttendantsMessagingTokens(disciplineClass: DisciplineClass): ArrayList<String> {
         val result = ArrayList<String>()
         disciplineClass.attendants?.forEach { attendant ->

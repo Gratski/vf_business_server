@@ -1,0 +1,1 @@
+ALTER TABLE student ADD COLUMN currently_attending int references "class"(id);
