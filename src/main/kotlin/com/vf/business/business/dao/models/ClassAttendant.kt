@@ -1,7 +1,5 @@
-package com.vf.business.business.dao.models.discipline.classes
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
-import com.vf.business.business.dao.models.Student
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.JoinColumn

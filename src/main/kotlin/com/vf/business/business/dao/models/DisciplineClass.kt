@@ -1,8 +1,5 @@
-package com.vf.business.business.dao.models.discipline.classes
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
-import com.vf.business.business.dao.models.professor.Professor
-import com.vf.business.business.dao.models.discipline.Discipline
 import java.util.*
 import javax.persistence.*
 

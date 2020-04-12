@@ -7,8 +7,8 @@ import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.dto.user.UserDTO
 import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.service.itf.internal.auth.AuthenticationService
-import com.vf.business.business.utils.ProfessorMapper
-import com.vf.business.business.utils.StudentMapper
+import com.vf.business.business.utils.mapper.ProfessorMapper
+import com.vf.business.business.utils.mapper.StudentMapper
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 

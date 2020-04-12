@@ -1,7 +1,7 @@
 package com.vf.business.controller.authenticated
 
 import com.vf.business.business.dao.models.Professor
-import com.vf.business.business.dto.user.StudentDTO
+import com.vf.business.business.dto.user.student.CreateStudentDTO
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.internal.StudentService
 import com.vf.business.business.service.itf.internal.UsersService
@@ -20,7 +20,7 @@ class StudentController (
 ) {
 
     @PostMapping("")
-    fun createStudent( @Valid @ValidStudent @RequestBody dto: StudentDTO, errors: Errors) =
+    fun createStudent(@Valid @ValidStudent @RequestBody dto: CreateStudentDTO, errors: Errors) =
         if (errors.hasErrors()) throw ResourceNotFoundException(errors.allErrors[0].defaultMessage)
         else studentService.createStudent(dto)
 
@@ -37,9 +37,9 @@ class StudentController (
     }
 
     @PutMapping("/{id}")
-    fun updateStudent( @Valid @ValidStudent @RequestBody dto: StudentDTO,
-                       @NotNull @PathVariable("id") id: Int,
-                       errors: Errors) =
+    fun updateStudent(@Valid @ValidStudent @RequestBody dto: CreateStudentDTO,
+                      @NotNull @PathVariable("id") id: Int,
+                      errors: Errors) =
             if (errors.hasErrors()) throw ResourceNotFoundException(errors.allErrors[0].defaultMessage)
             else studentService.createStudent(dto)
 

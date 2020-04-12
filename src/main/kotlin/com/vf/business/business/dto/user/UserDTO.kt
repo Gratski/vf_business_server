@@ -1,6 +1,7 @@
 package com.vf.business.business.dto.user
 
-import com.vf.business.common.CountryCodeEnum
+import com.vf.business.business.dto.locatization.CountryDTO
+import com.vf.business.business.dto.locatization.LanguageDTO
 import java.util.Date
 
 open class UserDTO (
@@ -9,7 +10,9 @@ open class UserDTO (
         val lastName: String?,
         val email: String?,
         val pwd: String?,
-        val countryCode: CountryCodeEnum?,
+        val nationality: CountryDTO,
+        val livingIn: CountryDTO,
+        val spokenLanguages: MutableList<LanguageDTO>,
         val active: Boolean? = false,
         val enabled: Boolean? = true,
         val createdAt: Date?,

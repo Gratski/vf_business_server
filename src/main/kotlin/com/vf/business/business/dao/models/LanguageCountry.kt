@@ -1,7 +1,8 @@
-package com.vf.business.business.dao.models.localization
+package com.vf.business.business.dao.models
 
 import com.vf.business.business.dao.models.AbstractEntity
 import com.vf.business.business.dao.models.Country
+import com.vf.business.business.dao.models.Language
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.JoinColumn

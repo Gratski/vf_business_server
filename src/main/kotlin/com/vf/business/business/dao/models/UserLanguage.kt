@@ -1,8 +1,5 @@
-package com.vf.business.business.dao.models.user
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
-import com.vf.business.business.dao.models.User
-import com.vf.business.business.dao.models.localization.Language
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.JoinColumn

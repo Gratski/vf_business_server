@@ -1,25 +1,23 @@
-package com.vf.business.business.dao.models.discipline.classes
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
-import com.vf.business.business.dao.models.Student
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "class_reservation")
 class ClassReservation (
-    id: Int? = null,
+        id: Int? = null,
 
-    @ManyToOne
+        @ManyToOne
     @JoinColumn(name = "discipline_class")
     open var disciplineClass: DisciplineClass,
 
-    @ManyToOne
+        @ManyToOne
     @JoinColumn(name = "student")
     open var student: Student,
 
-    createdAt: Date?,
-    updatedAt: Date?
+        createdAt: Date?,
+        updatedAt: Date?
 
 ): AbstractEntity(
 id, createdAt, updatedAt

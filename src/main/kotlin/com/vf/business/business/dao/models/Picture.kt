@@ -1,6 +1,5 @@
-package com.vf.business.business.dao.models.documents
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Table

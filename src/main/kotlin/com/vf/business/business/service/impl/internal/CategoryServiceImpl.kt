@@ -9,7 +9,7 @@ import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.internal.CategoryService
 import com.vf.business.business.service.itf.internal.ClassesService
 import com.vf.business.business.service.itf.internal.DisciplineService
-import com.vf.business.business.utils.CategoryMapper
+import com.vf.business.business.utils.mapper.CategoryMapper
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

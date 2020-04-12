@@ -1,7 +1,5 @@
-package com.vf.business.business.dao.models.localization
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
-import com.vf.business.business.dao.models.user.UserLanguage
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.OneToMany

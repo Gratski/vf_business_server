@@ -1,6 +1,6 @@
-package com.vf.business.business.utils
+package com.vf.business.business.utils.mapper
 
-import com.vf.business.business.dao.models.professor.Professor
+import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.user.ProfessorDTO
 
 class ProfessorMapper {
@@ -14,6 +14,9 @@ class ProfessorMapper {
                         firstName = input?.firstName,
                         lastName = input?.lastName,
                         active = input?.active,
+                        livingIn = CountryMapper.Mapper.map(input?.livingIn!!),
+                        nationality = CountryMapper.Mapper.map(input?.nationality!!),
+                        spokenLanguages = LanguageMapper.Mapper.map(input.spokenLanguages),
                         enabled = input?.enabled,
                         createdAt = input?.createdAt,
                         updatedAt = input?.updatedAt

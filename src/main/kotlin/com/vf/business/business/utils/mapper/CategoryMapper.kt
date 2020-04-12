@@ -1,4 +1,4 @@
-package com.vf.business.business.utils
+package com.vf.business.business.utils.mapper
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dto.category.CategoryDTO
@@ -15,7 +15,7 @@ class CategoryMapper {
                         description =  input?.description,
                         subCategories = map(input?.subCategories),
                         icon = input?.icon,
-                        picture =  PictureMapper.Mapper.map(input?.picture),
+                        picture = PictureMapper.Mapper.map(input?.picture),
                         createdAt = input?.createdAt,
                         updatedAt = input?.updatedAt
                 )

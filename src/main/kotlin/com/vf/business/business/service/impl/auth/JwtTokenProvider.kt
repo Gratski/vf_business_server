@@ -69,7 +69,7 @@ class JwtTokenProvider {
 
         if ( user is Student ) {
             authorities.add(SimpleGrantedAuthority(AuthRoles.STUDENT.toString()))
-        } else if ( user is Professor ) {
+        } else if ( user is Professor) {
             authorities.add(SimpleGrantedAuthority(AuthRoles.PROFESSOR.toString()))
         }
 

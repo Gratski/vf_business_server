@@ -1,6 +1,6 @@
 package com.vf.business.business.validator;
 
-import com.vf.business.business.dto.user.StudentDTO;
+import com.vf.business.business.dto.user.student.StudentDTO;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

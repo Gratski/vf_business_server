@@ -16,12 +16,13 @@ class AuthUtils {
     val ALGORITHM = "PBKDF2WithHmacSHA512"
     val KEY_LENGTH = 512
     val ITERATIONS = 65536
+    val SALT = "GRATSKI"
 
     object Instance {
 
-        fun hashPassword(password: String, salt: String): String? {
+        fun hashPassword(password: String): String? {
             val chars = password.toCharArray()
-            val bytes = salt.toByteArray()
+            val bytes = AuthUtils().SALT.toByteArray()
             val spec = PBEKeySpec(chars, bytes, 65536, 512)
             Arrays.fill(chars, Character.MIN_VALUE)
 

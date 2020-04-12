@@ -1,6 +1,6 @@
-package com.vf.business.business.utils
+package com.vf.business.business.utils.mapper
 
-import com.vf.business.business.dao.models.discipline.Discipline
+import com.vf.business.business.dao.models.Discipline
 import com.vf.business.business.dto.discipline.DisciplineDTO
 
 class DisciplineMapper {
@@ -11,7 +11,7 @@ class DisciplineMapper {
                 DisciplineDTO(
                         id = input?.id,
                         category = CategoryMapper.Mapper.map(input?.category),
-                        professor = ProfessorMapper.Mapper.map(input?.professor),
+                        professor = ProfessorMapper.Mapper.map(input?.languageContext?.professor),
                         designation = input?.designation,
                         description = input?.description,
                         duration = input?.duration,

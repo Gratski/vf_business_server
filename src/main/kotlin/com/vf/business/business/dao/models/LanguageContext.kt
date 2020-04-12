@@ -1,9 +1,5 @@
-package com.vf.business.business.dao.models.localization
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.AbstractEntity
-import com.vf.business.business.dao.models.professor.Professor
-import com.vf.business.business.dao.models.discipline.Discipline
-import com.vf.business.business.dao.models.professor.ProfessorDetails
 import java.util.*
 import javax.persistence.*
 

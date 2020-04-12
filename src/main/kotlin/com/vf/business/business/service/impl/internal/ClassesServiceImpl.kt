@@ -4,10 +4,10 @@ import com.google.gson.Gson
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
-import com.vf.business.business.dao.models.discipline.Discipline
-import com.vf.business.business.dao.models.discipline.classes.ClassAttendant
-import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
-import com.vf.business.business.dao.models.discipline.classes.DisciplineClassStatus
+import com.vf.business.business.dao.models.Discipline
+import com.vf.business.business.dao.models.ClassAttendant
+import com.vf.business.business.dao.models.DisciplineClass
+import com.vf.business.business.dao.models.DisciplineClassStatus
 import com.vf.business.business.dao.repo.ClassAttendantRepository
 import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dao.repo.ProfessorRepository
@@ -23,7 +23,7 @@ import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.external.messaging.MessagingService
 import com.vf.business.business.service.itf.internal.ClassesService
-import com.vf.business.business.utils.VFClassMapper
+import com.vf.business.business.utils.mapper.VFClassMapper
 import com.vf.business.common.RepetitionTypeEnum
 import com.vf.business.common.WeekDayEnum
 import com.vf.business.common.i18n.MessageCodes
@@ -320,7 +320,7 @@ class ClassesServiceImpl(
         val now = Calendar.getInstance()
         val newClass = DisciplineClass(
                 discipline = discipline,
-                professor = discipline.professor,
+                professor = discipline.languageContext.professor,
                 attendants = mutableListOf(),
                 reservations = mutableListOf(),
                 status = DisciplineClassStatus.CREATED,

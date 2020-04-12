@@ -1,6 +1,6 @@
-package com.vf.business.business.utils
+package com.vf.business.business.utils.mapper
 
-import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
+import com.vf.business.business.dao.models.DisciplineClass
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 
 class VFClassMapper {

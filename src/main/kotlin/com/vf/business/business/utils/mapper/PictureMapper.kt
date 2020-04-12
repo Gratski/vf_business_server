@@ -1,6 +1,6 @@
-package com.vf.business.business.utils
+package com.vf.business.business.utils.mapper
 
-import com.vf.business.business.dao.models.documents.Picture
+import com.vf.business.business.dao.models.Picture
 import com.vf.business.business.dto.documents.PictureDTO
 
 class PictureMapper {

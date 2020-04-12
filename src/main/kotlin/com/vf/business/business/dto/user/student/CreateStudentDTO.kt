@@ -1,4 +1,11 @@
 package com.vf.business.business.dto.user.student
 
-class CreateStudentDTO {
-}
+data class CreateStudentDTO (
+        val firstName: String,
+        val lastName: String,
+        val email: String,
+        val nationality: Int,
+        val livingIn: Int,
+        val spokenLanguages: MutableList<Int>,
+        val pwd: String
+)

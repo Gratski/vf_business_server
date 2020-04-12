@@ -1,6 +1,5 @@
 package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.documents.Picture
 import java.util.Date
 import javax.persistence.*
 

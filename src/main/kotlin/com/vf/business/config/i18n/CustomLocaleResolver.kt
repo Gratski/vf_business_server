@@ -8,7 +8,6 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
-
 @Configuration
 class CustomLocaleResolver : AcceptHeaderLocaleResolver(), WebMvcConfigurer {
     private var LOCALES: List<Locale> = listOf(

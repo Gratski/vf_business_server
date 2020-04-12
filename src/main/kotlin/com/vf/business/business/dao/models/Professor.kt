@@ -1,10 +1,5 @@
-package com.vf.business.business.dao.models.professor
+package com.vf.business.business.dao.models
 
-import com.vf.business.business.dao.models.User
-import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
-import com.vf.business.business.dao.models.Country
-import com.vf.business.business.dao.models.localization.LanguageContext
-import com.vf.business.business.dao.models.user.UserLanguage
 import java.util.Date
 import javax.persistence.*
 

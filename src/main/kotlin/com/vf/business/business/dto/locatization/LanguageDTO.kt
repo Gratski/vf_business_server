@@ -1,4 +1,8 @@
 package com.vf.business.business.dto.locatization
 
-class LanguageDTO {
-}
+import java.util.Date
+
+data class LanguageDTO (
+        val id: Int?,
+        val languageName: String
+)

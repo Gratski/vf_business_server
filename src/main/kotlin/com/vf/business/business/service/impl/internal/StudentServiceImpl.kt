@@ -2,43 +2,95 @@ package com.vf.business.business.service.impl.internal
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
-import com.vf.business.business.dao.repo.StudentRepository
-import com.vf.business.business.dao.repo.UsersRepository
-import com.vf.business.business.dto.user.StudentDTO
+import com.vf.business.business.dao.models.UserLanguage
+import com.vf.business.business.dao.repo.*
+import com.vf.business.business.dto.user.student.CreateStudentDTO
+import com.vf.business.business.dto.user.student.StudentDTO
 import com.vf.business.business.events.EventLabelsEnum
 import com.vf.business.business.events.EventTypeEnum
+import com.vf.business.business.exception.MissingArgumentsException
 import org.springframework.stereotype.Service
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.external.messaging.MessagingService
 import com.vf.business.business.service.itf.internal.StudentService
-import com.vf.business.business.utils.StudentMapper
+import com.vf.business.business.utils.auth.AuthUtils
+import com.vf.business.business.utils.mapper.StudentMapper
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
 import java.util.*
+import javax.transaction.Transactional
 
 @Service
 class StudentServiceImpl(
         userRepo: UsersRepository,
         val studentRepo: StudentRepository,
-        val messagingService: MessagingService
+        val messagingService: MessagingService,
+        val languageRepo: LanguageRepository,
+        val countryRepo: CountryRepository,
+        val userLangRepo: UserLanguageRepository
         ) : UsersServiceImpl<Student>(userRepo), StudentService {
 
-    override fun createStudent(s: StudentDTO): Int {
+    @Transactional
+    override fun createStudent(s: CreateStudentDTO): Int {
+        var studentOpt = this.getUserByEmail(s.email!!);
+        studentOpt.ifPresent {
+            throw ResourceConflictException(Translator.toLocale(MessageCodes.STUDENT_EMAIL_ALREADY_EXISTS))
+        }
 
-        var studentId: Int = -1
-        this.getUserByEmail(s.email!!).ifPresent {
-            throw ResourceConflictException()
+        // fetch living in country
+        val livingInOpt = countryRepo.findById(s.livingIn)
+        livingInOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.USER_UNEXISTING_LIVING_IN)
+            )
+        }
+        val livingIn = livingInOpt.get()
+
+        // fetch nationality country
+        val nationalityOpt = countryRepo.findById(s.livingIn)
+        livingInOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.USER_UNEXISTING_NATIONALITY)
+            )
+        }
+        val nationality = nationalityOpt.get()
+
+        // fetch languages spoken
+        val spokenLanguages = languageRepo.findAllById(s.spokenLanguages).asSequence().toMutableList()
+        if( spokenLanguages.size == 0 ) {
+            throw MissingArgumentsException(
+                    Translator.toLocale(MessageCodes.USER_SPOKEN_LANGUAGES_EMPTY)
+            )
         }
 
         val now = Date()
-        val student = Student(firstName = s.firstName, lastName = s.lastName, email = s.email, pwd = s.pwd, countryCode = s.countryCode,
+        val student = Student(
+                firstName = s.firstName,
+                lastName = s.lastName,
+                email = s.email,
+                pwd = AuthUtils.Instance.hashPassword(s.pwd),
+                livingIn = livingIn,
+                nationality = nationality,
+                spokenLanguages = mutableListOf(),
                 createdAt = now, updatedAt = now)
         studentRepo.save(student)
-        studentId = student.id!!
 
-        return studentId;
+        val spokenUserLanguages = mutableListOf<UserLanguage>()
+        spokenLanguages.forEach {
+            spokenUserLanguages.add(UserLanguage(
+                    language = it,
+                    user = student,
+                    createdAt = now,
+                    updatedAt = now
+            ))
+        }
+
+        // save all user spoken languages
+        userLangRepo.saveAll(spokenUserLanguages)
+
+        return student.id!!;
     }
 
     override fun getStudent(id: Int): StudentDTO = StudentMapper.Mapper.map(findStudentById(id))

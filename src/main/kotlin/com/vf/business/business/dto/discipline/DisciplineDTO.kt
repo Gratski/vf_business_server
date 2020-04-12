@@ -1,6 +1,5 @@
 package com.vf.business.business.dto.discipline
 
-import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
 import com.vf.business.business.dto.AbstractDTO
 import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.user.ProfessorDTO

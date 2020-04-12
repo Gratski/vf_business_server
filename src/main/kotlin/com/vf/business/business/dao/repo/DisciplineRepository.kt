@@ -1,7 +1,7 @@
 package com.vf.business.business.dao.repo
 
 import com.vf.business.business.dao.models.Category
-import com.vf.business.business.dao.models.discipline.Discipline
+import com.vf.business.business.dao.models.Discipline
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query

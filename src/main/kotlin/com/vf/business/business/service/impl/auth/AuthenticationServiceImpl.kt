@@ -18,7 +18,6 @@ class AuthenticationServiceImpl (
         private val tokenProvider: JwtTokenProvider
 ) : AuthenticationService {
 
-    private val SALT = "GRATSKI"
 
     override fun signin(email: String, password: String, domain: AppDomainEnum): SignInResponseDTO {
         val userOpt = userService.getUserByEmail(email)
@@ -27,7 +26,7 @@ class AuthenticationServiceImpl (
         }
 
         val user = userOpt.get()
-        val hashedPassword = AuthUtils.Instance.hashPassword(password, SALT)
+        val hashedPassword = AuthUtils.Instance.hashPassword(password)
         if ( hashedPassword != null && hashedPassword != user.password) {
             throw BadCredentialsException("This email and password do not match")
         }
@@ -44,7 +43,7 @@ class AuthenticationServiceImpl (
             }
             // add the correct role
             roles.add("STUDENT")
-        } else if ( user is Professor ) {
+        } else if ( user is Professor) {
 
             if( domain != AppDomainEnum.PROFESSORS_APP ) {
                 throw BadCredentialsException("This account is not authorized for this Application")

@@ -2,9 +2,10 @@ package com.vf.business.business.service.impl.internal
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
-import com.vf.business.business.dao.models.discipline.Discipline
+import com.vf.business.business.dao.models.Discipline
 import com.vf.business.business.dao.repo.CategoryRepository
 import com.vf.business.business.dao.repo.DisciplineRepository
+import com.vf.business.business.dao.repo.LanguageContextRepository
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
@@ -14,7 +15,7 @@ import com.vf.business.business.exception.*
 import com.vf.business.business.service.itf.internal.ClassesService
 import com.vf.business.business.service.itf.internal.DisciplineService
 import com.vf.business.business.service.itf.internal.StorageService
-import com.vf.business.business.utils.DisciplineMapper
+import com.vf.business.business.utils.mapper.DisciplineMapper
 import com.vf.business.common.PeriodEnum
 import com.vf.business.common.RepetitionTypeEnum
 import com.vf.business.common.i18n.MessageCodes
@@ -35,7 +36,7 @@ class DisciplineServiceImpl(
         val disciplineRepo: DisciplineRepository,
         val disciplineClassesService: ClassesService,
         val categoryRepo: CategoryRepository,
-        val translator: Translator
+        val languageContextRepo: LanguageContextRepository
 ) : DisciplineService {
 
     // hour to consider when getting morning classes
@@ -133,19 +134,27 @@ class DisciplineServiceImpl(
                             arrayOf(Translator.toLocale(MessageCodes.CATEGORY))))
         }
 
+        val languageContextOpt = languageContextRepo.findById(newDiscipline.languageContextId)
+        languageContextOpt.orElseThrow{
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,
+                    arrayOf(Translator.toLocale(MessageCodes.LANGUAGE_CONTEXT)))
+            )
+        }
+
         val now = Date()
         val discipline = Discipline(
-            category = categoryOpt.get(),
-            professor = professor,
-            classes = mutableListOf(),
-            maxAttendants = newDiscipline.maxAttendants,
-            designation = newDiscipline.designation,
-            description = newDiscipline.description,
-            imageUrl = null,
-            duration = newDiscipline.duration,
-            enabled = false,
-            createdAt = now,
-            updatedAt = now
+                category = categoryOpt.get(),
+                languageContext = languageContextOpt.get(),
+                classes = mutableListOf(),
+                maxAttendants = newDiscipline.maxAttendants,
+                designation = newDiscipline.designation,
+                description = newDiscipline.description,
+                imageUrl = null,
+                duration = newDiscipline.duration,
+                enabled = false,
+                createdAt = now,
+                updatedAt = now
         )
 
         disciplineRepo.save(discipline)
@@ -196,7 +205,7 @@ class DisciplineServiceImpl(
         }
 
         val discipline = disciplineOpt.get()
-        if ( discipline.professor.id != professor.id ) {
+        if ( discipline.languageContext.professor.id != professor.id ) {
             throw UnauthorizedOperationException("This operation is not permitted")
         }
 
@@ -236,7 +245,7 @@ class DisciplineServiceImpl(
      * @throws UnauthorizedOperationException if the given condition doesn't apply
      */
     private fun checkBelongsTo(d: Discipline, p: Professor) {
-        if( p.id != d.professor.id ) {
+        if( p.id != d.languageContext.professor.id ) {
             throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
         }
     }
