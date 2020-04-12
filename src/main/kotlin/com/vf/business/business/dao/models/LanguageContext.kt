@@ -21,8 +21,8 @@ class LanguageContext (
         @OneToMany(mappedBy = "languageContext")
         open var disciplines: MutableList<Discipline>,
 
-        @OneToOne(mappedBy = "languageContext")
-        open var professorDetails: ProfessorDetails,
+        @OneToOne(mappedBy = "languageContext", cascade = [CascadeType.ALL])
+        open var professorDetails: ProfessorDetails? = null,
 
         createdAt: Date,
         updatedAt: Date

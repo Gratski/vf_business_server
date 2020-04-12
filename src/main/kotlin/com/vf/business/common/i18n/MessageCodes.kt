@@ -15,7 +15,12 @@ class MessageCodes {
         val WEEK_DAY = "week_day"
 
         // LANGUAGE CONTEXT RELATED
+        val LANGUAGE = "language"
         val LANGUAGE_CONTEXT = "language_context"
+        val LANGUAGE_CONTEXT_ALREADY_EXISTS = "language_context_already_exists"
+
+        // PROFESSOR DETAILS RELATED
+        val PROFESSOR_DETAILS = "professor_details"
 
         // CATEGORY RELATED
         val CATEGORY = "category"
