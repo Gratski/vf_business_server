@@ -1,4 +1,4 @@
-package com.vf.business.business.service.itf
+package com.vf.business.business.service.itf.internal
 
 import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO

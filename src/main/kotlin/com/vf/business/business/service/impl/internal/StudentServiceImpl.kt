@@ -1,4 +1,4 @@
-package com.vf.business.business.service.impl
+package com.vf.business.business.service.impl.internal
 
 import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dao.repo.StudentRepository
@@ -7,7 +7,7 @@ import com.vf.business.business.dto.user.StudentDTO
 import org.springframework.stereotype.Service
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
-import com.vf.business.business.service.itf.StudentService
+import com.vf.business.business.service.itf.internal.StudentService
 import java.util.*
 
 @Service

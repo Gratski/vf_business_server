@@ -2,7 +2,7 @@ package com.vf.business.controller.authenticated
 
 import com.vf.business.business.dto.user.StudentDTO
 import com.vf.business.business.exception.ResourceNotFoundException
-import com.vf.business.business.service.itf.StudentService
+import com.vf.business.business.service.itf.internal.StudentService
 import com.vf.business.business.validator.ValidStudent
 import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.*
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull
 
 @RestController
 @RequestMapping("students")
-class StudentController ( val studentService: StudentService ) {
+class StudentController ( val studentService: StudentService) {
 
     @PostMapping("")
     fun createStudent( @Valid @ValidStudent @RequestBody dto: StudentDTO, errors: Errors) =

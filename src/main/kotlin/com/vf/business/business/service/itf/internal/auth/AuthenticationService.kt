@@ -1,4 +1,4 @@
-package com.vf.business.business.service.itf.auth
+package com.vf.business.business.service.itf.internal.auth
 
 import com.vf.business.business.dto.auth.AppDomainEnum
 import com.vf.business.business.dto.auth.SignInResponseDTO

@@ -3,7 +3,7 @@ package com.vf.business.controller.authenticated
 import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
-import com.vf.business.business.service.itf.CategoryService
+import com.vf.business.business.service.itf.internal.CategoryService
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

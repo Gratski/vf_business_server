@@ -18,7 +18,7 @@ class DisciplineClass (
         @JoinColumn(name = "professor")
         open var professor: Professor?,
 
-        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "disciplineClass")
         open var attendants: Collection<ClassAttendant>?,
 
         @Enumerated(EnumType.STRING)

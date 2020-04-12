@@ -1,11 +1,9 @@
-package com.vf.business.business.service.impl
+package com.vf.business.business.service.impl.internal
 
-import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dao.models.User
 import com.vf.business.business.dao.repo.UsersRepository
-import com.vf.business.business.dto.user.UserDTO
 import com.vf.business.business.exception.ResourceNotFoundException
-import com.vf.business.business.service.itf.UsersService
+import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.utils.auth.AuthUtils
 import org.springframework.security.authentication.BadCredentialsException
 import java.security.Principal

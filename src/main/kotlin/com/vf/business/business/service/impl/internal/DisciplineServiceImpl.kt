@@ -1,4 +1,4 @@
-package com.vf.business.business.service.impl
+package com.vf.business.business.service.impl.internal
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
@@ -11,9 +11,9 @@ import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.exception.*
-import com.vf.business.business.service.itf.ClassesService
-import com.vf.business.business.service.itf.DisciplineService
-import com.vf.business.business.service.itf.StorageService
+import com.vf.business.business.service.itf.internal.ClassesService
+import com.vf.business.business.service.itf.internal.DisciplineService
+import com.vf.business.business.service.itf.internal.StorageService
 import com.vf.business.business.utils.DisciplineMapper
 import com.vf.business.common.PeriodEnum
 import com.vf.business.common.RepetitionTypeEnum

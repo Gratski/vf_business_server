@@ -1,4 +1,4 @@
-package com.vf.business.business.service.impl.aws
+package com.vf.business.business.service.impl.external.storage
 
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.regions.Regions
@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.vf.business.business.dto.storage.StorePictureResponse
 import com.vf.business.business.exception.ExternalOperationException
-import com.vf.business.business.service.itf.StorageService
+import com.vf.business.business.service.itf.internal.StorageService
 import org.apache.commons.io.FilenameUtils
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile

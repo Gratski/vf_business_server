@@ -2,12 +2,11 @@ package com.vf.business.controller.permitted
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
-import com.vf.business.business.dao.models.User
 import com.vf.business.business.dto.auth.SignInRequestDTO
 import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.dto.user.UserDTO
-import com.vf.business.business.service.itf.UsersService
-import com.vf.business.business.service.itf.auth.AuthenticationService
+import com.vf.business.business.service.itf.internal.UsersService
+import com.vf.business.business.service.itf.internal.auth.AuthenticationService
 import com.vf.business.business.utils.ProfessorMapper
 import com.vf.business.business.utils.StudentMapper
 import org.springframework.web.bind.annotation.*

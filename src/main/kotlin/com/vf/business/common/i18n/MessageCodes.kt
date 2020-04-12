@@ -11,8 +11,12 @@ class MessageCodes {
         val BAD_FORMAT = "bad_format" // expects %resource argument to correctly format
         val DISCIPLINE_SLOT_CONFLICT = "discipline_slot_conflict"
 
+        // CLASS RELATED MESSAGES
+        val CLASS_IS_ALREADY_STARTED = "class_is_already_started"
+
         val CATEGORY = "category"
         val DISCIPLINE = "discipline"
+        val DISCIPLINE_CLASS = "discipline_class"
         val WEEK_DAY = "week_day"
 
     }

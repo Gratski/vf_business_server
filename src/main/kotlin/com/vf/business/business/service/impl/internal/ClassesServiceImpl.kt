@@ -1,19 +1,27 @@
-package com.vf.business.business.service.impl
+package com.vf.business.business.service.impl.internal
 
 import com.vf.business.business.dao.models.Category
+import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.discipline.Discipline
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClassStatus
 import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
+import com.vf.business.business.events.EventKeyEnum
+import com.vf.business.business.events.EventLabelsEnum
+import com.vf.business.business.events.EventTypeEnum
 import com.vf.business.business.exception.BadFormatException
-import com.vf.business.business.service.itf.ClassesService
+import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.exception.UnauthorizedOperationException
+import com.vf.business.business.service.itf.external.messaging.MessagingService
+import com.vf.business.business.service.itf.internal.ClassesService
 import com.vf.business.business.utils.VFClassMapper
 import com.vf.business.common.RepetitionTypeEnum
 import com.vf.business.common.WeekDayEnum
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
+import jdk.jfr.EventType
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -22,11 +30,12 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 import java.util.*
-import kotlin.math.min
+import kotlin.collections.HashMap
 
 @Service
 class ClassesServiceImpl(
-        val classesRepo: DisciplineClassesRepository
+        val classesRepo: DisciplineClassesRepository,
+        val messagingService: MessagingService
 ) : ClassesService {
 
     override fun getActiveClasses(pageNumber: Int, size: Int): Page<VFClassDTO> {
@@ -115,6 +124,46 @@ class ClassesServiceImpl(
         }
     }
 
+    override fun startClass(professor: Professor, classId: Int) {
+        val disciplineClass = findClassById(classId)
+        checkBelongsTo(disciplineClass, professor)
+
+        // check if this class has already started
+        if( disciplineClass.status != DisciplineClassStatus.CREATED  ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.CLASS_IS_ALREADY_STARTED))
+        }
+
+        // change discipline class status to STARTED
+        disciplineClass.status = DisciplineClassStatus.STARTED
+        classesRepo.save(disciplineClass)
+
+        // gather all class attendants messaging tokens
+        val usersTokenList = prepareClassAttendantsMessagingTokens(disciplineClass)
+
+        // prepare message
+        val msg = HashMap<String, String>()
+        msg[EventKeyEnum.EVENT_TYPE.toString()] = EventTypeEnum.CLASS_ENDED.toString()
+        msg[EventKeyEnum.BODY.toString()] = ""
+
+        // multi cast message to class attendants
+        messagingService.multiCastLabeledMessage(
+                msg, EventLabelsEnum.CLASS_STARTED.toString(), usersTokenList)
+    }
+
+    private fun checkBelongsTo(disciplineClass: DisciplineClass, professor: Professor) {
+        if( disciplineClass.professor?.id != professor.id  ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
+        }
+    }
+
+    private fun findClassById(id: Int): DisciplineClass {
+        val classOpt = classesRepo.findById(id)
+        classOpt.orElseThrow { throw ResourceNotFoundException(
+                Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,
+                        arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE_CLASS)))) }
+        return classOpt.get()
+    }
+
     private fun prepareCalendar(day: Int, month: Int, year: Int, hours: Int = 0, mins: Int = 0): Calendar =
         GregorianCalendar(year, convertIntToCalendarMonth(month), day, hours, mins, 0)
 
@@ -169,6 +218,16 @@ class ClassesServiceImpl(
             12 -> Calendar.DECEMBER
             else -> Calendar.JANUARY
         }
+    }
+
+    private fun prepareClassAttendantsMessagingTokens(disciplineClass: DisciplineClass): ArrayList<String> {
+        val result = ArrayList<String>()
+        disciplineClass.attendants?.forEach { attendant ->
+            attendant.student?.fcmToken.let {token ->
+                result.add(token!!)
+            }
+        }
+        return result
     }
 
 }

@@ -1,4 +1,4 @@
-package com.vf.business.business.service.impl.aws
+package com.vf.business.business.service.impl.external.storage
 
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.AWSCredentialsProvider

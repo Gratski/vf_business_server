@@ -14,8 +14,9 @@ class Professor(
         email: String,
         pwd: String?,
         countryCode: CountryCodeEnum?,
+        fcmToken: String? = null,
         active: Boolean = false,
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, firstName, lastName, email, pwd, countryCode, active, enabled, createdAt, updatedAt)
+) : User(id, firstName, lastName, email, pwd, countryCode, fcmToken, active, enabled, createdAt, updatedAt)

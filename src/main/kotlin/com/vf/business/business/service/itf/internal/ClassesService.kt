@@ -1,6 +1,7 @@
-package com.vf.business.business.service.itf
+package com.vf.business.business.service.itf.internal
 
 import com.vf.business.business.dao.models.Category
+import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.discipline.Discipline
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
@@ -16,5 +17,7 @@ interface ClassesService {
     fun getActiveClassesByCategory(category: Category, pageNumber: Int, size: Int): Page<VFClassDTO>
 
     fun createClassesFromUntil(dto: CreateDisciplineClassesDTO, discipline: Discipline)
+
+    fun startClass(professor: Professor, classId: Int)
 
 }

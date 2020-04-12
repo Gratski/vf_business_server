@@ -1,11 +1,14 @@
 package com.vf.business
 
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
 import org.flywaydb.core.Flyway
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-
+import java.io.FileInputStream
 
 @SpringBootApplication
 @ComponentScan
@@ -13,9 +16,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 class Application
 
     fun main(args: Array<String>) {
+        // setup flyway
         val flyway = Flyway.configure().dataSource("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres").load()
         flyway.baseline()
         flyway.migrate()
+
+        // setup firebase
+        val serviceAccount = FileInputStream("vfit-ee4bc-firebase-adminsdk-nztl6-6d72dda637.json")
+        val options: FirebaseOptions = FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("https://vfit-ee4bc.firebaseio.com")
+                .build()
+        FirebaseApp.initializeApp(options)
 
         SpringApplication.run(Application::class.java, *args)
     }

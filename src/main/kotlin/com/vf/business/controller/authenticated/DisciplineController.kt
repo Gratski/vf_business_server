@@ -6,8 +6,8 @@ import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
-import com.vf.business.business.service.itf.DisciplineService
-import com.vf.business.business.service.itf.UsersService
+import com.vf.business.business.service.itf.internal.DisciplineService
+import com.vf.business.business.service.itf.internal.UsersService
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal

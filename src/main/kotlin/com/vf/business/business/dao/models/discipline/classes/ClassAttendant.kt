@@ -4,6 +4,7 @@ import com.vf.business.business.dao.models.AbstractEntity
 import com.vf.business.business.dao.models.Student
 import java.util.*
 import javax.persistence.Entity
+import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
@@ -12,10 +13,12 @@ class ClassAttendant (
         id: Int?,
 
         @ManyToOne
+        @JoinColumn(name = "student")
         open var student: Student?,
 
         @ManyToOne
-        open var vfClass: DisciplineClass?,
+        @JoinColumn(name = "class")
+        open var disciplineClass: DisciplineClass?,
 
         open var leftAt: Date?,
         createdAt: Date?,

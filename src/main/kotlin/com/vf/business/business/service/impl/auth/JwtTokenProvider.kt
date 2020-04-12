@@ -2,7 +2,7 @@ package com.vf.business.business.service.impl.auth
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
-import com.vf.business.business.service.itf.UsersService
+import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.config.auth.AuthRoles
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException

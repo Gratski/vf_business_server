@@ -5,11 +5,12 @@ import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dto.auth.AppDomainEnum
 import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.exception.ResourceNotFoundException
-import com.vf.business.business.service.itf.UsersService
-import com.vf.business.business.service.itf.auth.AuthenticationService
+import com.vf.business.business.service.itf.internal.UsersService
+import com.vf.business.business.service.itf.internal.auth.AuthenticationService
 import com.vf.business.business.utils.auth.AuthUtils
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
+
 
 @Service
 class AuthenticationServiceImpl (

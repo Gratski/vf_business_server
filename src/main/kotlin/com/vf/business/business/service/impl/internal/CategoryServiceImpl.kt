@@ -1,4 +1,4 @@
-package com.vf.business.business.service.impl
+package com.vf.business.business.service.impl.internal
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.repo.CategoryRepository
@@ -6,9 +6,9 @@ import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.exception.ResourceNotFoundException
-import com.vf.business.business.service.itf.CategoryService
-import com.vf.business.business.service.itf.ClassesService
-import com.vf.business.business.service.itf.DisciplineService
+import com.vf.business.business.service.itf.internal.CategoryService
+import com.vf.business.business.service.itf.internal.ClassesService
+import com.vf.business.business.service.itf.internal.DisciplineService
 import com.vf.business.business.utils.CategoryMapper
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
