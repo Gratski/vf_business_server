@@ -138,6 +138,7 @@ class DisciplineServiceImpl(
             category = categoryOpt.get(),
             professor = professor,
             classes = mutableListOf(),
+            maxAttendants = newDiscipline.maxAttendants,
             designation = newDiscipline.designation,
             description = newDiscipline.description,
             imageUrl = null,

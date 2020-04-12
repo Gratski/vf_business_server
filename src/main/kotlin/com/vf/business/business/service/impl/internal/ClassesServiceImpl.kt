@@ -1,13 +1,20 @@
 package com.vf.business.business.service.impl.internal
 
+import com.google.gson.Gson
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dao.models.discipline.Discipline
+import com.vf.business.business.dao.models.discipline.classes.ClassAttendant
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClassStatus
+import com.vf.business.business.dao.repo.ClassAttendantRepository
 import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dao.repo.ProfessorRepository
+import com.vf.business.business.dao.repo.StudentRepository
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
+import com.vf.business.business.dto.discipline.classes.StudentJoinedClassDTO
+import com.vf.business.business.dto.discipline.classes.StudentLeftClassDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.events.EventLabelsEnum
 import com.vf.business.business.events.EventTypeEnum
@@ -35,6 +42,8 @@ import javax.transaction.Transactional
 class ClassesServiceImpl(
         val classesRepo: DisciplineClassesRepository,
         val professorRepo: ProfessorRepository,
+        val studentRepo: StudentRepository,
+        val classAttendantRepo: ClassAttendantRepository,
         val messagingService: MessagingService
 ) : ClassesService {
 
@@ -179,6 +188,89 @@ class ClassesServiceImpl(
         multiCastMessage(disciplineClass, EventTypeEnum.UNMUTE, EventLabelsEnum.UNMUTE_ALL, "ALL")
     }
 
+    override fun joinClass(student: Student, classId: Int) {
+        val disciplineClass = findClassById(classId)
+
+        // verify if is already full with all attendants
+        if( disciplineClass != null && disciplineClass.attendants!!.size >= disciplineClass.discipline!!.maxAttendants ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.CANNOT_JOIN_CLASS_IS_FULL))
+        }
+
+        var canJoin = false
+        // check if this user has reservation
+        // TODO: improve this method efficiency
+        disciplineClass.reservations?.forEach {
+            if(it.student.id == student.id) {
+                canJoin = true
+                return
+            }
+        }
+
+        // check if there are any places available
+        if( !canJoin ) {
+            canJoin = disciplineClass.reservations != null
+                    && disciplineClass.reservations!!.size < disciplineClass.discipline!!.maxAttendants
+        }
+
+        // if the class is considered to be full
+        if ( !canJoin ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.CANNOT_JOIN_CLASS_IS_FULL))
+        }
+
+        // if can join
+        val now = Date()
+        val classAttendant = ClassAttendant(
+                student = student,
+                disciplineClass = disciplineClass,
+                createdAt = now,
+                updatedAt = now
+        )
+        classAttendantRepo.save(classAttendant)
+
+        // gather students and professor messaging token
+        val tokens = prepareClassAttendantsMessagingTokens(disciplineClass)
+        if( disciplineClass.professor?.fcmToken != null ) {
+            tokens.add(disciplineClass.professor?.fcmToken!!)
+        }
+        // prepare message body
+        val body = Gson().toJson(StudentJoinedClassDTO(student.id!!, "${student.firstName} ${student.lastName}", student.pictureUrl))
+
+        // notify all member in the class and the professor
+        messagingService.multiCastLabeledMessage(EventTypeEnum.STUDENT_JOINED_CLASS, EventLabelsEnum.STUDENT_JOINED_CLASS, body, tokens)
+
+    }
+
+    override fun leaveClass(student: Student, classId: Int) {
+        val disciplineClass = findClassById(classId)
+
+        // free user from this class
+        student.currentlyAttending = null
+        studentRepo.save(student)
+
+        // mark the date this student left this class
+        disciplineClass.attendants?.forEach {
+            if(it.student?.id == student.id) {
+                val now = Date()
+                it.leftAt = now
+                it.updatedAt = now
+                classAttendantRepo.save(it)
+                return
+            }
+        }
+
+        // gather students and professor messaging token
+        val tokens = prepareClassAttendantsMessagingTokens(disciplineClass)
+        if( disciplineClass.professor?.fcmToken != null ) {
+            tokens.add(disciplineClass.professor?.fcmToken!!)
+        }
+        // prepare message body
+        val body = Gson().toJson(StudentLeftClassDTO(student.id!!, "${student.firstName} ${student.lastName}", student.pictureUrl))
+
+        // notify all member in the class and the professor
+        messagingService.multiCastLabeledMessage(EventTypeEnum.STUDENT_LEFT_CLASS, EventLabelsEnum.STUDENT_LEFT_CLASS, body, tokens)
+
+    }
+
     /**
      * Mutes or Unmutes all class attendants depending of the value of eventType attribute
      * Mutes all if eventType equals MUTE_ALL, otherwise Unmutes all
@@ -230,6 +322,7 @@ class ClassesServiceImpl(
                 discipline = discipline,
                 professor = discipline.professor,
                 attendants = mutableListOf(),
+                reservations = mutableListOf(),
                 status = DisciplineClassStatus.CREATED,
                 scheduledTo = targetDate,
                 createdAt = now.time,
@@ -281,8 +374,8 @@ class ClassesServiceImpl(
      * Gets all class attendants messaging tokens
      * @return a list os messaging tokens
      */
-    private fun prepareClassAttendantsMessagingTokens(disciplineClass: DisciplineClass): ArrayList<String> {
-        val result = ArrayList<String>()
+    private fun prepareClassAttendantsMessagingTokens(disciplineClass: DisciplineClass): MutableList<String> {
+        val result = mutableListOf<String>()
         disciplineClass.attendants?.forEach { attendant ->
             attendant.student?.fcmToken.let {token ->
                 result.add(token!!)

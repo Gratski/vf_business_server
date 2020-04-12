@@ -2,6 +2,7 @@ package com.vf.business.business.service.itf.internal
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dao.models.discipline.Discipline
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
@@ -25,5 +26,9 @@ interface ClassesService {
     fun muteAll(professor: Professor, classId: Int)
 
     fun unmuteAll(professor: Professor, classId: Int)
+
+    fun joinClass(student: Student, classId: Int)
+
+    fun leaveClass(student: Student, classId: Int)
 
 }

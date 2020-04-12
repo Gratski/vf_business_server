@@ -19,7 +19,10 @@ class DisciplineClass (
         open var professor: Professor?,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "disciplineClass")
-        open var attendants: Collection<ClassAttendant>?,
+        open var attendants: MutableCollection<ClassAttendant>,
+
+        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "disciplineClass")
+        open var reservations: Collection<ClassReservation>?,
 
         @Enumerated(EnumType.STRING)
         open var status: DisciplineClassStatus?,

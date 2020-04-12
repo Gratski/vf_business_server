@@ -19,6 +19,7 @@ class Student(
         pwd: String?,
         countryCode: CountryCodeEnum?,
         fcmToken: String? = null,
+        pictureUrl: String? = null,
 
         @ManyToOne
         @JoinColumn(name = "currently_attending")
@@ -28,7 +29,7 @@ class Student(
         enabled: Boolean? = true,
         createdAt: Date?,
         updatedAt: Date?
-) : User(id, firstName, lastName, email, pwd, countryCode, fcmToken, active, enabled, createdAt, updatedAt) {
+) : User(id, firstName, lastName, email, pwd, countryCode, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper {
         fun from(dto: Student): StudentDTO =

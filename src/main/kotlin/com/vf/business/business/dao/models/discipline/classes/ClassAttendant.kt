@@ -10,7 +10,7 @@ import javax.persistence.Table
 
 @Entity @Table(name = "class_attendant")
 class ClassAttendant (
-        id: Int?,
+        id: Int? = null,
 
         @ManyToOne
         @JoinColumn(name = "student")
@@ -20,7 +20,7 @@ class ClassAttendant (
         @JoinColumn(name = "class")
         open var disciplineClass: DisciplineClass?,
 
-        open var leftAt: Date?,
+        open var leftAt: Date? = null,
         createdAt: Date?,
         updatedAt: Date?
 ) : AbstractEntity(

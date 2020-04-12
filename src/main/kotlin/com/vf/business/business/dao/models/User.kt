@@ -24,6 +24,8 @@ abstract class User (
         open var countryCode: CountryCodeEnum? = null,
         @Column(name = "fcm_token")
         open var fcmToken: String? = null,
+        @Column(name = "picture_url")
+        open var pictureUrl: String?= null,
         @Column(name = "active")
         open var active: Boolean? = false,
         @Column(name = "enabled")

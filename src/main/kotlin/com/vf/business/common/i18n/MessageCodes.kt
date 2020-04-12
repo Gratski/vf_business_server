@@ -13,6 +13,7 @@ class MessageCodes {
 
         // CLASS RELATED MESSAGES
         val CLASS_IS_ALREADY_STARTED = "class_is_already_started"
+        val CANNOT_JOIN_CLASS_IS_FULL = "cannot_join_class_is_full"
 
         val CATEGORY = "category"
         val DISCIPLINE = "discipline"

@@ -1,6 +1,7 @@
 package com.vf.business.controller.authenticated
 
 import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.service.itf.internal.ClassesService
 import com.vf.business.business.service.itf.internal.UsersService
@@ -17,6 +18,7 @@ class ClassesController(
 
     /**
      * To start a class
+     * Only for Professors
      */
     @PostMapping("/{id}/start")
     fun startClass(principal: Principal, @PathVariable("id") classId: Int) {
@@ -26,6 +28,7 @@ class ClassesController(
 
     /**
      * To end a class
+     * Only for Professors
      */
     @PostMapping("/{id}/end")
     fun endClass(principal: Principal, @PathVariable("id") classId: Int) {
@@ -35,6 +38,7 @@ class ClassesController(
 
     /**
      * Mute all class attendants
+     * Only for Professors
      */
     @PostMapping("/{id}/mute")
     fun muteAll(principal: Principal, @PathVariable("id") classId: Int) {
@@ -44,11 +48,32 @@ class ClassesController(
 
     /**
      * Unmute all class attendants
+     * Only for Professors
      */
-    @PostMapping("/{id}/mute")
+    @PostMapping("/{id}/unmute")
     fun unmuteAll(principal: Principal, @PathVariable("id") classId: Int) {
         val professor = (usersService.getUser(principal) as Professor)
         classesService.unmuteAll(professor, classId)
+    }
+
+    /**
+     * Join Class
+     * Only for Students
+     */
+    @PostMapping("/{id}/join")
+    fun joinClass(principal: Principal, @PathVariable("id") classId: Int) {
+        val student= (usersService.getUser(principal) as Student)
+        classesService.joinClass(student, classId)
+    }
+
+    /**
+     * Leave Class
+     * Only for Students
+     */
+    @PostMapping("/{id}/leave")
+    fun leaveClass(principal: Principal, @PathVariable("id") classId: Int) {
+        val student= (usersService.getUser(principal) as Student)
+        classesService.leaveClass(student, classId)
     }
 
     /**

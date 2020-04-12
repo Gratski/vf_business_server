@@ -5,8 +5,8 @@ import com.vf.business.business.events.EventTypeEnum
 
 interface MessagingService {
 
-    fun multiCastLabeledMessage(eventType: EventTypeEnum, label: EventLabelsEnum, body: String, sendTo: ArrayList<String>)
-    fun multiCastLabeledMessage(msgMap: Map<String, String>, label: String, sendTo: ArrayList<String>)
+    fun multiCastLabeledMessage(eventType: EventTypeEnum, label: EventLabelsEnum, body: String, sendTo: MutableList<String>)
+    fun multiCastLabeledMessage(msgMap: Map<String, String>, label: String, sendTo: MutableList<String>)
 
     fun broadCastLabeledMessage(msgMap: Map<String, String>, label: String, topic: String)
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class MessagingServiceImpl: MessagingService {
 
-    override fun multiCastLabeledMessage(eventType: EventTypeEnum, label: EventLabelsEnum, body: String, sendTo: ArrayList<String>) {
+    override fun multiCastLabeledMessage(eventType: EventTypeEnum, label: EventLabelsEnum, body: String, sendTo: MutableList<String>) {
         val map = HashMap<String, String>()
         map[EventKeyEnum.EVENT_TYPE.toString()] = eventType.toString()
         map[EventKeyEnum.BODY.toString()] = body
@@ -18,7 +18,7 @@ class MessagingServiceImpl: MessagingService {
         multiCastLabeledMessage(map, label.toString(), sendTo)
     }
 
-    override fun multiCastLabeledMessage(msgMap: Map<String, String>, label: String, sendTo: ArrayList<String>) {
+    override fun multiCastLabeledMessage(msgMap: Map<String, String>, label: String, sendTo: MutableList<String>) {
         if(sendTo.size == 0) { return }
 
         val msgBuilder = MulticastMessage.builder().addAllTokens(sendTo)
