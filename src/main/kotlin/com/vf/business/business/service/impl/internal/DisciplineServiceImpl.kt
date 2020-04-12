@@ -150,6 +150,9 @@ class DisciplineServiceImpl(
                 maxAttendants = newDiscipline.maxAttendants,
                 designation = newDiscipline.designation,
                 description = newDiscipline.description,
+                equipment = newDiscipline.equipment,
+                goal = newDiscipline.goal,
+                calories = newDiscipline.calories,
                 imageUrl = null,
                 duration = newDiscipline.duration,
                 enabled = false,
@@ -192,6 +195,10 @@ class DisciplineServiceImpl(
         discipline.designation = dto.designation
         discipline.description = dto.description
         discipline.duration = dto.duration
+        discipline.equipment = dto.equipment
+        discipline.calories = dto.calories
+        discipline.goal = dto.goal
+        discipline.maxAttendants = dto.maxAttendants
         disciplineRepo.save(discipline)
 
         // TODO: Create all classes depending on the repetition type
@@ -256,6 +263,9 @@ class DisciplineServiceImpl(
                 && dto.description != null && dto.description.isNotBlank()
                 && dto.designation != null && dto.designation.isNotBlank()
                 && dto.duration != null && dto.duration > 0
+                && dto.calories != null && dto.calories > 0
+                && dto.goal != null && dto.goal.isNotBlank()
+                && dto.equipment != null && dto.equipment.isNotBlank()
     }
 
     private fun hasAllRequiredFields(dto: UpdateDisciplineDTO): Boolean {
@@ -263,6 +273,9 @@ class DisciplineServiceImpl(
                 && dto.description != null && dto.description.isNotBlank()
                 && dto.designation != null && dto.designation.isNotBlank()
                 && dto.duration != null && dto.duration > 0
+                && dto.calories != null && dto.calories > 0
+                && dto.goal != null && dto.goal.isNotBlank()
+                && dto.equipment != null && dto.equipment.isNotBlank()
     }
 
     private fun hasAllRequiredFields(dto: CreateDisciplineClassesDTO): Boolean {

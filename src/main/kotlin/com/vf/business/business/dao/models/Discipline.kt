@@ -23,6 +23,9 @@ class Discipline (
         open var imageUrl: String?,
         open var duration: Int, //in minutes
         open var maxAttendants: Int,
+        open var calories: Double,
+        open var equipment: String,
+        open var goal: String,
 
         open var reviewsScore: Double? = -1.0,
 

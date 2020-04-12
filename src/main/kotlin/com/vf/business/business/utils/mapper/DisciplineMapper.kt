@@ -7,18 +7,21 @@ class DisciplineMapper {
 
     object Mapper {
 
-        fun map(input: Discipline?): DisciplineDTO =
+        fun map(input: Discipline): DisciplineDTO =
                 DisciplineDTO(
-                        id = input?.id,
-                        category = CategoryMapper.Mapper.map(input?.category),
-                        professor = ProfessorMapper.Mapper.map(input?.languageContext?.professor),
-                        designation = input?.designation,
-                        description = input?.description,
-                        duration = input?.duration,
-                        imageUrl = input?.imageUrl,
-                        updatedAt = input?.createdAt,
-                        createdAt = input?.createdAt,
-                        enabled = input?.enabled
+                        id = input.id,
+                        category = CategoryMapper.Mapper.map(input.category),
+                        professor = ProfessorMapper.Mapper.map(input.languageContext?.professor),
+                        designation = input.designation,
+                        description = input.description,
+                        duration = input.duration,
+                        equipment = input.equipment,
+                        goal = input.goal,
+                        calories = input.calories,
+                        imageUrl = input.imageUrl,
+                        updatedAt = input.createdAt,
+                        createdAt = input.createdAt,
+                        enabled = input.enabled
                 )
     }
 
