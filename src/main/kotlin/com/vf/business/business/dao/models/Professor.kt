@@ -1,12 +1,12 @@
-package com.vf.business.business.dao.models
+package com.vf.business.business.dao.models.professor
 
+import com.vf.business.business.dao.models.User
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
-import com.vf.business.common.CountryCodeEnum
+import com.vf.business.business.dao.models.Country
+import com.vf.business.business.dao.models.localization.LanguageContext
+import com.vf.business.business.dao.models.user.UserLanguage
 import java.util.Date
-import javax.persistence.Entity
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "professor")
@@ -16,16 +16,22 @@ class Professor(
         lastName: String,
         email: String,
         pwd: String?,
-        countryCode: CountryCodeEnum?,
-        fcmToken: String? = null,
-        pictureUrl: String?,
+        nationality: Country,
+        livingIn: Country,
+        spokenLanguages: MutableList<UserLanguage>,
+
+        @OneToMany(mappedBy = "professor")
+        open var languageContexts: MutableList<LanguageContext>,
 
         @ManyToOne
         @JoinColumn(name = "currently_giving")
-        open var currentlyGiving: DisciplineClass? = null,
+        open var currentlyGiving: DisciplineClass,
 
+        fcmToken: String? = null,
+        pictureUrl: String?,
         active: Boolean = false,
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, firstName, lastName, email, pwd, countryCode, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt)
+) : User(id, firstName, lastName, email, pwd, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+}

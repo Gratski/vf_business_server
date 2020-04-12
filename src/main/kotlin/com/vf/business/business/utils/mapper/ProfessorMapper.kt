@@ -1,6 +1,6 @@
 package com.vf.business.business.utils
 
-import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.professor.Professor
 import com.vf.business.business.dto.user.ProfessorDTO
 
 class ProfessorMapper {

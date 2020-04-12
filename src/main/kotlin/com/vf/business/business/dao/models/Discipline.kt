@@ -2,9 +2,9 @@ package com.vf.business.business.dao.models.discipline
 
 import com.vf.business.business.dao.models.AbstractEntity
 import com.vf.business.business.dao.models.Category
-import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dao.models.professor.Professor
 import com.vf.business.business.dao.models.discipline.classes.DisciplineClass
-import com.vf.business.business.dao.repo.DisciplineClassesRepository
+import com.vf.business.business.dao.models.localization.LanguageContext
 import java.util.Date
 import javax.persistence.*
 
@@ -17,8 +17,8 @@ class Discipline (
         open var category: Category?,
 
         @ManyToOne
-        @JoinColumn(name = "professor")
-        open var professor: Professor,
+        @JoinColumn(name = "language_context_id")
+        open var languageContext: LanguageContext,
 
         @OneToMany(fetch = FetchType.LAZY, mappedBy = "discipline")
         open var classes: MutableCollection<DisciplineClass>?,
