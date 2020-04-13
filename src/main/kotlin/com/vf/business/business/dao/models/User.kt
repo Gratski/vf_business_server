@@ -42,6 +42,9 @@ abstract class User (
         @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
         open var spokenLanguages: MutableList<UserLanguage>,
 
+        @OneToMany(mappedBy = "user")
+        open var notificationPreferences: MutableList<NotificationPreference>,
+
         @Column(name = "fcm_token")
         open var fcmToken: String? = null,
         @Column(name = "picture_url")

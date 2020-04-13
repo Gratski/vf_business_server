@@ -7,7 +7,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "professor")
 class Professor(
-        id: Int?,
+        id: Int? = null,
         firstName: String,
         lastName: String,
         email: String,
@@ -28,16 +28,18 @@ class Professor(
 
         @ManyToOne
         @JoinColumn(name = "currently_giving")
-        open var currentlyGiving: DisciplineClass,
+        open var currentlyGiving: DisciplineClass? = null,
+
+        notificationPreferences: MutableList<NotificationPreference>,
 
         @Column(name = "cancellations_number")
         open var cancellationsNumber: Int,
 
         fcmToken: String? = null,
-        pictureUrl: String?,
+        pictureUrl: String? = null,
         active: Boolean = false,
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 }

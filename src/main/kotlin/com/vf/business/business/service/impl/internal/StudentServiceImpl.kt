@@ -36,7 +36,7 @@ class StudentServiceImpl(
     override fun createStudent(s: CreateStudentDTO): Int {
         var studentOpt = this.getUserByEmail(s.email!!);
         studentOpt.ifPresent {
-            throw ResourceConflictException(Translator.toLocale(MessageCodes.STUDENT_EMAIL_ALREADY_EXISTS))
+            throw ResourceConflictException(Translator.toLocale(MessageCodes.EMAIL_ALREADY_EXISTS))
         }
 
         // fetch living in country
@@ -85,7 +85,9 @@ class StudentServiceImpl(
                 livingIn = livingIn,
                 nationality = nationality,
                 spokenLanguages = mutableListOf(),
-                createdAt = now, updatedAt = now)
+                createdAt = now, updatedAt = now,
+                //TODO: this will cause an app error if not fixed
+                notificationPreferences = mutableListOf())
         studentRepo.save(student)
 
         val spokenUserLanguages = mutableListOf<UserLanguage>()

@@ -25,6 +25,9 @@ class Student(
         nationality: Country,
         livingIn: Country,
         spokenLanguages: MutableList<UserLanguage>,
+
+        notificationPreferences: MutableList<NotificationPreference>,
+
         fcmToken: String? = null,
         pictureUrl: String? = null,
 
@@ -36,7 +39,7 @@ class Student(
         enabled: Boolean? = true,
         createdAt: Date?,
         updatedAt: Date?
-) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences,  fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper {
         fun from(student: Student): StudentDTO =
