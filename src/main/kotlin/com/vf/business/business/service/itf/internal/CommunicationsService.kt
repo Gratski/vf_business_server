@@ -10,4 +10,6 @@ interface CommunicationsService {
 
     fun sendInvitationEmail(to: Array<String>, professor: Professor, languageTag: String)
 
+    fun sendPasswordRecoveryEmail(email: String, firstName: String, token: String, languageTag: String)
+
 }

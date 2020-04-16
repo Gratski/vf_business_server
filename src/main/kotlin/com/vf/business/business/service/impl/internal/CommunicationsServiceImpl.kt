@@ -2,6 +2,7 @@ package com.vf.business.business.service.impl.internal
 
 import com.google.gson.Gson
 import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dto.comms.auth.PasswordRecoveryMessage
 import com.vf.business.business.dto.comms.invitation.InvitationMessage
 import com.vf.business.business.dto.comms.support.SupportMessage
 import com.vf.business.business.service.itf.internal.CommunicationsService
@@ -47,6 +48,23 @@ class CommunicationsServiceImpl(
         val msg = Message(Gson().toJson(invitationMessage).toByteArray(), props)
         rabbitTemplate.encoding = "application/json"
         rabbitTemplate.convertAndSend("comms.email.invitation.professors", msg)
+    }
+
+    override fun sendPasswordRecoveryEmail(email: String, username: String, token: String, languageTag: String) {
+        val pwdRecoveryMessage = PasswordRecoveryMessage(
+                to = email,
+                languageTag = languageTag,
+                username = username,
+                token = token
+        )
+
+        //TODO: Generate dynamic link here
+
+        val props = MessageProperties()
+        props.contentType = "json"
+        val msg = Message(Gson().toJson(pwdRecoveryMessage).toByteArray(), props)
+        rabbitTemplate.encoding = "application/json"
+        rabbitTemplate.convertAndSend("comms.email.auth.passrecovery", msg)
     }
 
 }

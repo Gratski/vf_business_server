@@ -31,6 +31,7 @@ class Student(
         notificationPreferences: MutableList<NotificationPreference>,
 
         fcmToken: String? = null,
+        pwdToken: String? = null,
         pictureUrl: String? = null,
 
         @ManyToOne
@@ -41,7 +42,7 @@ class Student(
         enabled: Boolean? = true,
         createdAt: Date?,
         updatedAt: Date?
-) : User(id, referredBy, referrals, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences,  fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, referredBy, referrals, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences,  fcmToken, pwdToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper {
         fun from(student: Student): StudentDTO =

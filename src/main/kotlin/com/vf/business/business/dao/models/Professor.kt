@@ -38,10 +38,11 @@ class Professor(
         open var cancellationsNumber: Int,
 
         fcmToken: String? = null,
+        pwdToken: String? = null,
         pictureUrl: String? = null,
         active: Boolean = false,
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, referredBy, referrals, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, referredBy, referrals, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pwdToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 }

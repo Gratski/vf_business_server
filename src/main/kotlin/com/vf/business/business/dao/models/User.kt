@@ -55,6 +55,10 @@ abstract class User (
 
         @Column(name = "fcm_token")
         open var fcmToken: String? = null,
+
+        @Column(name = "pwd_token")
+        open var pwdToken: String? = null,
+
         @Column(name = "picture_url")
         open var pictureUrl: String?= null,
         @Column(name = "active")
