@@ -3,6 +3,7 @@ package com.vf.business.controller.permitted
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dto.auth.PasswordRecoveryDTO
+import com.vf.business.business.dto.auth.ResetPasswordDTO
 import com.vf.business.business.dto.auth.SignInRequestDTO
 import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.dto.user.UserDTO
@@ -25,8 +26,12 @@ class AuthController (
             authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
 
     @PostMapping("/password-recovery")
-    fun signin(@RequestBody dto: PasswordRecoveryDTO) =
+    fun passwordRecovery(@RequestBody dto: PasswordRecoveryDTO) =
             authService.passwordRecovery(dto.email)
+
+    @PostMapping("/password-reset")
+    fun resetPassword(@RequestBody dto: ResetPasswordDTO) =
+            authService.resetPassword(dto)
 
     @GetMapping("/me")
     fun getAuthenticatedUser(principal: Principal): UserDTO {

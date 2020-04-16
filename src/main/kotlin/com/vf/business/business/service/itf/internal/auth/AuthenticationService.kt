@@ -1,6 +1,7 @@
 package com.vf.business.business.service.itf.internal.auth
 
 import com.vf.business.business.dto.auth.AppDomainEnum
+import com.vf.business.business.dto.auth.ResetPasswordDTO
 import com.vf.business.business.dto.auth.SignInResponseDTO
 
 interface AuthenticationService {
@@ -13,5 +14,10 @@ interface AuthenticationService {
      * @throws ResourceNotFoundException if no user with the given email was found
      */
     fun passwordRecovery(email: String)
+
+    /**
+     * Resets the user password if the token mathces the user generated password reset token
+     */
+    fun resetPassword(dto: ResetPasswordDTO)
 
 }

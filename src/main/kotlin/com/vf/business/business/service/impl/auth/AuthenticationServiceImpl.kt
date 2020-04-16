@@ -2,10 +2,13 @@ package com.vf.business.business.service.impl.auth
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
+import com.vf.business.business.dao.models.User
 import com.vf.business.business.dao.repo.UsersRepository
 import com.vf.business.business.dto.auth.AppDomainEnum
+import com.vf.business.business.dto.auth.ResetPasswordDTO
 import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.internal.CommunicationsService
 import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.service.itf.internal.auth.AuthenticationService
@@ -16,6 +19,7 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
 import java.util.*
+import javax.transaction.Transactional
 
 
 @Service
@@ -65,13 +69,7 @@ class AuthenticationServiceImpl (
     }
 
     override fun passwordRecovery(email: String) {
-        val userOpt = userService.getUserByEmail(email)
-        userOpt.orElseThrow {
-            throw ResourceNotFoundException(
-                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.USER)))
-            )
-        }
-        val user = userOpt.get()
+        val user = getUserByEmail(email)
 
         // generate token
         val token = UUID.randomUUID().toString()
@@ -81,6 +79,30 @@ class AuthenticationServiceImpl (
         // send email to user
         communicationsService.sendPasswordRecoveryEmail(user.email!!, user.firstName!!, token, LocaleContextHolder.getLocale().toLanguageTag())
 
+    }
+
+    override fun resetPassword(dto: ResetPasswordDTO) {
+        val user = getUserByEmail(dto.email)
+
+        // match given token with user pwd token
+        if( user.pwdToken != dto.pwdToken ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
+        }
+
+        // clean user pwd token and change its password
+        user.pwdToken = null
+        user.password = AuthUtils.Instance.hashPassword(dto.newPassword)
+        userRepo.save(user)
+    }
+
+    private fun getUserByEmail(email: String): User {
+        val userOpt = userService.getUserByEmail(email)
+        userOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.USER)))
+            )
+        }
+        return userOpt.get()
     }
 
 }
