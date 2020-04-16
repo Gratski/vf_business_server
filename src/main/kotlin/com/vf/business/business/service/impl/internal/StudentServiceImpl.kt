@@ -74,6 +74,7 @@ class StudentServiceImpl(
 
         val now = Date()
         val student = Student(
+                referrals = mutableListOf(),
                 firstName = s.firstName,
                 lastName = s.lastName,
                 email = s.email,

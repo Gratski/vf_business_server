@@ -27,6 +27,7 @@ class MessageCodes {
 
         // PROFESSOR DETAILS RELATED
         val PROFESSOR_DETAILS = "professor_details"
+        val NO_ACCESS_CODE_FOUND = "no_access_code_found"
 
         // CATEGORY RELATED
         val CATEGORY = "category"

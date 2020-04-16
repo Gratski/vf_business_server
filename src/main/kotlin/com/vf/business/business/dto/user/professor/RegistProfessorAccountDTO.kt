@@ -4,6 +4,7 @@ import com.vf.business.business.dto.user.Gender
 import java.util.*
 
 data class RegistProfessorAccountDTO(
+        val accessCode: String,
         val email: String,
         val pwd: String,
         val firstName: String,

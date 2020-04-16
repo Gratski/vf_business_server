@@ -8,6 +8,8 @@ import javax.persistence.*
 @Table(name = "professor")
 class Professor(
         id: Int? = null,
+        referredBy: User? = null,
+        referrals: MutableList<User>?,
         firstName: String,
         lastName: String,
         email: String,
@@ -41,5 +43,5 @@ class Professor(
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, referredBy, referrals, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 }

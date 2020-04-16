@@ -9,6 +9,7 @@ import com.vf.business.business.dto.user.professor.UpdateProfessorProfileDetails
 import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.internal.ProfessorService
 import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.utils.EmailUtils
@@ -28,6 +29,7 @@ class ProfessorServiceImpl(
         val languageRepository: LanguageRepository,
         val langContextRepo: LanguageContextRepository,
         val notificationPreferenceRepo: NotificationPreferenceRepository,
+        val accessCodeRepo: AccessCodeRepository,
         val countryRepository: CountryRepository
 ): ProfessorService {
 
@@ -82,6 +84,16 @@ class ProfessorServiceImpl(
             throw ResourceConflictException(Translator.toLocale(MessageCodes.EMAIL_ALREADY_EXISTS))
         }
 
+        // check if this professor has an access code given by our team
+        val accessCodeOpt = accessCodeRepo.findByEmail(dto.email)
+        if ( accessCodeOpt.isEmpty || accessCodeOpt.get().code != dto.accessCode ) {
+            UnauthorizedOperationException(
+                    Translator.toLocale(MessageCodes.NO_ACCESS_CODE_FOUND)
+            )
+        }
+        val accessCode = accessCodeOpt.get()
+        accessCodeRepo.delete(accessCode)
+
         // fetch needed countries
         val nationality = getCountryById(dto.nationalityCountryId)
         val currentlyLivingIn = getCountryById(dto.currentlyLivingInCountryId)
@@ -91,6 +103,7 @@ class ProfessorServiceImpl(
 
         // create professor account
         val professor = Professor(
+            referrals = mutableListOf(),
             firstName= dto.firstName,
             lastName= dto.lastName,
             email= dto.email,

@@ -9,6 +9,14 @@ import javax.persistence.*
 @Inheritance(strategy = InheritanceType.JOINED)
 abstract class User (
         id: Int? = null,
+
+        @ManyToOne
+        @JoinColumn(name = "referred_by")
+        open var referredBy: User? = null,
+
+        @OneToMany(mappedBy = "referredBy")
+        open var referrals: MutableList<User>? = mutableListOf(),
+
         @Column(name = "first_name")
         open var firstName: String?,
         @Column(name = "last_name")

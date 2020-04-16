@@ -14,6 +14,8 @@ import javax.persistence.Table
 @Table(name = "student")
 class Student(
         id: Int? = null,
+        referredBy: User? = null,
+        referrals: MutableList<User>?,
         firstName: String?,
         lastName: String?,
         email: String?,
@@ -39,7 +41,7 @@ class Student(
         enabled: Boolean? = true,
         createdAt: Date?,
         updatedAt: Date?
-) : User(id, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences,  fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, referredBy, referrals, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences,  fcmToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper {
         fun from(student: Student): StudentDTO =
