@@ -1,6 +1,6 @@
 package com.vf.business.business.dao.models
 
-import com.vf.business.business.dto.support.SupportType
+import com.vf.business.business.dto.comms.support.SupportType
 import java.util.*
 import javax.persistence.*
 

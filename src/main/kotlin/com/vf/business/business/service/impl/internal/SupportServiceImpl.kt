@@ -3,7 +3,7 @@ package com.vf.business.business.service.impl.internal
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.SupportContact
 import com.vf.business.business.dao.repo.SupportContactRepository
-import com.vf.business.business.dto.support.SupportContactInDTO
+import com.vf.business.business.dto.comms.support.SupportContactInDTO
 import com.vf.business.business.service.itf.internal.CommunicationsService
 import com.vf.business.business.service.itf.internal.SupportService
 import org.springframework.context.i18n.LocaleContextHolder

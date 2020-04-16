@@ -8,4 +8,6 @@ interface CommunicationsService {
 
     fun sendSupportEmail(ticketID: String, professor: Professor, currentLanguageTag: String)
 
+    fun sendInvitationEmail(to: Array<String>, professor: Professor, languageTag: String)
+
 }

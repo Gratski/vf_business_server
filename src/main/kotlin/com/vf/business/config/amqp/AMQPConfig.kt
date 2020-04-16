@@ -1,8 +1,7 @@
 package com.vf.business.config.amqp
 
-import com.vf.business.business.dto.support.SupportMessage
+import com.vf.business.business.dto.comms.support.SupportMessage
 import org.springframework.amqp.core.AmqpAdmin
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitAdmin

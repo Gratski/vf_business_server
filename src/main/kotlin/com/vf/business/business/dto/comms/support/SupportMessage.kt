@@ -1,6 +1,4 @@
-package com.vf.business.business.dto.support
-
-import java.io.Serializable
+package com.vf.business.business.dto.comms.support
 
 data class SupportMessage(
         val id: Int,
