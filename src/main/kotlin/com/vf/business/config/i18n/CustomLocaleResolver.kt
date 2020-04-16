@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest
 class CustomLocaleResolver : AcceptHeaderLocaleResolver(), WebMvcConfigurer {
     private var LOCALES: List<Locale> = listOf(
             Locale("en"),
-            Locale("fr"),
             Locale("pt")
     )
 
