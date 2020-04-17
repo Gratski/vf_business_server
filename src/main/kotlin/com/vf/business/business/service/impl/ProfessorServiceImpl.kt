@@ -30,7 +30,8 @@ class ProfessorServiceImpl(
         val langContextRepo: LanguageContextRepository,
         val notificationPreferenceRepo: NotificationPreferenceRepository,
         val accessCodeRepo: AccessCodeRepository,
-        val countryRepository: CountryRepository
+        val countryRepository: CountryRepository,
+        val walletRepo: WalletRepository
 ): ProfessorService {
 
     override fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorProfileDetailsDTO) {
@@ -124,6 +125,15 @@ class ProfessorServiceImpl(
             updatedAt = now
         )
         professorRepository.save(professor)
+
+        // create wallet
+        val wallet = Wallet(
+            belongsTo = professor,
+            balance = 0.0,
+            createdAt = now,
+            updatedAt = now
+        )
+        walletRepo.save(wallet)
 
         // create all needed notification preferences
         createDefaultNotificationPreferencesList(professor)
