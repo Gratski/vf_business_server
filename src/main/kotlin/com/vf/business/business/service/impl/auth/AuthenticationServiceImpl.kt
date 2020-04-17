@@ -5,8 +5,10 @@ import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dao.models.User
 import com.vf.business.business.dao.repo.UsersRepository
 import com.vf.business.business.dto.auth.AppDomainEnum
+import com.vf.business.business.dto.auth.ChangePasswordDTO
 import com.vf.business.business.dto.auth.ResetPasswordDTO
 import com.vf.business.business.dto.auth.SignInResponseDTO
+import com.vf.business.business.exception.BadFormatException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.internal.CommunicationsService
@@ -19,7 +21,6 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
 import java.util.*
-import javax.transaction.Transactional
 
 
 @Service
@@ -93,6 +94,27 @@ class AuthenticationServiceImpl (
         user.pwdToken = null
         user.password = AuthUtils.Instance.hashPassword(dto.newPassword)
         userRepo.save(user)
+    }
+
+    override fun changePassword(user: User, dto: ChangePasswordDTO) {
+        // check the passwords match
+        if ( user.password != AuthUtils.Instance.hashPassword(dto.oldPassword) ) {
+            throw UnauthorizedOperationException(
+                    Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION)
+            )
+        }
+
+        // check if the new password format is ok
+        if( dto.newPassword.isBlank() ) {
+            throw BadFormatException(
+                    Translator.toLocale(MessageCodes.PASSWORD_TOO_WEAK)
+            )
+        }
+
+        // update the user with the new password
+        user.password = AuthUtils.Instance.hashPassword(dto.newPassword)
+        userRepo.save(user)
+
     }
 
     private fun getUserByEmail(email: String): User {

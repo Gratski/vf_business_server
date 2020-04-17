@@ -11,6 +11,7 @@ class MessageCodes {
         val UNAUTHORIZED_OPERATION = "unauthorized_operation"
         val BAD_FORMAT = "bad_format" // expects %resource argument to correctly format
         val EMAIL_ALREADY_EXISTS = "email_already_exists"
+        val PASSWORD_TOO_WEAK = "password_too_weak"
 
         // COMMON TERMS
         val WEEK_DAY = "week_day"

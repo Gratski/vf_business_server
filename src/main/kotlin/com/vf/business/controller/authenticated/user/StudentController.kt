@@ -1,4 +1,4 @@
-package com.vf.business.controller.authenticated
+package com.vf.business.controller.authenticated.user
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.user.student.CreateStudentDTO
