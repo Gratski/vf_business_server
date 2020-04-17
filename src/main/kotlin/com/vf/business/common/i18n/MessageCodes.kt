@@ -18,6 +18,9 @@ class MessageCodes {
         val USER = "user"
         val COUNTRY = "country"
 
+        // PAYMENTS TERMS
+        val COMMISSION = "commisssion"
+
         // NOTIFICATION PREFERENCES RELATED
         val NOTIFICATION_TYPE = "notification_type"
         // LANGUAGE CONTEXT RELATED

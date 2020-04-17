@@ -17,6 +17,9 @@ abstract class User (
         @OneToMany(mappedBy = "referredBy")
         open var referrals: MutableList<User>? = mutableListOf(),
 
+        @OneToOne(mappedBy = "belongsTo")
+        open var wallet: Wallet? = null,
+
         @Column(name = "first_name")
         open var firstName: String?,
         @Column(name = "last_name")

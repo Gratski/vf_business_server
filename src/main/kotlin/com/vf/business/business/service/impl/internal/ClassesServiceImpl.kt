@@ -21,6 +21,7 @@ import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.external.messaging.MessagingService
 import com.vf.business.business.service.itf.internal.ClassesService
+import com.vf.business.business.service.itf.internal.WalletService
 import com.vf.business.business.utils.mapper.VFClassMapper
 import com.vf.business.common.RepetitionTypeEnum
 import com.vf.business.common.WeekDayEnum
@@ -42,7 +43,8 @@ class ClassesServiceImpl(
         val professorRepo: ProfessorRepository,
         val studentRepo: StudentRepository,
         val classAttendantRepo: ClassAttendantRepository,
-        val messagingService: MessagingService
+        val messagingService: MessagingService,
+        val walletService: WalletService
 ) : ClassesService {
 
     override fun getActiveClasses(pageNumber: Int, size: Int): Page<VFClassDTO> {
@@ -165,6 +167,9 @@ class ClassesServiceImpl(
         // change professor currently giving class
         professor.currentlyGiving = disciplineClass
         professorRepo.save(professor)
+
+        // add payment to professor wallet if applicable
+        walletService.deposit(disciplineClass.attendants.size, professor)
 
         // notify all class attendants
         multiCastMessage(disciplineClass, EventTypeEnum.CLASS_ENDED, EventLabelsEnum.CLASS_ENDED, "${disciplineClass.id}")

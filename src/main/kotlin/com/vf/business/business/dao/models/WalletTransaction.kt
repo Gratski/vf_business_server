@@ -1,9 +1,29 @@
 package com.vf.business.business.dao.models
 
-import javax.persistence.Entity
-import javax.persistence.Table
+import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "wallet_transaction")
-class WalletTransaction {
+class WalletTransaction(
+        id: Int? = null,
+
+        @ManyToOne
+        @JoinColumn(name = "wallet_id")
+        open var wallet: Wallet,
+
+        @Column(name = "amount")
+        open var amount: Double,
+
+        @Column(name = "direction")
+        @Enumerated(EnumType.STRING)
+        open var direction: TransactionDirection,
+
+        @Column(name = "transaction_type")
+        @Enumerated(EnumType.STRING)
+        open var transactionType: TransactionType,
+
+        createdAt: Date,
+        updatedAt: Date
+): AbstractEntity(id, createdAt, updatedAt) {
 }

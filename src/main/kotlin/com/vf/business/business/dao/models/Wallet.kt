@@ -12,14 +12,14 @@ class Wallet(
         @JoinColumn(name = "belongs_to")
         open var belongsTo: User,
 
-        @OneToMany(mappedBy = "wallet")
-        open var transactions: MutableList<WalletTransaction> = mutableListOf(),
-
         @Column(name = "balance")
         open var balance: Double,
 
         @Column(name = "currency")
-        open var currenct: Currency = Currency.EUR,
+        open var currency: Currency = Currency.EUR,
+
+        @OneToMany(mappedBy = "wallet")
+        open var transactions: MutableList<WalletTransaction> = mutableListOf(),
 
         createdAt: Date,
         updatedAt: Date
