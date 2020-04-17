@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.comms.auth.PasswordRecoveryMessage
 import com.vf.business.business.dto.comms.invitation.InvitationMessage
+import com.vf.business.business.dto.comms.invoice.InvoiceMessage
 import com.vf.business.business.dto.comms.support.SupportMessage
 import com.vf.business.business.service.itf.internal.CommunicationsService
 import org.springframework.amqp.core.Message
@@ -65,6 +66,22 @@ class CommunicationsServiceImpl(
         val msg = Message(Gson().toJson(pwdRecoveryMessage).toByteArray(), props)
         rabbitTemplate.encoding = "application/json"
         rabbitTemplate.convertAndSend("comms.email.auth.passrecovery", msg)
+    }
+
+    override fun sendBillingEmails(email: String, firstName: String, url: String, id: Int, languageTag: String) {
+        val invoiceMessage = InvoiceMessage(
+                to = email,
+                username = firstName,
+                docUrl = url,
+                invoiceId = String.format("%d", id),
+                languageTag = languageTag
+        )
+
+        val props = MessageProperties()
+        props.contentType = "json"
+        val msg = Message(Gson().toJson(invoiceMessage).toByteArray(), props)
+        rabbitTemplate.encoding = "application/json"
+        rabbitTemplate.convertAndSend("comms.email.invoice", msg)
     }
 
 }

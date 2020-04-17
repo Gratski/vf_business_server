@@ -12,4 +12,6 @@ interface CommunicationsService {
 
     fun sendPasswordRecoveryEmail(email: String, firstName: String, token: String, languageTag: String)
 
+    fun sendBillingEmails(email: String, firstName: String, url: String, id: Int, toLanguageTag: String)
+
 }
