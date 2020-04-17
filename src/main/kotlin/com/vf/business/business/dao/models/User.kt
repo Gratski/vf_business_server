@@ -69,5 +69,5 @@ abstract class User (
         @Column(name = "enabled")
         open var enabled: Boolean? = true,
 
-        createdAt: Date?,
-        updatedAt: Date?) : AbstractEntity(id, createdAt, updatedAt)
+        createdAt: Date,
+        updatedAt: Date) : AbstractEntity(id, createdAt, updatedAt)

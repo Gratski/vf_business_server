@@ -31,8 +31,8 @@ class Discipline (
 
         open var active: Boolean? = true,
         open var enabled: Boolean? = false,
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 ) : AbstractEntity(
         id = id,
         createdAt = createdAt,

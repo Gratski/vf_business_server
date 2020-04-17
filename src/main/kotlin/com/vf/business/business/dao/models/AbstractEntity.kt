@@ -10,6 +10,6 @@ import javax.persistence.MappedSuperclass
 abstract class AbstractEntity (
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         open var id: Int?,
-        open var createdAt: Date?,
-        open var updatedAt: Date?
+        open var createdAt: Date,
+        open var updatedAt: Date
 )

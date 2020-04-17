@@ -69,10 +69,13 @@ class ClassesServiceImpl(
             return Page.empty()
 
         val now = Date()
-        val pageRequest = PageRequest.of((pageNumber * size), size)
+        val pageRequest = PageRequest.of(pageNumber, size)
         val classesPage: Page<DisciplineClass> = classesRepo.findActiveClassesByCategory(category, now, pageRequest)
-        val resultList = arrayListOf<VFClassDTO>()
+        val resultList = mutableListOf<VFClassDTO>()
 
+        classesPage.forEach {
+            resultList.add(VFClassMapper.Mapper.map(it))
+        }
 
         return PageImpl<VFClassDTO>(resultList, pageRequest, classesPage.totalElements)
     }

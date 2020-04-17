@@ -19,8 +19,8 @@ class ClassAttendant (
         open var disciplineClass: DisciplineClass?,
 
         open var leftAt: Date? = null,
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 ) : AbstractEntity(
         id, createdAt, updatedAt
 ){

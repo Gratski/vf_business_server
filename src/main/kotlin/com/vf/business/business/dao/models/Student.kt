@@ -41,8 +41,8 @@ class Student(
 
         active: Boolean? = false,
         enabled: Boolean? = true,
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 ) : User(id, referredBy, referrals, wallet, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences,  fcmToken, pwdToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper {

@@ -28,8 +28,8 @@ class DisciplineClass (
 
         open var startedAt: Date? = null,
         open var endedAt: Date? = null,
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 
 ): AbstractEntity(
         id, createdAt, updatedAt

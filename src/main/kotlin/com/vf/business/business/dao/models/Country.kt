@@ -16,7 +16,7 @@ class Country (
         open var spokenLanguages: MutableList<LanguageCountry>,
 
 
-        createdAt: Date? = null,
-        updatedAt: Date? = null
+        createdAt: Date,
+        updatedAt: Date
 ): AbstractEntity(id, createdAt, updatedAt){
 }

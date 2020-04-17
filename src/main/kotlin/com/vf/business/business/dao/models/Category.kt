@@ -21,8 +21,8 @@ class Category(
         @OneToOne(fetch = FetchType.EAGER, optional = true)
         open var picture: Picture? = null,
 
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 ) : AbstractEntity(
         id = id,
         createdAt = createdAt,

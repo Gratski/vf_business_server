@@ -9,8 +9,8 @@ class Picture(
         id: Int?,
         open var designation: String?,
         open var extension: String?,
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 ) : AbstractEntity(
         id = id,
         createdAt = createdAt,

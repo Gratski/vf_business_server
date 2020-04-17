@@ -16,8 +16,8 @@ class ClassReservation (
     @JoinColumn(name = "student")
     open var student: Student,
 
-        createdAt: Date?,
-        updatedAt: Date?
+        createdAt: Date,
+        updatedAt: Date
 
 ): AbstractEntity(
 id, createdAt, updatedAt
