@@ -22,7 +22,6 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
 import java.util.*
 
-
 @Service
 class AuthenticationServiceImpl (
         private val userService: UsersService,

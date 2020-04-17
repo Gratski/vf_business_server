@@ -16,6 +16,7 @@
         <java.version>1.8</java.version>
         <kotlin.version>1.3.61</kotlin.version>
         <spring.amqp.version>2.2.5.RELEASE</spring.amqp.version>
+        <firebase.version>6.12.2</firebase.version>
     </properties>
 
     <dependencyManagement>
@@ -45,7 +46,7 @@
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
-            <version>6.12.2</version>
+            <version>${firebase.version}</version>
         </dependency>
 
         <dependency>
