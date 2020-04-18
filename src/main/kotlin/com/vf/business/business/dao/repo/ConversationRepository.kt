@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 interface ConversationRepository: CrudRepository<Conversation, Int> {
@@ -19,5 +20,15 @@ interface ConversationRepository: CrudRepository<Conversation, Int> {
             "   WHERE u = :user AND cc.conversation = c" +
             ") ")
     fun findUserConversationsOrderedByLastMessageDesc(@Param("user") user: User, pageable: Pageable): Page<Conversation>
+
+    @Query("SELECT c FROM Conversation c " +
+            "WHERE :user IN (SELECT cc1.user, cc2.user FROM ConversationCorrespondent cc1, ConversationCorrespondent cc2 " +
+            "                   WHERE cc1.conversation = c AND cc2.conversation = c AND cc1 != cc2 " +
+            "                   AND (( cc1.user = :user AND cc2.user = :other ) OR ( cc2.user = :user AND cc1.user = :other ) )" +
+            ")")
+    fun findByCorrespondents(
+            @Param("user") user: User,
+            @Param("other") other: User
+        ): Optional<Conversation>
 
 }

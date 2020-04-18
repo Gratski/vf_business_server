@@ -1,6 +1,6 @@
 package com.vf.business.business.exception
 
-class UnexistingConversationException: RuntimeException {
+class ConversationException: RuntimeException {
 
     constructor(): super() {}
     constructor(msg: String?): super(msg) {}
