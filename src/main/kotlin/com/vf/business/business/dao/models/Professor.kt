@@ -11,6 +11,7 @@ class Professor(
         referredBy: User? = null,
         referrals: MutableList<User>?,
         wallet: Wallet? = null,
+        conversations: MutableList<ConversationCorrespondent>? = null,
         firstName: String,
         lastName: String,
         email: String,
@@ -45,5 +46,5 @@ class Professor(
         enabled: Boolean = true,
         createdAt: Date,
         updatedAt: Date
-) : User(id, referredBy, referrals, wallet, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pwdToken, pictureUrl, active, enabled, createdAt, updatedAt) {
+) : User(id, referredBy, referrals, wallet, conversations, firstName, lastName, email, pwd, gender, birthday, phoneNumberCountry, phoneNumber, nationality, livingIn, spokenLanguages, notificationPreferences, fcmToken, pwdToken, pictureUrl, active, enabled, createdAt, updatedAt) {
 }

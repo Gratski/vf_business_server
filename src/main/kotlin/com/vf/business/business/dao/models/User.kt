@@ -20,6 +20,9 @@ abstract class User (
         @OneToOne(mappedBy = "belongsTo")
         open var wallet: Wallet? = null,
 
+        @OneToMany(mappedBy = "user")
+        open var conversations: MutableList<ConversationCorrespondent>? = null,
+
         @Column(name = "first_name")
         open var firstName: String?,
         @Column(name = "last_name")

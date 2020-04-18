@@ -208,12 +208,14 @@ class DisciplineServiceImpl(
     override fun changeDisciplinePicture(id: Int, professor: Professor, file: MultipartFile) {
         val disciplineOpt = disciplineRepo.findById(id)
         disciplineOpt.orElseThrow {
-            throw ResourceNotFoundException("This discipline does not exists")
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE)))
+            )
         }
 
         val discipline = disciplineOpt.get()
         if ( discipline.languageContext.professor.id != professor.id ) {
-            throw UnauthorizedOperationException("This operation is not permitted")
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
         }
 
         // upload image to AWS
