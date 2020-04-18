@@ -39,7 +39,7 @@ class ConversationController(
      */
     @Secured
     @PostMapping("/{id}/messages")
-    fun addMessageToExistingConversation(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateMessageDTO) {
+    fun addMessageToExistingConversation(principal: Principal, @PathVariable("id") id: Long, @RequestBody dto: CreateMessageDTO) {
         val user = usersService.getUser(principal)
         return conversationsService.addMessageToExistingConversation(user, id, dto)
     }
@@ -49,7 +49,7 @@ class ConversationController(
      */
     @Secured
     @GetMapping("/{id}/messages")
-    fun getConversationMessages(principal: Principal, @PathVariable("id") id: Int, @RequestParam("page") page: Int, @RequestParam("size") size: Int): ResourcePage<ConversationMessageListItemDTO> {
+    fun getConversationMessages(principal: Principal, @PathVariable("id") id: Long, @RequestParam("page") page: Int, @RequestParam("size") size: Int): ResourcePage<ConversationMessageListItemDTO> {
         val user = usersService.getUser(principal)
         return conversationsService.getConversationMessages(user, id, page, size)
     }

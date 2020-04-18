@@ -23,11 +23,11 @@ interface ConversationService {
      * @param id Conversation id
      * @param dto DTO containing the message body
      */
-    fun addMessageToExistingConversation(user: User, id: Int, dto: CreateMessageDTO)
+    fun addMessageToExistingConversation(user: User, id: Long, dto: CreateMessageDTO)
 
     /**
      * Gets a page of messages of the given conversation
      */
-    fun getConversationMessages(currentUser: User, conversationId: Int, page: Int, size: Int): ResourcePage<ConversationMessageListItemDTO>
+    fun getConversationMessages(currentUser: User, id: Long, page: Int, size: Int): ResourcePage<ConversationMessageListItemDTO>
 
 }

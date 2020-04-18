@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "conversation")
 class Conversation(
-        id: Int? = null,
+        id: Long? = null,
 
         @OrderBy("createdAt DESC")
         @OneToMany(mappedBy = "conversation")
@@ -17,5 +17,5 @@ class Conversation(
 
         createdAt: Date,
         updatedAt: Date
-): AbstractEntity(id, createdAt, updatedAt) {
+): AbstractLongEntity(id, createdAt, updatedAt) {
 }

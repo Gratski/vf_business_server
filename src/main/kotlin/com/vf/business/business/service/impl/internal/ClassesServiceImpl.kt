@@ -13,7 +13,7 @@ import com.vf.business.business.dao.repo.DisciplineClassesRepository
 import com.vf.business.business.dao.repo.ProfessorRepository
 import com.vf.business.business.dao.repo.StudentRepository
 import com.vf.business.business.dto.discipline.classes.*
-import com.vf.business.business.dto.notifications.ClassCancelledNotificationDTO
+import com.vf.business.business.dto.notifications.push.ClassCancelledNotificationDTO
 import com.vf.business.business.events.EventLabelsEnum
 import com.vf.business.business.events.EventTypeEnum
 import com.vf.business.business.exception.BadFormatException
@@ -194,12 +194,12 @@ class ClassesServiceImpl(
             val professorName = "${disciplineClass.discipline.languageContext.professor.firstName} " +
                     "${disciplineClass.discipline.languageContext.professor.lastName}"
             val notificationDTO = ClassCancelledNotificationDTO(
-                id = disciplineClass.id,
-                title = disciplineClass.discipline.designation,
-                professorName = professorName,
-                cancellationMsg = dto.informativeMessage,
-                pictureUrl = disciplineClass.discipline.imageUrl,
-                date = Date()
+                    id = disciplineClass.id,
+                    title = disciplineClass.discipline.designation,
+                    professorName = professorName,
+                    cancellationMsg = dto.informativeMessage,
+                    pictureUrl = disciplineClass.discipline.imageUrl,
+                    date = Date()
             )
             val cancellationDetails = Gson().toJson(notificationDTO)
 

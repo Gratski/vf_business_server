@@ -1,0 +1,1 @@
+ALTER TABLE feed_notification ADD COLUMN target_user_id int not null references app_user(id);

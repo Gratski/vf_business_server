@@ -21,6 +21,9 @@ class MessageCodes {
         // CONVERSATIONS
         val CONVERSATION = "conversation"
 
+        // NOTIFICATIONS
+        val NOTIFICATION = "notification"
+
         // PAYMENTS TERMS
         val COMMISSION = "commisssion"
 

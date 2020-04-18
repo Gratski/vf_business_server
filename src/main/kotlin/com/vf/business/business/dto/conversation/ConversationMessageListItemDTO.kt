@@ -1,7 +1,7 @@
 package com.vf.business.business.dto.conversation
 
 data class ConversationMessageListItemDTO(
-        val id: Int,
+        val id: Long,
         val body: String,
         val fromId: Int,
         val fromName: String,

@@ -9,7 +9,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "conversation_correspondent")
 class ConversationCorrespondent(
-        id: Int? = null,
+        id: Long? = null,
 
         @ManyToOne
         @JoinColumn(name = "conversation_id")
@@ -21,5 +21,5 @@ class ConversationCorrespondent(
 
         createdAt: Date,
         updatedAt: Date
-): AbstractEntity(id, createdAt, updatedAt) {
+): AbstractLongEntity(id, createdAt, updatedAt) {
 }
