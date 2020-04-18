@@ -161,7 +161,7 @@ class DisciplineServiceImpl(
         )
 
         disciplineRepo.save(discipline)
-        return CreateOperationResponseDTO(discipline.id)
+        return CreateOperationResponseDTO(discipline.id!!)
     }
 
     override fun enableDisable(id: Int, isEnabled: Boolean) {

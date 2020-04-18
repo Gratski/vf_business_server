@@ -18,6 +18,9 @@ class MessageCodes {
         val USER = "user"
         val COUNTRY = "country"
 
+        // CONVERSATIONS
+        val CONVERSATION = "conversation"
+
         // PAYMENTS TERMS
         val COMMISSION = "commisssion"
 

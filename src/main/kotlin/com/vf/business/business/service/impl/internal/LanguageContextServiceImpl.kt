@@ -68,7 +68,7 @@ class LanguageContextServiceImpl(
         languageContext.professorDetails = details
         languageContextRepo.save(languageContext)
 
-        return CreateOperationResponseDTO(languageContext.id)
+        return CreateOperationResponseDTO(languageContext.id!!)
     }
 
 }

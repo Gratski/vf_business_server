@@ -12,7 +12,7 @@ class Conversation(
         @OneToMany(mappedBy = "conversation")
         open var messages: MutableList<ConversationMessage>,
 
-        @OneToMany(mappedBy = "conversation")
+        @OneToMany(mappedBy = "conversation", cascade = [CascadeType.ALL])
         open var correspondents: MutableList<ConversationCorrespondent>,
 
         createdAt: Date,

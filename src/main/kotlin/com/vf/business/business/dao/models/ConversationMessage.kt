@@ -23,7 +23,7 @@ class ConversationMessage(
         open var seen: Boolean,
 
         @Column(name = "seen_at")
-        open var seen_at: Date,
+        open var seen_at: Date? = null,
 
         createdAt: Date,
         updatedAt: Date
