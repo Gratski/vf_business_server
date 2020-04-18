@@ -9,6 +9,7 @@ import com.vf.business.business.dao.repo.ConversationMessageRepository
 import com.vf.business.business.dao.repo.ConversationRepository
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.conversation.ConversationListItemDTO
+import com.vf.business.business.dto.conversation.ConversationMessageListItemDTO
 import com.vf.business.business.dto.conversation.CreateMessageDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.exception.ConversationException
@@ -111,13 +112,8 @@ class ConversationServiceImpl(
         return CreateOperationResponseDTO(id = message.id!!)
     }
 
-    override fun addMessageToExistingConversation(user: User, id: Int, dto: CreateMessageDTO) {
-        val conversationOpt = conversationsRepo.findById(id)
-        conversationOpt.orElseThrow {
-            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CONVERSATION))))
-        }
-        val conversation = conversationOpt.get()
-
+    override fun addMessageToExistingConversation(user: User, conversationId: Int, dto: CreateMessageDTO) {
+        val conversation = getConversationById(conversationId)
         val now = Date()
         val message = ConversationMessage(
                 body = dto.body,
@@ -131,6 +127,27 @@ class ConversationServiceImpl(
         conversationMessageRepo.save(message)
     }
 
+    override fun getConversationMessages(currentUser: User, conversationId: Int, page: Int, size: Int): ResourcePage<ConversationMessageListItemDTO> {
+        val conversation = getConversationById(conversationId)
+        val pageReq = PageRequest.of(page, size)
+        val messagesPage = conversationMessageRepo.findByConversationOrderByCreatedAtDesc(conversation, pageReq)
+        val resultsList = mutableListOf<ConversationMessageListItemDTO>()
+        messagesPage.forEach {
+            val cur = ConversationMessageListItemDTO(
+                    id = it.id!!,
+                    body = it.body,
+                    fromId = it.sender.id!!,
+                    fromName = "${it.sender.firstName} ${it.sender.lastName}",
+                    fromPictureUrl = "${it.sender.pictureUrl}"
+            )
+            resultsList.add(cur)
+        }
+        return ResourcePage(
+                total = messagesPage.totalElements,
+                items = resultsList
+        )
+    }
+
     private fun extractOtherUserFromConversation(c: Conversation, u: User): User {
         c.correspondents?.forEach {
             if ( it.user.id != u.id ) {
@@ -138,6 +155,14 @@ class ConversationServiceImpl(
             }
         }
         throw ConversationException()
+    }
+
+    private fun getConversationById(id: Int): Conversation {
+        val conversationOpt = conversationsRepo.findById(id)
+        conversationOpt.orElseThrow {
+            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CONVERSATION))))
+        }
+        return conversationOpt.get()
     }
 
 }

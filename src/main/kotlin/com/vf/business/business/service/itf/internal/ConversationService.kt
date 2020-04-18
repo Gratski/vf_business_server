@@ -3,6 +3,7 @@ package com.vf.business.business.service.itf.internal
 import com.vf.business.business.dao.models.User
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.conversation.ConversationListItemDTO
+import com.vf.business.business.dto.conversation.ConversationMessageListItemDTO
 import com.vf.business.business.dto.conversation.CreateMessageDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 
@@ -23,5 +24,10 @@ interface ConversationService {
      * @param dto DTO containing the message body
      */
     fun addMessageToExistingConversation(user: User, id: Int, dto: CreateMessageDTO)
+
+    /**
+     * Gets a page of messages of the given conversation
+     */
+    fun getConversationMessages(currentUser: User, conversationId: Int, page: Int, size: Int): ResourcePage<ConversationMessageListItemDTO>
 
 }

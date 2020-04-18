@@ -1,5 +1,7 @@
 package com.vf.business.controller.authenticated
 
+import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.conversation.ConversationMessageListItemDTO
 import com.vf.business.business.dto.conversation.CreateMessageDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.service.itf.internal.ConversationService
@@ -40,6 +42,16 @@ class ConversationController(
     fun addMessageToExistingConversation(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateMessageDTO) {
         val user = usersService.getUser(principal)
         return conversationsService.addMessageToExistingConversation(user, id, dto)
+    }
+
+    /**
+     * Gets a page of messages for the given conversation sorted by id DESC
+     */
+    @Secured
+    @GetMapping("/{id}/messages")
+    fun getConversationMessages(principal: Principal, @PathVariable("id") id: Int, @RequestParam("page") page: Int, @RequestParam("size") size: Int): ResourcePage<ConversationMessageListItemDTO> {
+        val user = usersService.getUser(principal)
+        return conversationsService.getConversationMessages(user, id, page, size)
     }
 
 }
