@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface ConversationRepository: CrudRepository<Conversation, Int> {
+interface ConversationRepository: CrudRepository<Conversation, Long> {
 
     @Query("SELECT DISTINCT c FROM Conversation c " +
             "WHERE EXISTS " +

@@ -3,7 +3,7 @@ package com.vf.business.business.dto.conversation
 import java.util.*
 
 data class ConversationListItemDTO(
-    val id: Int,
+    val id: Long,
     val otherUsername: String,
     val otherId: Int,
     val lastMessage: String,

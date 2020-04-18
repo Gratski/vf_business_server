@@ -1,4 +1,4 @@
-package com.vf.business.business.dto.notifications
+package com.vf.business.business.dto.notifications.push
 
 import java.util.*
 

@@ -112,7 +112,7 @@ class ConversationServiceImpl(
         return CreateOperationResponseDTO(id = message.id!!)
     }
 
-    override fun addMessageToExistingConversation(user: User, conversationId: Int, dto: CreateMessageDTO) {
+    override fun addMessageToExistingConversation(user: User, conversationId: Long, dto: CreateMessageDTO) {
         val conversation = getConversationById(conversationId)
         val now = Date()
         val message = ConversationMessage(
@@ -127,7 +127,7 @@ class ConversationServiceImpl(
         conversationMessageRepo.save(message)
     }
 
-    override fun getConversationMessages(currentUser: User, conversationId: Int, page: Int, size: Int): ResourcePage<ConversationMessageListItemDTO> {
+    override fun getConversationMessages(currentUser: User, conversationId: Long, page: Int, size: Int): ResourcePage<ConversationMessageListItemDTO> {
         val conversation = getConversationById(conversationId)
         val pageReq = PageRequest.of(page, size)
         val messagesPage = conversationMessageRepo.findByConversationOrderByCreatedAtDesc(conversation, pageReq)
@@ -157,7 +157,7 @@ class ConversationServiceImpl(
         throw ConversationException()
     }
 
-    private fun getConversationById(id: Int): Conversation {
+    private fun getConversationById(id: Long): Conversation {
         val conversationOpt = conversationsRepo.findById(id)
         conversationOpt.orElseThrow {
             throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CONVERSATION))))

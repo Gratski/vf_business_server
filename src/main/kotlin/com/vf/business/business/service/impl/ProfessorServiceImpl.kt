@@ -2,7 +2,9 @@ package com.vf.business.business.service.impl
 
 import com.vf.business.business.dao.models.*
 import com.vf.business.business.dao.repo.*
+import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
+import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
 import com.vf.business.business.dto.user.professor.ProfessorDetailsDTO
 import com.vf.business.business.dto.user.professor.RegistProfessorAccountDTO
 import com.vf.business.business.dto.user.professor.UpdateProfessorProfileDetailsDTO
@@ -10,6 +12,7 @@ import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
+import com.vf.business.business.service.itf.internal.FeedNotificationService
 import com.vf.business.business.service.itf.internal.ProfessorService
 import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.utils.EmailUtils
@@ -23,6 +26,7 @@ import javax.transaction.Transactional
 @Service
 class ProfessorServiceImpl(
         val userService: UsersService,
+        val feedNotificationsService: FeedNotificationService,
         val professorRepository: ProfessorRepository,
         val professorDetailsRepository: ProfessorDetailsRepository,
         val userLanguageRepo: UserLanguageRepository,
@@ -145,6 +149,10 @@ class ProfessorServiceImpl(
         createDefaultContextLanguage(dto.professorDetails, professor, dto.nativeSpeakingLanguage)
 
 
+    }
+
+    override fun getProfessorNotifications(professor: Professor, page: Int, size: Int): ResourcePage<ListItemFeedNotificationDTO> {
+        TODO("Not yet implemented")
     }
 
     private fun createDefaultSpeakingLanguage(professor: Professor, languageName: String) {
