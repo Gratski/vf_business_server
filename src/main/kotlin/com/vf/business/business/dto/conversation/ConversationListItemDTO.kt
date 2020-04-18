@@ -1,4 +1,13 @@
 package com.vf.business.business.dto.conversation
 
-class ConversationListItemDTO {
-}
+import java.util.*
+
+data class ConversationListItemDTO(
+    val id: Int,
+    val otherUsername: String,
+    val otherId: Int,
+    val lastMessage: String,
+    val lastMessageDate: Date,
+    val lastMessageSeen: Boolean,
+    val lastMessageSeenAt: Date? = null
+)
