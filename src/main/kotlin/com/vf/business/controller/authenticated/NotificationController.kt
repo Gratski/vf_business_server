@@ -1,8 +1,7 @@
 package com.vf.business.controller.authenticated
 
-import com.vf.business.business.dao.models.Professor
-import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
+import com.vf.business.business.dto.notifications.feed.MarkNotificationsAsSeenOrNotSeenDTO
 import com.vf.business.business.service.itf.internal.FeedNotificationService
 import com.vf.business.business.service.itf.internal.UsersService
 import org.springframework.security.access.annotation.Secured
@@ -15,6 +14,16 @@ class NotificationController(
         val usersService: UsersService,
         val notificationService: FeedNotificationService
 ) {
+
+    /**
+     * Marks the notifications as seen
+     */
+    @Secured
+    @PostMapping("/actions/bulk/mark-as-seen")
+    fun markNotificationsAsSeenOrNotSeen(principal: Principal, @RequestBody dto: MarkNotificationsAsSeenOrNotSeenDTO) {
+        val user = usersService.getUser(principal)
+        notificationService.markNotificationsAsSeen(user, dto)
+    }
 
     @Secured
     @GetMapping("/{id}")
