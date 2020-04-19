@@ -11,8 +11,6 @@ class Category(
         @ManyToOne
         @JoinColumn(name = "parent_id", referencedColumnName="id",nullable=false)
         open var parent: Category? = null,
-        open var designation: String? = null,
-        open var description: String? = null,
         open var icon: String? = null,
 
         @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL, CascadeType.PERSIST], mappedBy = "parent")
@@ -20,6 +18,9 @@ class Category(
 
         @OneToOne(fetch = FetchType.EAGER, optional = true)
         open var picture: Picture? = null,
+
+        @OneToMany(mappedBy = "category")
+        open var translations: MutableList<CategoryTranslation> = mutableListOf(),
 
         createdAt: Date,
         updatedAt: Date

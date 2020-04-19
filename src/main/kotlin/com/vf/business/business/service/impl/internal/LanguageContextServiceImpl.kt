@@ -1,5 +1,6 @@
 package com.vf.business.business.service.impl.internal
 
+import com.vf.business.business.dao.models.Language
 import com.vf.business.business.dao.models.LanguageContext
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.ProfessorDetails
@@ -8,6 +9,7 @@ import com.vf.business.business.dao.repo.LanguageRepository
 import com.vf.business.business.dao.repo.ProfessorDetailsRepository
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.dto.locatization.CreateLanguageContextDTO
+import com.vf.business.business.exception.CriticalSystemException
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.internal.LanguageContextService
@@ -69,6 +71,21 @@ class LanguageContextServiceImpl(
         languageContextRepo.save(languageContext)
 
         return CreateOperationResponseDTO(languageContext.id!!)
+    }
+
+    /**
+     * Gets a language by its code if exists
+     * Otherwise it returns the system default language
+     */
+    override fun getLanguageByCode(code: String): Language {
+        val languageOpt = languageRepo.findFirstByCode(code)
+        return languageOpt.orElseGet {
+            val defaultLangOpt = languageRepo.findFirstBySystemLanguage(true)
+            defaultLangOpt.orElseThrow {
+                throw CriticalSystemException()
+            }
+            defaultLangOpt.get()
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Discipline
 import com.vf.business.business.dao.repo.CategoryRepository
+import com.vf.business.business.dao.repo.CategoryTranslationRepository
 import com.vf.business.business.dao.repo.DisciplineRepository
 import com.vf.business.business.dao.repo.LanguageContextRepository
 import com.vf.business.business.dto.discipline.CreateDisciplineDTO
@@ -33,6 +34,7 @@ import javax.transaction.Transactional
 @Service
 class DisciplineServiceImpl(
         val storageService: StorageService,
+        val categoryTranslationRepo: CategoryTranslationRepository,
         val disciplineRepo: DisciplineRepository,
         val disciplineClassesService: ClassesService,
         val categoryRepo: CategoryRepository,
@@ -57,8 +59,14 @@ class DisciplineServiceImpl(
     val WEEKLY_NUMBER_OF_REPETITION = 4
 
 
-    override fun getDiscipline(id: Int): DisciplineDTO =
-        DisciplineMapper.Mapper.map(getDisciplineById(id))
+    override fun getDiscipline(id: Int): DisciplineDTO {
+        val discipline = getDisciplineById(id)
+        val categoryTranslation = categoryTranslationRepo.findByCategoryIdAndLanguage(discipline.category?.id!!, discipline.languageContext.language)
+        categoryTranslation.orElseThrow {
+            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
+        }
+        return DisciplineMapper.Mapper.map(discipline, categoryTranslation.get())
+    }
 
 
     override fun getDisciplinesByCategory(category: Category, page: Pageable): Collection<DisciplineDTO> {

@@ -7,7 +7,7 @@ import java.util.Date
 
 class DisciplineDTO(
         id: Int?,
-        val category: CategoryDTO,
+        val category: CategoryDTO?,
         val professor: ProfessorDTO,
         val designation: String?,
         val description: String?,
