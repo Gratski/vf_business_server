@@ -12,7 +12,7 @@ open class UserDTO (
         val pwd: String?,
         val nationality: CountryDTO,
         val livingIn: CountryDTO,
-        val spokenLanguages: MutableList<LanguageDTO>,
+        val spokenLanguages: MutableList<LanguageDTO>? = null,
         val active: Boolean? = false,
         val enabled: Boolean? = true,
         val createdAt: Date?,

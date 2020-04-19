@@ -9,7 +9,6 @@ class CategoryDTO(
         id: Int?,
         val designation: String?,
         val description: String?,
-        val subCategories: Collection<CategoryDTO?>?,
         val icon: String?,
         val picture: PictureDTO?,
         createdAt: Date?,

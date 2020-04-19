@@ -8,6 +8,8 @@ import java.util.*
 @Repository
 interface LanguageRepository: CrudRepository<Language, Int> {
 
-    fun findLanguageByLanguageName(languageName: String): Optional<Language>
+    fun findFirstByCode(code: String): Optional<Language>
+
+    fun findFirstBySystemLanguage(isSystemLanguage: Boolean): Optional<Language>
 
 }

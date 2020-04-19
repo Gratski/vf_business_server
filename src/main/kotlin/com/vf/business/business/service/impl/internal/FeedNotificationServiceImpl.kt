@@ -66,9 +66,11 @@ class FeedNotificationServiceImpl(
         if ( it is ClassFeedNotification ) {
             item.type = FeedNotificationType.CLASS_NOTIFICATION
             item.classObj = ListItemFeedNotificationDisciplineClassDTO(
+                    userName = "${it.user.firstName} ${it.user.lastName}",
+                    userCountryCode = it.user.livingIn?.countryCode!!,
+                    userPictureUrl = it.user.pictureUrl,
                     discipline = it.disciplineClass.discipline.designation!!,
-                    category = it.disciplineClass.discipline.category?.designation!!,
-                    language = it.disciplineClass.discipline.languageContext.language.languageName,
+                    disciplineLanguage = it.disciplineClass.discipline.languageContext.language.code,
                     notificationType = it.notificationType
             )
         } else if ( it is MessageFeedNotification ) {
@@ -77,6 +79,7 @@ class FeedNotificationServiceImpl(
                     conversationId = it.conversation.id!!,
                     fromId = it.user.id!!,
                     fromName = "${it.user.firstName} ${it.user.lastName}",
+                    fromPictureUrl = it.user.pictureUrl,
                     fromCountry = it.user.nationality?.countryName!!,
                     body = it.message
             )

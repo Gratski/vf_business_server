@@ -16,7 +16,6 @@ class ProfessorMapper {
                         active = input?.active,
                         livingIn = CountryMapper.Mapper.map(input?.livingIn!!),
                         nationality = CountryMapper.Mapper.map(input?.nationality!!),
-                        spokenLanguages = LanguageMapper.Mapper.map(input.spokenLanguages),
                         enabled = input?.enabled,
                         createdAt = input?.createdAt,
                         updatedAt = input?.updatedAt

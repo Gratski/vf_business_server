@@ -155,8 +155,8 @@ class ProfessorServiceImpl(
         TODO("Not yet implemented")
     }
 
-    private fun createDefaultSpeakingLanguage(professor: Professor, languageName: String) {
-        val language = languageRepository.findLanguageByLanguageName(languageName)
+    private fun createDefaultSpeakingLanguage(professor: Professor, languageCode: String) {
+        val language = languageRepository.findFirstByCode(languageCode)
         language.orElseThrow {
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,
@@ -173,8 +173,8 @@ class ProfessorServiceImpl(
         userLanguageRepo.save(userLang)
     }
 
-    private fun createDefaultContextLanguage(detailsDto: ProfessorDetailsDTO, professor: Professor, languageName: String) {
-        val language = languageRepository.findLanguageByLanguageName(languageName)
+    private fun createDefaultContextLanguage(detailsDto: ProfessorDetailsDTO, professor: Professor, languageCode: String) {
+        val language = languageRepository.findFirstByCode(languageCode)
         language.orElseThrow {
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,

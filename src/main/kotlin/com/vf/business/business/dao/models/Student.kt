@@ -55,7 +55,6 @@ class Student(
                         email = student.email,
                         livingIn = CountryMapper.Mapper.map(student.livingIn!!),
                         nationality = CountryMapper.Mapper.map(student.nationality!!),
-                        spokenLanguages = LanguageMapper.Mapper.map(student.spokenLanguages),
                         pwd = student.password,
                         active = student.active,
                         enabled = student.enabled,

@@ -16,7 +16,6 @@ class StudentMapper {
                         pwd = null,
                         nationality = CountryMapper.Mapper.map(input.nationality!!),
                         livingIn = CountryMapper.Mapper.map(input.livingIn!!),
-                        spokenLanguages = LanguageMapper.Mapper.map(input.spokenLanguages),
                         active = input.active,
                         enabled = input.enabled,
                         createdAt = input.createdAt,
