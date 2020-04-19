@@ -10,6 +10,7 @@ import com.vf.business.business.dao.repo.FeedNotificationRepository
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.notifications.feed.*
 import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.internal.FeedNotificationService
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
@@ -42,6 +43,19 @@ class FeedNotificationServiceImpl(
             throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.NOTIFICATION))))
         }
         return convertIntoListItem(nOpt.get())
+    }
+
+    override fun markNotificationsAsSeen(user: User, dto: MarkNotificationsAsSeenOrNotSeenDTO) {
+        val iterable = feedNotificationRepo.findAllById(dto.notifications.map { it.id })
+        val notifications = mutableListOf<FeedNotification>()
+        iterable.forEach {
+            if ( it.targetUser.id != user.id ) {
+                throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
+            }
+            it.seen = true
+            notifications.add(it)
+        }
+        feedNotificationRepo.saveAll(notifications)
     }
 
     private fun convertIntoListItem(it: FeedNotification): ListItemFeedNotificationDTO {
