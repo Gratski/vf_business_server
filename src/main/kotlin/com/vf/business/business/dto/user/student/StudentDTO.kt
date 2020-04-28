@@ -3,11 +3,8 @@ package com.vf.business.business.dto.user.student
 import com.vf.business.business.dto.locatization.CountryDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.user.UserDTO
-import com.vf.business.business.validator.ValidStudent
-import com.vf.business.business.validator.ValidationMode
 import java.util.Date
 
-@ValidStudent(ValidationMode.REQUIRED_FIELDS)
 class StudentDTO(id: Int? = null,
                  firstName: String?,
                  lastName: String?,

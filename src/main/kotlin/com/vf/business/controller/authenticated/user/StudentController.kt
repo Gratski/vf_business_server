@@ -5,7 +5,6 @@ import com.vf.business.business.dto.user.student.CreateStudentDTO
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.internal.StudentService
 import com.vf.business.business.service.itf.internal.UsersService
-import com.vf.business.business.validator.ValidStudent
 import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -20,7 +19,7 @@ class StudentController (
 ) {
 
     @PostMapping("")
-    fun createStudent(@Valid @ValidStudent @RequestBody dto: CreateStudentDTO, errors: Errors) =
+    fun createStudent(@RequestBody dto: CreateStudentDTO, errors: Errors) =
         if (errors.hasErrors()) throw ResourceNotFoundException(errors.allErrors[0].defaultMessage)
         else studentService.createStudent(dto)
 
@@ -37,7 +36,7 @@ class StudentController (
     }
 
     @PutMapping("/{id}")
-    fun updateStudent(@Valid @ValidStudent @RequestBody dto: CreateStudentDTO,
+    fun updateStudent(@RequestBody dto: CreateStudentDTO,
                       @NotNull @PathVariable("id") id: Int,
                       errors: Errors) =
             if (errors.hasErrors()) throw ResourceNotFoundException(errors.allErrors[0].defaultMessage)
