@@ -11,13 +11,22 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import java.io.FileInputStream
 
 @SpringBootApplication
-@ComponentScan
 @EnableJpaRepositories(basePackages = ["com.vf.business.business.dao.repo"])
 class Application
 
+
     fun main(args: Array<String>) {
         // setup flyway
-        val flyway = Flyway.configure().dataSource("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres").load()
+        val dbUrl = System.getenv("DB_URL")
+        if( dbUrl == null ) println("Database url must be set")
+
+        val dbUser = System.getenv("DB_USER")
+        if( dbUser == null ) println("Database user must be set")
+
+        val dbPwd = System.getenv("DB_PWD")
+        if( dbPwd == null ) println("Database pwd must be set")
+
+        val flyway = Flyway.configure().dataSource(dbUrl, dbUser, dbPwd).load()
         flyway.baseline()
         flyway.migrate()
 
