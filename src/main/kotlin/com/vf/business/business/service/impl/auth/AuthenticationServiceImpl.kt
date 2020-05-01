@@ -1,8 +1,10 @@
 package com.vf.business.business.service.impl.auth
 
+import com.vf.business.business.dao.models.Admin
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Student
 import com.vf.business.business.dao.models.User
+import com.vf.business.business.dao.repo.AccessCodeRepository
 import com.vf.business.business.dao.repo.UsersRepository
 import com.vf.business.business.dto.auth.AppDomainEnum
 import com.vf.business.business.dto.auth.ChangePasswordDTO
@@ -27,6 +29,7 @@ class AuthenticationServiceImpl (
         private val userService: UsersService,
         private val tokenProvider: JwtTokenProvider,
         private val userRepo: UsersRepository,
+        private val accessCodeRepo: AccessCodeRepository,
         private val communicationsService: CommunicationsService
 ) : AuthenticationService {
 
@@ -60,8 +63,21 @@ class AuthenticationServiceImpl (
             if( domain != AppDomainEnum.PROFESSORS_APP ) {
                 throw BadCredentialsException("This account is not authorized for this Application")
             }
+
+            // validate profesor access code
+            val accessCodeOpt = accessCodeRepo.findByEmail(user.email!!);
+            accessCodeOpt.orElseThrow {
+                throw BadCredentialsException(Translator.toLocale(MessageCodes.NO_ACCESS_CODE_FOUND))
+            }
+            val accessCode = accessCodeOpt.get()
+            if ( !accessCode.confirmed ) {
+                throw BadCredentialsException(Translator.toLocale(MessageCodes.ACCESS_CODE_NOT_CONFIRMED))
+            }
+
             // add the correct role
             roles.add("PROFESSOR")
+        } else if ( user is Admin ) {
+            roles.add("ADMIN")
         }
 
         return SignInResponseDTO(user.id,

@@ -4,6 +4,7 @@ import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
+import com.vf.business.business.dto.user.professor.ProfessorRegistValidationDTO
 import com.vf.business.business.dto.user.professor.RegistProfessorAccountDTO
 import com.vf.business.business.dto.user.professor.UpdateProfessorProfileDetailsDTO
 
@@ -28,5 +29,11 @@ interface ProfessorService {
      * Gets a page of notifications belonging to the given professor account
      */
     fun getProfessorNotifications(professor: Professor, page: Int, size: Int): ResourcePage<ListItemFeedNotificationDTO>
+
+    /**
+     * Validates a professor regist
+     * This is the last step of registration for a professor
+     */
+    fun registValidationProfessor(dto: ProfessorRegistValidationDTO);
 
 }

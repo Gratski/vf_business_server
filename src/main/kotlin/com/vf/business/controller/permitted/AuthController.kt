@@ -22,7 +22,7 @@ class AuthController (
         ) {
 
     @PostMapping("/signin")
-    fun signin(@RequestBody signInRequest: SignInRequestDTO): SignInResponseDTO =
+    fun signIn(@RequestBody signInRequest: SignInRequestDTO): SignInResponseDTO =
             authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
 
     @PostMapping("/password-recovery")

@@ -14,4 +14,6 @@ interface CommunicationsService {
 
     fun sendBillingEmails(email: String, firstName: String, url: String, id: Int, toLanguageTag: String)
 
+    fun sendWelcomeEmailToProfessor(s: String, email: String, generatedAccessCode: String, nativeSpeakingLanguage: String)
+
 }

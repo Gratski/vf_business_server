@@ -6,11 +6,13 @@ import com.vf.business.business.dto.comms.auth.PasswordRecoveryMessage
 import com.vf.business.business.dto.comms.invitation.InvitationMessage
 import com.vf.business.business.dto.comms.invoice.InvoiceMessage
 import com.vf.business.business.dto.comms.support.SupportMessage
+import com.vf.business.business.dto.comms.welcome.ProfessorWelcomeMessage
 import com.vf.business.business.service.itf.internal.CommunicationsService
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class CommunicationsServiceImpl(
@@ -66,6 +68,24 @@ class CommunicationsServiceImpl(
         val msg = Message(Gson().toJson(pwdRecoveryMessage).toByteArray(), props)
         rabbitTemplate.encoding = "application/json"
         rabbitTemplate.convertAndSend("comms.email.auth.passrecovery", msg)
+    }
+
+    override fun sendWelcomeEmailToProfessor(name: String, email: String, accessCode: String, language: String) {
+        val welcomeMessage = ProfessorWelcomeMessage(
+                name = name,
+                email = email,
+                languageTag = Locale(language, "").toLanguageTag(),
+                accessCode = accessCode,
+                link = "Dynamiclink"
+        )
+
+        // TODO: generate dynamic link here
+
+        val props = MessageProperties()
+        props.contentType = "json"
+        val msg = Message(Gson().toJson(welcomeMessage).toByteArray(), props)
+        rabbitTemplate.encoding = "application/json"
+        rabbitTemplate.convertAndSend("comms.email.welcome.professors", msg)
     }
 
     override fun sendBillingEmails(email: String, firstName: String, url: String, id: Int, languageTag: String) {

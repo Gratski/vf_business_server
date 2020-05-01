@@ -26,6 +26,11 @@ interface UsersService {
     fun getUserByEmail(email: String): Optional<User>
 
     /**
+     * Updates an existing user
+     */
+    fun updateUser(user: User)
+
+    /**
      * Soft delete user
      */
     fun deleteUser(id: Int)

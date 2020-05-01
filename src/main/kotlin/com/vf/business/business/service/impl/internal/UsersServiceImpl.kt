@@ -26,6 +26,10 @@ open class UsersServiceImpl<T: User>(val userRepo: UsersRepository) : UsersServi
     override fun getUserByEmail(email: String): Optional<User> =
         userRepo.findByEmail(email)
 
+    override fun updateUser(user: User) {
+        userRepo.save(user)
+    }
+
     override fun deleteUser(id: Int) {
         val userOpt = getUser(id)
         userOpt.ifPresent { u ->

@@ -15,6 +15,9 @@ class AccessCode(
         @Column(name = "email")
         open var email: String,
 
+        @Column(name = "confirmed")
+        open var confirmed: Boolean,
+
         createdAt: Date,
         updatedAt: Date
 ): AbstractEntity(id, createdAt, updatedAt) {}

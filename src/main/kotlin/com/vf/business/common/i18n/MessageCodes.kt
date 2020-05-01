@@ -38,6 +38,8 @@ class MessageCodes {
         // PROFESSOR DETAILS RELATED
         val PROFESSOR_DETAILS = "professor_details"
         val NO_ACCESS_CODE_FOUND = "no_access_code_found"
+        val INVALID_ACCESS_CODE = "invalid_access_code"
+        val ACCESS_CODE_NOT_CONFIRMED = "access_code_not_confirmed"
 
         // CATEGORY RELATED
         val CATEGORY = "category"
