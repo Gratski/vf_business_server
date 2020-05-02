@@ -83,7 +83,7 @@ class ProfessorServiceImpl(
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     override fun registerNewProfessorAccount(dto: RegistProfessorAccountDTO) {
-        if ( hasAllRequiredFields(dto) ) {
+        if ( !hasAllRequiredFields(dto) ) {
             throw MissingArgumentsException(Translator.toLocale(MessageCodes.MISSING_ARGUMENTS))
         }
 

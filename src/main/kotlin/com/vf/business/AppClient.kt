@@ -6,7 +6,6 @@ import com.google.firebase.FirebaseOptions
 import org.flywaydb.core.Flyway
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import java.io.FileInputStream
 

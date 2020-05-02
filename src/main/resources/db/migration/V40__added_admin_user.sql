@@ -24,7 +24,7 @@ WITH admin_user AS (
         'Admin',
         'Admin',
         'email',
-        'adminpass',
+        'yoj4amxgkmbxz8chR1IZAhOUgIZ25tFxU+zl4U9d4vxN3ujv1+dy+67sIY9NQfoAvqTqkSy78B+6AgBW8BOXvg==',
         true,
         true,
         current_timestamp,
