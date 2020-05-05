@@ -1,12 +1,11 @@
 package com.vf.business.business.service.impl
 
 import com.vf.business.business.dao.models.*
+import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dao.repo.*
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.locatization.LanguageDTO
-import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
-import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
 import com.vf.business.business.dto.user.professor.*
 import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceConflictException
@@ -116,10 +115,10 @@ class ProfessorServiceImpl(
 
         // create wallet
         val wallet = Wallet(
-            belongsTo = professor,
-            balance = 0.0,
-            createdAt = now,
-            updatedAt = now
+                belongsTo = professor,
+                balance = 0.0,
+                createdAt = now,
+                updatedAt = now
         )
         walletRepo.save(wallet)
 

@@ -1,5 +1,6 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dto.user.Gender
 import java.util.Date
 import javax.persistence.*
@@ -45,7 +46,7 @@ abstract class User (
 
         @Column(name = "phone_number")
         open var phoneNumber: String? = null,
-        
+
         @ManyToOne
         @JoinColumn(name = "nationality")
         open var nationality: Country? = null,

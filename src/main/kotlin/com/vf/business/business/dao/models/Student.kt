@@ -1,9 +1,9 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dto.user.Gender
 import com.vf.business.business.dto.user.student.StudentDTO
 import com.vf.business.business.utils.mapper.CountryMapper
-import com.vf.business.business.utils.mapper.LanguageMapper
 import java.util.Date
 import javax.persistence.Entity
 import javax.persistence.JoinColumn

@@ -1,5 +1,8 @@
-package com.vf.business.business.dao.models
+package com.vf.business.business.dao.models.wallet
 
+import com.vf.business.business.dao.models.AbstractEntity
+import com.vf.business.business.dao.models.Currency
+import com.vf.business.business.dao.models.User
 import java.util.*
 import javax.persistence.*
 
@@ -17,6 +20,9 @@ class Wallet(
 
         @Column(name = "currency")
         open var currency: Currency = Currency.EUR,
+
+        @OneToMany(mappedBy = "wallet")
+        open var paymentMethods: MutableList<PaymentMethod> = mutableListOf(),
 
         @OneToMany(mappedBy = "wallet")
         open var transactions: MutableList<WalletTransaction> = mutableListOf(),

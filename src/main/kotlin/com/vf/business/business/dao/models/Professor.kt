@@ -1,5 +1,6 @@
 package com.vf.business.business.dao.models
 
+import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dto.user.Gender
 import java.util.Date
 import javax.persistence.*

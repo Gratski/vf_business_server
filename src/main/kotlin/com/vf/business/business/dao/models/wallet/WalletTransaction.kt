@@ -1,5 +1,6 @@
-package com.vf.business.business.dao.models
+package com.vf.business.business.dao.models.wallet
 
+import com.vf.business.business.dao.models.AbstractEntity
 import java.util.*
 import javax.persistence.*
 

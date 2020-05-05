@@ -1,6 +1,6 @@
 package com.vf.business.business.dao.repo
 
-import com.vf.business.business.dao.models.Wallet
+import com.vf.business.business.dao.models.wallet.Wallet
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
