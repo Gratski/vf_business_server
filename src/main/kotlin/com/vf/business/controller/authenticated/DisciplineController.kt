@@ -19,20 +19,29 @@ class DisciplineController(
         val usersService: UsersService
 ) {
 
-    // POSTS
+    /**
+     * Creates a new Discipline
+     */
     @PostMapping("")
     fun createDiscipline(principal: Principal, @RequestBody dto: CreateDisciplineDTO): CreateOperationResponseDTO {
         val professor = (usersService.getUser(principal) as Professor)
         return disciplineService.createDiscipline(professor, dto)
     }
 
+    /**
+     * Enables an existing discipline
+     */
     @PostMapping("/{id}/enable")
     fun enableDiscipline(@PathVariable("id") id: Int) =
             disciplineService.enableDisable(id, true)
 
+    /**
+     * Disables an existing discipline
+     */
     @PostMapping("/{id}/disable")
     fun disableDiscipline(@PathVariable("id") id: Int) =
             disciplineService.enableDisable(id, false)
+
 
     @PostMapping("/{id}/classes")
     fun createDisciplineClasses(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateDisciplineClassesDTO) {
@@ -40,12 +49,16 @@ class DisciplineController(
         disciplineService.createDisciplineClasses(id, professor, dto)
     }
 
-    // GETS
+    /**
+     * Gets a discipline by its ID
+     */
     @GetMapping("/{id}")
     fun getDisciplineById(@PathVariable("id") id: Int): DisciplineDTO =
             disciplineService.getDiscipline(id)
 
-    // PUTS
+    /**
+     * Updates an existing discipline
+     */
     @PutMapping("/{id}")
     fun editDiscipline(@PathVariable("id") id: Int,
                        principal: Principal, @RequestBody dto: UpdateDisciplineDTO) {
@@ -53,6 +66,9 @@ class DisciplineController(
         disciplineService.updateDiscipline(id, dto,professor)
     }
 
+    /**
+     * Changes discipline picture
+     */
     @PutMapping("/{id}/picture")
     fun changeDisciplinePicture(@PathVariable("id") id: Int,
                                 principal: Principal, @RequestParam file: MultipartFile) {

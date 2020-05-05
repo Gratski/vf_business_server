@@ -53,6 +53,8 @@ class Student(
                         firstName = student.firstName,
                         lastName = student.lastName,
                         email = student.email,
+                        birthday = student.birthday,
+                        phoneNumber = student.phoneNumber,
                         livingIn = CountryMapper.Mapper.map(student.livingIn!!),
                         nationality = CountryMapper.Mapper.map(student.nationality!!),
                         pwd = student.password,

@@ -7,6 +7,8 @@ interface StorageService {
 
     fun storePicture(file: MultipartFile): StoreFileResponse
 
+    fun removePicture(pictureUrl: String?)
+
     fun storeInvoice(file: MultipartFile): StoreFileResponse
 
 }

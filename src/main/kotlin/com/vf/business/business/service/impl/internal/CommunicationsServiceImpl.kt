@@ -72,8 +72,8 @@ class CommunicationsServiceImpl(
 
     override fun sendWelcomeEmailToProfessor(name: String, email: String, accessCode: String, language: String) {
         val welcomeMessage = ProfessorWelcomeMessage(
-                name = name,
-                email = email,
+                username = name,
+                to = email,
                 languageTag = Locale(language, "").toLanguageTag(),
                 accessCode = accessCode,
                 link = "Dynamiclink"

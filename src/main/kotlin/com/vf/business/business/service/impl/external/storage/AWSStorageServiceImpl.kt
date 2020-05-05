@@ -3,6 +3,7 @@ package com.vf.business.business.service.impl.external.storage
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.vf.business.business.dto.storage.StoreFileResponse
 import com.vf.business.business.exception.ExternalOperationException
@@ -50,6 +51,23 @@ class AWSStorageServiceImpl(
             throw ExternalOperationException("Could not insert the given file")
         }
 
+    }
+
+    override fun removePicture(pictureUrl: String?) {
+        if ( pictureUrl== null ) return;
+        val s3 = AmazonS3ClientBuilder.standard()
+                .withCredentials(credentialsProvider)
+                .withRegion(Regions.EU_WEST_2)
+                .build()
+
+        return try {
+            val tokens = pictureUrl.split(BASE_AWS_URL)
+            val result = s3.deleteObject(DeleteObjectRequest(BUCKET_NAME, tokens[0]))
+        } catch (e: AmazonServiceException) {
+            throw ExternalOperationException("Could not remove the given file")
+        } catch (e: Exception) {
+            throw ExternalOperationException("Could not remove the given file")
+        }
     }
 
     override fun storeInvoice(file: MultipartFile): StoreFileResponse {

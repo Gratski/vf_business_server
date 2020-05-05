@@ -9,6 +9,9 @@ class StudentDTO(id: Int? = null,
                  firstName: String?,
                  lastName: String?,
                  email: String?,
+                 birthday: Date?,
+                 phoneNumber: String?,
+                 pictureUrl: String? = null,
                  nationality: CountryDTO,
                  livingIn: CountryDTO,
                  spokenLanguages: MutableList<LanguageDTO>? = null,
@@ -16,7 +19,7 @@ class StudentDTO(id: Int? = null,
                  active: Boolean? = false,
                  enabled: Boolean? = true,
                  createdAt: Date? = null,
-                 updatedAt: Date? = null) : UserDTO(id, firstName, lastName, email, pwd, nationality, livingIn, spokenLanguages, active, enabled, createdAt, updatedAt) {
+                 updatedAt: Date? = null) : UserDTO(id, firstName, lastName, email, pwd, birthday, phoneNumber, pictureUrl, nationality, livingIn, spokenLanguages, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper { }
 

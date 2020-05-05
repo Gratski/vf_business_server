@@ -15,7 +15,7 @@ class LanguageMapper {
         fun map(lt: LanguageTranslation): LanguageDTO =
                 LanguageDTO(
                         id = lt.language.id,
-                        languageName = lt.designation
+                        designation = lt.designation
                 )
 
         fun map(lts: MutableList<LanguageTranslation>): MutableList<LanguageDTO> {

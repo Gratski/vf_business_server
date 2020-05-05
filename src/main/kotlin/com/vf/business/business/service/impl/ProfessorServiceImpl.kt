@@ -3,24 +3,22 @@ package com.vf.business.business.service.impl
 import com.vf.business.business.dao.models.*
 import com.vf.business.business.dao.repo.*
 import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
-import com.vf.business.business.dto.user.professor.ProfessorDetailsDTO
-import com.vf.business.business.dto.user.professor.ProfessorRegistValidationDTO
-import com.vf.business.business.dto.user.professor.RegistProfessorAccountDTO
-import com.vf.business.business.dto.user.professor.UpdateProfessorProfileDetailsDTO
+import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
+import com.vf.business.business.dto.user.professor.*
 import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
-import com.vf.business.business.service.itf.internal.CommunicationsService
-import com.vf.business.business.service.itf.internal.FeedNotificationService
-import com.vf.business.business.service.itf.internal.ProfessorService
-import com.vf.business.business.service.itf.internal.UsersService
+import com.vf.business.business.service.itf.internal.*
 import com.vf.business.business.utils.EmailUtils
 import com.vf.business.business.utils.auth.AuthUtils
+import com.vf.business.business.utils.mapper.ProfessorDetailsMapper
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.transaction.Transactional
@@ -37,12 +35,12 @@ class ProfessorServiceImpl(
         val accessCodeRepo: AccessCodeRepository,
         val countryRepository: CountryRepository,
         val walletRepo: WalletRepository,
-        val communicationsService: CommunicationsService
+        val communicationsService: CommunicationsService,
+        val languageService: LanguageService,
+        val languageContextRepository: LanguageContextRepository
 ): ProfessorService {
 
-    private val charPool : List<Char> = ('a'..'z') + ('A'..'Z')
-
-    override fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorProfileDetailsDTO) {
+    override fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorPersonalDetailsDTO) {
         if ( !hasAllRequiredFields(dto) ) {
             throw MissingArgumentsException(Translator.toLocale(MessageCodes.MISSING_ARGUMENTS))
         }
@@ -66,19 +64,6 @@ class ProfessorServiceImpl(
         professor.VAT = dto.VAT
 
         professorRepository.save(professor)
-
-    }
-
-    override fun enableDisableNotification(professor: Professor, notificationType: NotificationTypeDTO, newValue: Boolean) {
-        val type = NotificationType.valueOf(notificationType.toString())
-        val npOpt = notificationPreferenceRepo.findByNotificationTypeAndUser(type, professor)
-        npOpt.orElseThrow {
-            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.NOTIFICATION_TYPE))))
-        }
-
-        val np = npOpt.get()
-        np.enabled = newValue
-        notificationPreferenceRepo.save(np)
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -96,10 +81,7 @@ class ProfessorServiceImpl(
         val now = Date()
 
         // check if this professor has an access code given by our team
-        val generatedAccessCode = (1..5)
-                .map { _ -> kotlin.random.Random.nextInt(0, charPool.size) }
-                .map(charPool::get)
-                .joinToString("");
+        val generatedAccessCode = AuthUtils.Instance.generateRandomString(5)
         val accessCode = AccessCode(code = generatedAccessCode, confirmed = false, email = dto.email, createdAt = now, updatedAt = now)
         accessCodeRepo.save(accessCode)
 
@@ -171,11 +153,15 @@ class ProfessorServiceImpl(
         // check if this professor has an access code given by our team
         val accessCodeOpt = accessCodeRepo.findByEmail(dto.email)
         if ( accessCodeOpt.isEmpty ) {
-            ResourceNotFoundException(
+            throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.NO_ACCESS_CODE_FOUND)
             )
+        } else if( accessCodeOpt.get().confirmed ) {
+            throw UnauthorizedOperationException(
+                    Translator.toLocale(MessageCodes.ACCESS_CODE_ALREADY_CONFIRMED)
+            )
         } else if ( accessCodeOpt.get().code != dto.accessCode ) {
-            UnauthorizedOperationException(
+            throw UnauthorizedOperationException(
                     Translator.toLocale(MessageCodes.INVALID_ACCESS_CODE)
             )
         }
@@ -186,9 +172,46 @@ class ProfessorServiceImpl(
         // update user password
         val user = userOpt.get()
         user.password = AuthUtils.Instance.hashPassword(dto.password)
+        user.active = true
         userService.updateUser(user)
+
     }
 
+    override fun getAvailableLanguages(langCode: String, professor: Professor): ResourcePage<LanguageDTO> =
+        languageService.getAvailableLanguagesForProfessor(langCode, professor)
+
+    override fun getExistingLanguages(professor: Professor): ResourcePage<LanguageDTO> =
+        languageService.getExistingLanguagesOfProfessor(LocaleContextHolder.getLocale().toLanguageTag(), professor)
+
+    override fun updateLanguageProfile(professor: Professor, dto: UpdateLanguageProfileDTO) {
+        val languageContextOpt = languageContextRepository.findById(dto.id)
+        languageContextOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.PROFESSOR_DETAILS)))
+            )
+        }
+        val langContext = languageContextOpt.get()
+        langContext.professorDetails?.designation = dto.designation
+        langContext.professorDetails?.description = dto.description
+        langContext.professorDetails?.quote = dto.quote
+        languageContextRepository.save(langContext)
+    }
+
+    override fun getProfileDetails(professor: Professor, languageId: Int): ProfessorDetailsDTO {
+        val pdOpt = professorDetailsRepository.findProfessorDetailsByProfessorAndLanguage(languageId, professor)
+        pdOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.PROFESSOR_DETAILS)))
+            )
+        }
+
+        // verify if this professor details belongs to the requester
+        if ( professor.id != pdOpt.get().languageContext.professor.id ) {
+            throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
+        }
+
+        return ProfessorDetailsMapper.Mapper.map(pdOpt.get())
+    }
 
     private fun createDefaultSpeakingLanguage(professor: Professor, languageCode: String) {
         val language = languageRepository.findFirstByCode(languageCode)
@@ -266,7 +289,7 @@ class ProfessorServiceImpl(
         return countryOpt.get()
     }
 
-    private fun hasAllRequiredFields(dto: UpdateProfessorProfileDetailsDTO): Boolean {
+    private fun hasAllRequiredFields(dto: UpdateProfessorPersonalDetailsDTO): Boolean {
         return dto.firstName.isNotBlank() && dto.lastName.isNotBlank() && dto.phoneNumber.isNotBlank() && dto.VAT.isNotBlank()
     }
 

@@ -10,6 +10,8 @@ import java.util.*
 @Repository
 interface NotificationPreferenceRepository: CrudRepository<NotificationPreference, Int> {
 
+    fun findByUser(user: User): List<NotificationPreference>
+
     fun findByNotificationTypeAndUser(type: NotificationType, user: User): Optional<NotificationPreference>
 
 }

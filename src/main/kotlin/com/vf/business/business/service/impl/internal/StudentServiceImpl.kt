@@ -14,6 +14,7 @@ import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.external.messaging.MessagingService
+import com.vf.business.business.service.itf.internal.CountriesService
 import com.vf.business.business.service.itf.internal.StudentService
 import com.vf.business.business.utils.auth.AuthUtils
 import com.vf.business.business.utils.mapper.StudentMapper
@@ -25,12 +26,13 @@ import javax.transaction.Transactional
 @Service
 class StudentServiceImpl(
         userRepo: UsersRepository,
+        countriesService: CountriesService,
+        notificationPreferenceRepository: NotificationPreferenceRepository,
         val studentRepo: StudentRepository,
         val messagingService: MessagingService,
         val languageRepo: LanguageRepository,
-        val countryRepo: CountryRepository,
         val userLangRepo: UserLanguageRepository
-        ) : UsersServiceImpl<Student>(userRepo), StudentService {
+        ) : UsersServiceImpl<Student>(userRepo, countriesService, notificationPreferenceRepository), StudentService {
 
     @Transactional
     override fun createStudent(s: CreateStudentDTO): Int {
@@ -40,22 +42,13 @@ class StudentServiceImpl(
         }
 
         // fetch living in country
-        val livingInOpt = countryRepo.findById(s.livingIn)
-        livingInOpt.orElseThrow {
-            throw ResourceNotFoundException(
-                    Translator.toLocale(MessageCodes.USER_UNEXISTING_LIVING_IN)
-            )
-        }
-        val livingIn = livingInOpt.get()
+        val livingIn = countriesService.getCountry(s.livingIn)
 
         // fetch nationality country
-        val nationalityOpt = countryRepo.findById(s.livingIn)
-        livingInOpt.orElseThrow {
-            throw ResourceNotFoundException(
-                    Translator.toLocale(MessageCodes.USER_UNEXISTING_NATIONALITY)
-            )
-        }
-        val nationality = nationalityOpt.get()
+        val nationality = countriesService.getCountry(s.nationality)
+
+        // check if the given phone country exists
+        val phoneNumberCountry = countriesService.getCountry(s.phoneNumberCountryId)
 
         // fetch languages spoken
         val spokenLanguages = languageRepo.findAllById(s.spokenLanguages).asSequence().toMutableList()
@@ -64,13 +57,6 @@ class StudentServiceImpl(
                     Translator.toLocale(MessageCodes.USER_SPOKEN_LANGUAGES_EMPTY)
             )
         }
-
-        // check if the given phone country exists
-        val phoneCountryOpt = countryRepo.findById(s.phoneNumberCountryId)
-        phoneCountryOpt.orElseThrow {
-            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.COUNTRY))))
-        }
-        val phoneNumberCountry = phoneCountryOpt.get()
 
         val now = Date()
         val student = Student(

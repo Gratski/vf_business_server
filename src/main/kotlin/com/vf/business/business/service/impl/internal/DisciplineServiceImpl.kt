@@ -142,7 +142,7 @@ class DisciplineServiceImpl(
                             arrayOf(Translator.toLocale(MessageCodes.CATEGORY))))
         }
 
-        val languageContextOpt = languageContextRepo.findById(newDiscipline.languageContextId)
+        val languageContextOpt = languageContextRepo.findByLanguageIdAndProfessor(newDiscipline.languageId, professor)
         languageContextOpt.orElseThrow{
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,
@@ -208,9 +208,6 @@ class DisciplineServiceImpl(
         discipline.goal = dto.goal
         discipline.maxAttendants = dto.maxAttendants
         disciplineRepo.save(discipline)
-
-        // TODO: Create all classes depending on the repetition type
-
     }
 
     override fun changeDisciplinePicture(id: Int, professor: Professor, file: MultipartFile) {
@@ -227,6 +224,7 @@ class DisciplineServiceImpl(
         }
 
         // upload image to AWS
+        storageService.removePicture(discipline.imageUrl);
         val storePictureResponse = storageService.storePicture(file)
 
         // change it on the database to point to the new link

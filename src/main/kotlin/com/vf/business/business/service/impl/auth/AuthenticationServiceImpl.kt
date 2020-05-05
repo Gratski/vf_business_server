@@ -37,13 +37,13 @@ class AuthenticationServiceImpl (
     override fun signin(email: String, password: String, domain: AppDomainEnum): SignInResponseDTO {
         val userOpt = userService.getUserByEmail(email)
         userOpt.orElseThrow {
-            throw ResourceNotFoundException("This email is not registered")
+            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.AUTH_EMAIL_NOT_FOUND))
         }
 
         val user = userOpt.get()
         val hashedPassword = AuthUtils.Instance.hashPassword(password)
         if ( hashedPassword != null && hashedPassword != user.password) {
-            throw BadCredentialsException("This email and password do not match")
+            throw BadCredentialsException(Translator.toLocale(MessageCodes.AUTH_INCORRECT_PASSWORD))
         }
 
         val roles = mutableListOf<String>()
@@ -54,14 +54,14 @@ class AuthenticationServiceImpl (
         if ( user is Student ) {
 
             if( domain != AppDomainEnum.STUDENTS_APP ) {
-                throw BadCredentialsException("This account is not authorized for this Application")
+                throw BadCredentialsException(Translator.toLocale(MessageCodes.AUTH_UNAUTHORIZED_DOMAIN))
             }
             // add the correct role
             roles.add("STUDENT")
         } else if ( user is Professor) {
 
             if( domain != AppDomainEnum.PROFESSORS_APP ) {
-                throw BadCredentialsException("This account is not authorized for this Application")
+                throw BadCredentialsException(Translator.toLocale(MessageCodes.AUTH_UNAUTHORIZED_DOMAIN))
             }
 
             // validate profesor access code
@@ -90,10 +90,12 @@ class AuthenticationServiceImpl (
         // generate token
         val token = UUID.randomUUID().toString()
         user.pwdToken = token
+        val newPass = AuthUtils.Instance.generateRandomString(10)
+        user.password = AuthUtils.Instance.hashPassword(newPass)
         userRepo.save(user)
 
         // send email to user
-        communicationsService.sendPasswordRecoveryEmail(user.email!!, user.firstName!!, token, LocaleContextHolder.getLocale().toLanguageTag())
+        communicationsService.sendPasswordRecoveryEmail(user.email!!, user.firstName!!, newPass, LocaleContextHolder.getLocale().toLanguageTag())
 
     }
 
@@ -129,7 +131,6 @@ class AuthenticationServiceImpl (
         // update the user with the new password
         user.password = AuthUtils.Instance.hashPassword(dto.newPassword)
         userRepo.save(user)
-
     }
 
     private fun getUserByEmail(email: String): User {

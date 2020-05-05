@@ -3,7 +3,7 @@ package com.vf.business.business.dto.user.professor
 import com.vf.business.business.dto.user.Gender
 import java.util.Date
 
-data class UpdateProfessorProfileDetailsDTO(
+data class UpdateProfessorPersonalDetailsDTO (
         val firstName: String,
         val lastName: String,
         val gender: Gender,

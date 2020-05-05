@@ -2,23 +2,18 @@ package com.vf.business.business.service.itf.internal
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
-import com.vf.business.business.dto.user.professor.ProfessorRegistValidationDTO
-import com.vf.business.business.dto.user.professor.RegistProfessorAccountDTO
-import com.vf.business.business.dto.user.professor.UpdateProfessorProfileDetailsDTO
+import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
+import com.vf.business.business.dto.user.professor.*
 
 interface ProfessorService {
 
     /**
      * Updates professor profile details
      */
-    fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorProfileDetailsDTO)
-
-    /**
-     * Enables a notification type for the given professor
-     */
-    fun enableDisableNotification(professor: Professor, notificationType: NotificationTypeDTO, newValue: Boolean)
+    fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorPersonalDetailsDTO)
 
     /**
      * Creates a new professor account
@@ -35,5 +30,25 @@ interface ProfessorService {
      * This is the last step of registration for a professor
      */
     fun registValidationProfessor(dto: ProfessorRegistValidationDTO);
+
+    /**
+     * Gets the languages that are not configured by the given professor yet
+     */
+    fun getAvailableLanguages(langCode: String, professor: Professor): ResourcePage<LanguageDTO>
+
+    /**
+     * Gets the languages that are already configured for the given professor
+     */
+    fun getExistingLanguages(professor: Professor): ResourcePage<LanguageDTO>
+
+    /**
+     * Updates the profile of a given professor to a certain language
+     */
+    fun updateLanguageProfile(professor: Professor, dto: UpdateLanguageProfileDTO)
+
+    /**
+     * Gets a single profile details based on its ID
+     */
+    fun getProfileDetails(professor: Professor, id: Int): ProfessorDetailsDTO
 
 }

@@ -1,6 +1,9 @@
 package com.vf.business.business.service.impl.internal
 
-import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException
+import com.vf.business.business.exception.ResourceNotFoundException
+import com.vf.business.business.dao.models.Language
+import com.vf.business.business.dao.models.LanguageTranslation
+import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.repo.LanguageRepository
 import com.vf.business.business.dao.repo.LanguageTranslationRepository
 import com.vf.business.business.dto.ResourcePage
@@ -18,12 +21,38 @@ class LanguageServiceImpl(
 ): LanguageService {
 
     override fun getLanguagesByLanguageCode(langCode: String): ResourcePage<LanguageDTO> {
+        val language = getLanguageByCode(langCode)
+        return mapLanguageTranslationToDTO(langTranslationsRepo.findByCode(language.code))
+    }
 
+    override fun getAvailableLanguagesForProfessor(langCode: String, professor: Professor): ResourcePage<LanguageDTO> {
+        val language = getLanguageByCode(langCode)
+        return mapLanguageTranslationToDTO(langTranslationsRepo.findAvailableLanguagesForProfessor(language.code, professor.id))
+    }
+
+    override fun getExistingLanguagesOfProfessor(langCode: String, professor: Professor): ResourcePage<LanguageDTO> {
+        val language = getLanguageByCode(langCode)
+        return mapLanguageTranslationToDTO(langTranslationsRepo.findExistingLanguagesOfProfessor(language.code, professor.id))
+    }
+
+    override fun getLanguageById(id: Int): Language {
+        val langOpt = langRepo.findById(id)
+        langOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.COUNTRY)))
+            )
+        }
+        return langOpt.get()
+    }
+
+    private fun getLanguageByCode(langCode: String): Language {
         val langOpt = langRepo.findFirstByCode(langCode)
-        var code = "en"
-        if ( langOpt.isPresent ) code = langCode
+        return langOpt.orElseGet(
+            return langRepo.findFirstByCode("en").get()
+        )
+    }
 
-        val translations = langTranslationsRepo.findByCode(code)
+    private fun mapLanguageTranslationToDTO(translations: List<LanguageTranslation>): ResourcePage<LanguageDTO> {
         val result = mutableListOf<LanguageDTO>()
         translations.forEach {
             result.add(LanguageMapper.Mapper.map(it))

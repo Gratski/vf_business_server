@@ -8,10 +8,16 @@ class MessageCodes {
         val INVALID_PERIOD_OF_DAY = "invalid_period_of_day"
         val MISSING_ARGUMENTS = "missing_arguments"
         val UNEXISTING_RESOURCE = "unexisting_resource" // expects %resource argument to correctly format
+        val ALREADY_EXISTING_RESOURCE = "already_existing_resource"
         val UNAUTHORIZED_OPERATION = "unauthorized_operation"
         val BAD_FORMAT = "bad_format" // expects %resource argument to correctly format
         val EMAIL_ALREADY_EXISTS = "email_already_exists"
         val PASSWORD_TOO_WEAK = "password_too_weak"
+
+        // AUTHENTICATION
+        val AUTH_EMAIL_NOT_FOUND = "auth_email_not_found"
+        val AUTH_INCORRECT_PASSWORD = "auth_incorrect_password"
+        val AUTH_UNAUTHORIZED_DOMAIN = "auth_unauthorized_domain"
 
         // COMMON TERMS
         val WEEK_DAY = "week_day"
@@ -40,6 +46,7 @@ class MessageCodes {
         val NO_ACCESS_CODE_FOUND = "no_access_code_found"
         val INVALID_ACCESS_CODE = "invalid_access_code"
         val ACCESS_CODE_NOT_CONFIRMED = "access_code_not_confirmed"
+        val ACCESS_CODE_ALREADY_CONFIRMED = "access_code_already_confirmed"
 
         // CATEGORY RELATED
         val CATEGORY = "category"

@@ -46,6 +46,14 @@ class AuthUtils {
                     ?: throw BadCredentialsException("Invalid Session Token")
             return id!!
         }
+
+        fun generateRandomString(length: Int): String {
+            val charPool : List<Char> = ('a'..'z') + ('A'..'Z')
+            return (1..length)
+                    .map { _ -> kotlin.random.Random.nextInt(0, charPool.size) }
+                    .map(charPool::get)
+                    .joinToString("")
+        }
     }
 
 }
