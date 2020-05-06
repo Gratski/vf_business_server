@@ -15,6 +15,7 @@ import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.external.messaging.MessagingService
 import com.vf.business.business.service.itf.internal.CountriesService
+import com.vf.business.business.service.itf.internal.StorageService
 import com.vf.business.business.service.itf.internal.StudentService
 import com.vf.business.business.utils.auth.AuthUtils
 import com.vf.business.business.utils.mapper.StudentMapper
@@ -31,8 +32,9 @@ class StudentServiceImpl(
         val studentRepo: StudentRepository,
         val messagingService: MessagingService,
         val languageRepo: LanguageRepository,
-        val userLangRepo: UserLanguageRepository
-        ) : UsersServiceImpl<Student>(userRepo, countriesService, notificationPreferenceRepository), StudentService {
+        val userLangRepo: UserLanguageRepository,
+        storageService: StorageService
+        ) : UsersServiceImpl<Student>(userRepo, countriesService, notificationPreferenceRepository, storageService), StudentService {
 
     @Transactional
     override fun createStudent(s: CreateStudentDTO): Int {

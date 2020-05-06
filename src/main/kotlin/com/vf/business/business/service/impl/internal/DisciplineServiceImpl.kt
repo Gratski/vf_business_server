@@ -223,9 +223,13 @@ class DisciplineServiceImpl(
             throw UnauthorizedOperationException(Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION))
         }
 
-        // upload image to AWS
-        storageService.removePicture(discipline.imageUrl);
+        // store new picture
         val storePictureResponse = storageService.storePicture(file)
+
+        // delete the old one
+        if ( discipline.imageUrl != null ) {
+            storageService.removePicture(discipline.imageUrl)
+        }
 
         // change it on the database to point to the new link
         discipline.imageUrl = storePictureResponse.url

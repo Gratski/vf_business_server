@@ -119,7 +119,7 @@ class WalletServiceImpl(
 
         // set the others to non default
         professor.wallet!!.paymentMethods?.forEach {
-            if ( it.id == paymentMethodId ) {
+            if ( it.id != paymentMethodId ) {
                 it.isDefault = false
                 paymentMethodRepo.save(it)
             }

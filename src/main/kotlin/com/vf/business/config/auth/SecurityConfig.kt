@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 
@@ -24,28 +26,17 @@ class SecurityConfig(
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         //@formatter:off
-        http
+        http.authorizeRequests()
+                .antMatchers("/api/*/auth/signin").permitAll()
+                .antMatchers("/api/*/auth/password-recovery").permitAll()
+                .antMatchers("/api/*/auth/password-reset").permitAll()
+                .antMatchers("/api/*/registrations/professor").permitAll()
+                .anyRequest().authenticated()
+                .and()
             .httpBasic().disable()
-            .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-
-                .antMatchers("/swagger-ui.html**").permitAll()
-                .antMatchers("/webjars**").permitAll()
-
-                .antMatchers(HttpMethod.POST, "/v1/auth/signin").permitAll() // login
-                .antMatchers(HttpMethod.GET,"/v1/auth/me").authenticated() // get current user
-
-                .antMatchers(HttpMethod.POST, "/v1/disciplines").authenticated() // create disciplines
-                .antMatchers(HttpMethod.POST, "/v1/disciplines/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/v1/disciplines/**").authenticated() // update disciplines
-                .antMatchers(HttpMethod.PUT, "/v1/disciplines/*/picture")
-                    .hasAnyRole(AuthRoles.ADMIN.toString(), AuthRoles.PROFESSOR.toString()) // change discipline picture
-
-
-                .anyRequest().permitAll()
             .and().csrf().disable()
+                
             .apply(JWTConfigurer(jwtTokenProvider))
         //@formatter:on
     }

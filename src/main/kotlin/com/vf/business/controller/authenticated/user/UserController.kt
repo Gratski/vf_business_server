@@ -1,6 +1,7 @@
 package com.vf.business.controller.authenticated.user
 
 import com.vf.business.business.dao.models.Professor
+import com.vf.business.business.dto.ChangePictureResponseDTO
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.auth.ChangePasswordDTO
 import com.vf.business.business.dto.conversation.ConversationListItemDTO
@@ -13,6 +14,7 @@ import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.service.itf.internal.auth.AuthenticationService
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 
 @RestController
@@ -35,6 +37,13 @@ class UserController (
     fun updateUserDetails(principal: Principal, @RequestBody dto: UpdatedUserDetailsDTO) {
         val user = userService.getUser(principal)
         userService.updateUser(user)
+    }
+
+    @Secured
+    @PostMapping("/me/picture")
+    fun changeProfilePicture(principal: Principal, @RequestParam file: MultipartFile): ChangePictureResponseDTO {
+        val user = userService.getUser(principal)
+        return userService.changeProfilePicture(user, file)
     }
 
     @Secured

@@ -1,5 +1,6 @@
 package com.vf.business.business.service.itf.internal
 
+import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
@@ -15,7 +16,12 @@ interface CategoryService {
     /**
      * Gets all available categories
      */
-    fun getAllCategories(): Collection<CategoryDTO>
+    fun getAllCategories(): ResourcePage<CategoryDTO>
+
+    /**
+     * Get the sub categories of a given category
+     */
+    fun getSubCategories(id: Int): ResourcePage<CategoryDTO>
 
     /**
      * Gets a single Category based on its id

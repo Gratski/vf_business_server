@@ -5,6 +5,7 @@ import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.User
 import com.vf.business.business.dao.repo.NotificationPreferenceRepository
 import com.vf.business.business.dao.repo.UsersRepository
+import com.vf.business.business.dto.ChangePictureResponseDTO
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
@@ -12,18 +13,21 @@ import com.vf.business.business.dto.user.UpdatedUserDetailsDTO
 import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceNotFoundException
 import com.vf.business.business.service.itf.internal.CountriesService
+import com.vf.business.business.service.itf.internal.StorageService
 import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.utils.auth.AuthUtils
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 import java.util.Optional
 
 open class UsersServiceImpl<T: User>(
         private val userRepo: UsersRepository,
         val countriesService: CountriesService,
-        val notificationPreferenceRepo: NotificationPreferenceRepository
+        val notificationPreferenceRepo: NotificationPreferenceRepository,
+        val storageService: StorageService
         ) : UsersService {
 
     override fun getUser(id: Int): Optional<User> =
@@ -94,6 +98,20 @@ open class UsersServiceImpl<T: User>(
         val np = npOpt.get()
         np.enabled = isEnabled
         notificationPreferenceRepo.save(np)
+    }
+
+    override fun changeProfilePicture(user: User, file: MultipartFile): ChangePictureResponseDTO {
+        // upload new picture
+        val storePictureResponse = storageService.storePicture(file)
+
+        // delete the old picture
+        if ( user.pictureUrl != null ) {
+            storageService.removePicture(user.pictureUrl);
+        }
+
+        user.pictureUrl = storePictureResponse.url
+        userRepo.save(user)
+        return ChangePictureResponseDTO(user.pictureUrl!!)
     }
 
     private fun validateRequiredFields(details: UpdatedUserDetailsDTO) {

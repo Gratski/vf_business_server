@@ -1,5 +1,6 @@
 package com.vf.business.controller.authenticated
 
+import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
@@ -7,6 +8,7 @@ import com.vf.business.business.service.itf.internal.CategoryService
 import com.vf.business.common.PeriodEnum
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,20 +20,31 @@ class CategoryController (
     /**
      * Gets all existing categories
      */
+    @Secured
     @GetMapping("")
-    fun getAllCategories(): Collection<CategoryDTO> =
+    fun getAllCategories(): ResourcePage<CategoryDTO> =
         categoryService.getAllCategories()
 
     /**
      * Gets a single category based on the given ID
      */
+    @Secured
     @GetMapping("/{id}")
     fun getCategoryById(@PathVariable("id") id: Int ): CategoryDTO =
             categoryService.getById(id)
 
     /**
+     * Gets a single category based on the given ID
+     */
+    @Secured
+    @GetMapping("/{id}/sub-categories")
+    fun getSubCategories(@PathVariable("id") id: Int ): ResourcePage<CategoryDTO> =
+            categoryService.getSubCategories(id)
+
+    /**
      * Gets a page of disciplines of a given category
      */
+    @Secured
     @GetMapping("/{id}/disciplines")
     fun getAllCategoryDisciplines(
             @PathVariable("id") id: Int,
@@ -43,6 +56,7 @@ class CategoryController (
      * Gets a page of disciplines for the given category
      * Considering the period of day
      */
+    @Secured
     @GetMapping("/{id}/disciplines/byPeriod")
     fun getCategoryDisciplinesByPeriodOfDay(
             @PathVariable("id") id: Int,

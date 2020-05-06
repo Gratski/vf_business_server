@@ -5,6 +5,7 @@ import com.vf.business.business.dao.models.Language
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.repo.CategoryRepository
 import com.vf.business.business.dao.repo.CategoryTranslationRepository
+import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.classes.VFClassDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
@@ -15,6 +16,7 @@ import com.vf.business.business.service.itf.internal.DisciplineService
 import com.vf.business.business.service.itf.internal.LanguageContextService
 import com.vf.business.business.utils.mapper.CategoryMapper
 import com.vf.business.common.PeriodEnum
+import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.data.domain.Page
@@ -31,7 +33,7 @@ class CategoryServiceImpl(
 ): CategoryService {
 
 
-    override fun getAllCategories(): Collection<CategoryDTO> {
+    override fun getAllCategories(): ResourcePage<CategoryDTO> {
         val language = languageService.getLanguageByCode(Translator.getContextLocaleLanguageCode(LocaleContextHolder.getLocale()))
         val categories = categoryTranslationsRepo.findAllByLanguage(language);
         val result = arrayListOf<CategoryDTO>()
@@ -40,7 +42,17 @@ class CategoryServiceImpl(
                 result.add(CategoryMapper.Mapper.map(it))
             }
         }
-        return result
+        return ResourcePage(total = categories.size.toLong(), items = result)
+    }
+
+    override fun getSubCategories(id: Int): ResourcePage<CategoryDTO> {
+        val language = languageService.getLanguageByCode(Translator.getContextLocaleLanguageCode(LocaleContextHolder.getLocale()))
+        val categories = categoryTranslationsRepo.findByParentIdAndLanguage(id, language)
+        val result = mutableListOf<CategoryDTO>()
+        categories.forEach {
+            result.add(CategoryMapper.Mapper.map(it))
+        }
+        return ResourcePage(total = categories.size.toLong(), items = result)
     }
 
     override fun getById(categoryId: Int): CategoryDTO {

@@ -1,10 +1,12 @@
 package com.vf.business.business.service.itf.internal
 
 import com.vf.business.business.dao.models.User
+import com.vf.business.business.dto.ChangePictureResponseDTO
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
 import com.vf.business.business.dto.user.UpdatedUserDetailsDTO
+import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
 import java.util.*
 
@@ -53,5 +55,10 @@ interface UsersService {
      * Enables/Disables the given type of notification for the given user
      */
     fun enableDisableNotification(user: User, notificationType: NotificationTypeDTO, isEnabled: Boolean)
+
+    /**
+     * Changes user profile picture
+     */
+    fun changeProfilePicture(user: User, file: MultipartFile): ChangePictureResponseDTO
 
 }
