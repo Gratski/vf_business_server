@@ -47,7 +47,7 @@ class AuthenticationServiceImpl (
         }
 
         val roles = mutableListOf<String>()
-        roles.add("USER")
+        roles.add("ROLE_USER")
 
         // validate the user account domain against the request domain
         // add the correct role to the granted authorities
@@ -57,7 +57,7 @@ class AuthenticationServiceImpl (
                 throw BadCredentialsException(Translator.toLocale(MessageCodes.AUTH_UNAUTHORIZED_DOMAIN))
             }
             // add the correct role
-            roles.add("STUDENT")
+            roles.add("ROLE_STUDENT")
         } else if ( user is Professor) {
 
             if( domain != AppDomainEnum.PROFESSORS_APP ) {
@@ -75,9 +75,9 @@ class AuthenticationServiceImpl (
             }
 
             // add the correct role
-            roles.add("PROFESSOR")
+            roles.add("ROLE_PROFESSOR")
         } else if ( user is Admin ) {
-            roles.add("ADMIN")
+            roles.add("ROLE_ADMIN")
         }
 
         return SignInResponseDTO(user.id,

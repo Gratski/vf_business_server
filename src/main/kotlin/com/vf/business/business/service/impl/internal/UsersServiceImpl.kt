@@ -101,13 +101,13 @@ open class UsersServiceImpl<T: User>(
     }
 
     override fun changeProfilePicture(user: User, file: MultipartFile): ChangePictureResponseDTO {
-        // upload new picture
-        val storePictureResponse = storageService.storePicture(file)
-
         // delete the old picture
         if ( user.pictureUrl != null ) {
             storageService.removePicture(user.pictureUrl);
         }
+
+        // upload new picture
+        val storePictureResponse = storageService.storeProfilePicture(file)
 
         user.pictureUrl = storePictureResponse.url
         userRepo.save(user)

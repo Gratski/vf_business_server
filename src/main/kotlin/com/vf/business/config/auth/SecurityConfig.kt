@@ -29,14 +29,13 @@ class SecurityConfig(
         http.authorizeRequests()
                 .antMatchers("/api/*/auth/signin").permitAll()
                 .antMatchers("/api/*/auth/password-recovery").permitAll()
-                .antMatchers("/api/*/auth/password-reset").permitAll()
                 .antMatchers("/api/*/registrations/professor").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .httpBasic().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().csrf().disable()
-                
+
             .apply(JWTConfigurer(jwtTokenProvider))
         //@formatter:on
     }

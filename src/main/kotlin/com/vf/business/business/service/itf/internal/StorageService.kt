@@ -11,4 +11,5 @@ interface StorageService {
 
     fun storeInvoice(file: MultipartFile): StoreFileResponse
 
+    fun storeProfilePicture(file: MultipartFile): StoreFileResponse
 }
