@@ -7,6 +7,7 @@ class CreateDisciplineDTO (
         val description: String,
         val equipment: String,
         val goal: String,
+        val difficultyLevel: Int,
         val calories: Double,
         val duration: Int,
         val maxAttendants: Int = 1000000

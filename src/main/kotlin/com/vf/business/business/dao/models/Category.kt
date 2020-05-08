@@ -9,7 +9,7 @@ class Category(
         id: Int?,
 
         @ManyToOne
-        @JoinColumn(name = "parent_id", referencedColumnName="id",nullable=false)
+        @JoinColumn(name = "parent_id", referencedColumnName="id")
         open var parent: Category? = null,
         open var icon: String? = null,
 

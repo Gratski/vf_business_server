@@ -34,7 +34,7 @@ class Translator(val messageSource: ResourceBundleMessageSource) {
 
         private fun standardizeLanguageCode(rawLanguageCode: String?): String {
             if(rawLanguageCode == null) return ""
-            return rawLanguageCode.toUpperCase()
+            return rawLanguageCode.toLowerCase()
         }
 
     }

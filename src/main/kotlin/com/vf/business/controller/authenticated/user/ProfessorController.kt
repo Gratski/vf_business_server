@@ -2,6 +2,8 @@ package com.vf.business.controller.authenticated.user
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.discipline.DisciplineDTO
+import com.vf.business.business.dto.discipline.DisciplineListItemDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.dto.locatization.CreateProfessorDetailsDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
@@ -26,6 +28,13 @@ class ProfessorController (
         val professorService: ProfessorService,
         val professorDetailsService: ProfessorDetailsService
 ) {
+
+    @Secured
+    @GetMapping("/me/disciplines")
+    fun getUserDisciplines(principal: Principal, @RequestParam("page") page: Int, @RequestParam("limit") limit: Int): ResourcePage<DisciplineListItemDTO> {
+        val professor = userService.getUser(principal) as Professor
+        return professorService.getProfessorDisciplines(professor, page, limit)
+    }
 
     @Secured
     @GetMapping("me/notifications")

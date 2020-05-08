@@ -16,6 +16,7 @@ class DisciplineDTO(
         val equipment: String,
         val calories: Double,
         val goal: String,
+        val difficultyLevel: Int,
         val enabled: Boolean?,
         createdAt: Date?,
         updatedAt: Date?

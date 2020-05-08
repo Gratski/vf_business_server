@@ -2,6 +2,8 @@ package com.vf.business.business.service.itf.internal
 
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.discipline.DisciplineDTO
+import com.vf.business.business.dto.discipline.DisciplineListItemDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
@@ -50,5 +52,10 @@ interface ProfessorService {
      * Gets a single profile details based on its ID
      */
     fun getProfileDetails(professor: Professor, id: Int): ProfessorDetailsDTO
+
+    /**
+     * Gets a page of disciplines owned by a given professor
+     */
+    fun getProfessorDisciplines(professor: Professor, page: Int, limit: Int): ResourcePage<DisciplineListItemDTO>
 
 }

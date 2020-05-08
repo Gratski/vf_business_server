@@ -2,7 +2,9 @@ package com.vf.business.business.dao.repo
 
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Discipline
+import com.vf.business.business.dao.models.Professor
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -35,5 +37,9 @@ interface DisciplineRepository : CrudRepository<Discipline, Int> {
             @Param("from") from: Date,
             @Param("until") until: Date,
             pageable: Pageable): Page<Discipline>
+
+
+    @Query("SELECT D FROM Discipline D WHERE D.languageContext.professor = :professor")
+    fun findByProfessor(@Param("professor") professor: Professor, pageable: Pageable): Page<Discipline>
 
 }

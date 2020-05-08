@@ -35,7 +35,7 @@ class CategoryServiceImpl(
 
     override fun getAllCategories(): ResourcePage<CategoryDTO> {
         val language = languageService.getLanguageByCode(Translator.getContextLocaleLanguageCode(LocaleContextHolder.getLocale()))
-        val categories = categoryTranslationsRepo.findAllByLanguage(language);
+        val categories = categoryTranslationsRepo.findAllTopCategoriesByLanguage(language);
         val result = arrayListOf<CategoryDTO>()
         categories.forEach {
             it?.let {

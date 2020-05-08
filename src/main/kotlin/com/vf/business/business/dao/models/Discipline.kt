@@ -26,6 +26,7 @@ class Discipline (
         open var calories: Double,
         open var equipment: String,
         open var goal: String,
+        open var difficultyLevel: Int,
 
         open var reviewsScore: Double? = -1.0,
 

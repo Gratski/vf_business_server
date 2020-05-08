@@ -160,6 +160,7 @@ class DisciplineServiceImpl(
                 description = newDiscipline.description,
                 equipment = newDiscipline.equipment,
                 goal = newDiscipline.goal,
+                difficultyLevel = newDiscipline.difficultyLevel,
                 calories = newDiscipline.calories,
                 imageUrl = null,
                 duration = newDiscipline.duration,

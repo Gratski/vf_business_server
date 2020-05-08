@@ -4,6 +4,8 @@ import com.vf.business.business.dao.models.*
 import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dao.repo.*
 import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.discipline.DisciplineDTO
+import com.vf.business.business.dto.discipline.DisciplineListItemDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
 import com.vf.business.business.dto.user.professor.*
@@ -14,10 +16,12 @@ import com.vf.business.business.exception.UnauthorizedOperationException
 import com.vf.business.business.service.itf.internal.*
 import com.vf.business.business.utils.EmailUtils
 import com.vf.business.business.utils.auth.AuthUtils
+import com.vf.business.business.utils.mapper.DisciplineMapper
 import com.vf.business.business.utils.mapper.ProfessorDetailsMapper
 import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
 import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.transaction.Transactional
@@ -36,7 +40,8 @@ class ProfessorServiceImpl(
         val walletRepo: WalletRepository,
         val communicationsService: CommunicationsService,
         val languageService: LanguageService,
-        val languageContextRepository: LanguageContextRepository
+        val languageContextRepository: LanguageContextRepository,
+        val disciplineRepo: DisciplineRepository
 ): ProfessorService {
 
     override fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorPersonalDetailsDTO) {
@@ -210,6 +215,25 @@ class ProfessorServiceImpl(
         }
 
         return ProfessorDetailsMapper.Mapper.map(pdOpt.get())
+    }
+
+    override fun getProfessorDisciplines(professor: Professor, page: Int, limit: Int): ResourcePage<DisciplineListItemDTO> {
+        val pageReq = PageRequest.of(page, limit)
+        val page = this.disciplineRepo.findByProfessor(professor, pageReq)
+        val resultList = mutableListOf<DisciplineListItemDTO>()
+        page.forEach {
+            resultList.add(DisciplineListItemDTO(
+                id = it.id!!,
+                designation= it.designation!!,
+                difficultyLevel= it.difficultyLevel,
+                duration = it.duration,
+                isActive= it.active!!,
+                languageCode= it.languageContext.language.code,
+                pictureUrl= it.imageUrl
+            ))
+        }
+
+        return ResourcePage(total = page.totalElements, items = resultList)
     }
 
     private fun createDefaultSpeakingLanguage(professor: Professor, languageCode: String) {

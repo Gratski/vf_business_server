@@ -29,7 +29,7 @@ class SecurityConfig(
         http.authorizeRequests()
                 .antMatchers("/api/*/auth/signin").permitAll()
                 .antMatchers("/api/*/auth/password-recovery").permitAll()
-                .antMatchers("/api/*/registrations/professor").permitAll()
+                .antMatchers("/api/*/registrations/professor/validation").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .httpBasic().disable()

@@ -18,6 +18,7 @@ class DisciplineMapper {
                         duration = input.duration,
                         equipment = input.equipment,
                         goal = input.goal,
+                        difficultyLevel = input.difficultyLevel,
                         calories = input.calories,
                         imageUrl = input.imageUrl,
                         updatedAt = input.createdAt,

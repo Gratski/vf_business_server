@@ -1,7 +1,5 @@
 package com.vf.business.controller.permitted
 
-import com.vf.business.business.dto.auth.AppDomainEnum
-import com.vf.business.business.dto.auth.SignInResponseDTO
 import com.vf.business.business.dto.user.professor.ProfessorRegistValidationDTO
 import com.vf.business.business.dto.user.professor.RegistProfessorAccountDTO
 import com.vf.business.business.service.itf.internal.ProfessorService

@@ -1,0 +1,1 @@
+ALTER TABLE discipline ADD COLUMN difficulty_level int default 1;
