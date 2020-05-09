@@ -42,6 +42,15 @@ class DisciplineController(
     fun disableDiscipline(@PathVariable("id") id: Int) =
             disciplineService.enableDisable(id, false)
 
+    /**
+     * Soft delete a given discipline
+     */
+    @DeleteMapping("/{id}")
+    fun deleteDiscipline(principal: Principal, @PathVariable("id") id: Int) {
+        val professor = (usersService.getUser(principal)) as Professor
+        disciplineService.deleteDiscipline(professor, id)
+    }
+
 
     @PostMapping("/{id}/classes")
     fun createDisciplineClasses(principal: Principal, @PathVariable("id") id: Int, @RequestBody dto: CreateDisciplineClassesDTO) {

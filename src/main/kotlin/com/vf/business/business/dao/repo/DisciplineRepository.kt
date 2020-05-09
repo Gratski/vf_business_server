@@ -39,7 +39,7 @@ interface DisciplineRepository : CrudRepository<Discipline, Int> {
             pageable: Pageable): Page<Discipline>
 
 
-    @Query("SELECT D FROM Discipline D WHERE D.languageContext.professor = :professor")
+    @Query("SELECT D FROM Discipline D WHERE D.languageContext.professor = :professor AND D.active = TRUE")
     fun findByProfessor(@Param("professor") professor: Professor, pageable: Pageable): Page<Discipline>
 
 }

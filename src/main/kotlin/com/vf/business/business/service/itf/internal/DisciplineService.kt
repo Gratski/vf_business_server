@@ -32,4 +32,9 @@ interface DisciplineService {
 
     fun createDisciplineClasses(id: Int, professor: Professor, dto: CreateDisciplineClassesDTO)
 
+    /**
+     * Soft delete a given discipline
+     */
+    fun deleteDiscipline(professor: Professor, id: Int)
+
 }

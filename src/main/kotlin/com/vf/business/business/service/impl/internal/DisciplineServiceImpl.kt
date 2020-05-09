@@ -253,6 +253,14 @@ class DisciplineServiceImpl(
         disciplineClassesService.createClassesFromUntil(dto, discipline)
     }
 
+    override fun deleteDiscipline(professor: Professor, id: Int) {
+        val discipline = getDisciplineById(id)
+        checkBelongsTo(discipline, professor)
+
+        discipline.active = false;
+        disciplineRepo.save(discipline)
+    }
+
     // Aux methods
     /**
      * Gets a discipline based on the given ID
@@ -260,7 +268,7 @@ class DisciplineServiceImpl(
      */
     private fun getDisciplineById(id: Int): Discipline {
         val disciplineOpt = disciplineRepo.findById(id)
-        disciplineOpt.orElseThrow {
+        if ( disciplineOpt.isEmpty || !disciplineOpt.get().active!! ) {
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
         }
