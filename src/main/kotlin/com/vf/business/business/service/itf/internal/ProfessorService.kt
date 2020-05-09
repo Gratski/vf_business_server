@@ -54,8 +54,8 @@ interface ProfessorService {
     fun getProfileDetails(professor: Professor, id: Int): ProfessorDetailsDTO
 
     /**
-     * Gets a page of disciplines owned by a given professor
+     * Gets a set of disciplines owned by a given professor
      */
-    fun getProfessorDisciplines(professor: Professor, page: Int, limit: Int): ResourcePage<DisciplineListItemDTO>
+    fun getProfessorDisciplines(professor: Professor, offset: Int, limit: Int): ResourcePage<DisciplineListItemDTO>
 
 }

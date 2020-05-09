@@ -11,6 +11,7 @@ class DisciplineMapper {
         fun map(input: Discipline, ct: CategoryTranslation? = null, ctParent: CategoryTranslation? = null): DisciplineDTO =
                 DisciplineDTO(
                         id = input.id,
+                        rate = input.reviewsScore ?: 0.0,
                         languageId = input.languageContext.language.id!!,
                         category = CategoryMapper.Mapper.map(ct),
                         parentCategory = CategoryMapper.Mapper.map(ctParent),
@@ -27,7 +28,11 @@ class DisciplineMapper {
                         createdAt = input.createdAt,
                         enabled = input.enabled!!,
                         status = input.status,
-                        isActive = input.active!!
+                        isActive = input.active!!,
+                        instructorId = input.languageContext.professor.id!!,
+                        instructorName = "${input.languageContext.professor.firstName} ${input.languageContext.professor.lastName}",
+                        instructorRate = 0.0,
+                        instructorPictureUrl = input.languageContext.professor.pictureUrl
                 )
     }
 

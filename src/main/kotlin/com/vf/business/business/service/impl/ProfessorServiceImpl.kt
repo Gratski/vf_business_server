@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.transaction.Transactional
+import kotlin.math.floor
 
 @Service
 class ProfessorServiceImpl(
@@ -217,8 +218,9 @@ class ProfessorServiceImpl(
         return ProfessorDetailsMapper.Mapper.map(pdOpt.get())
     }
 
-    override fun getProfessorDisciplines(professor: Professor, page: Int, limit: Int): ResourcePage<DisciplineListItemDTO> {
-        val pageReq = PageRequest.of(page, limit)
+    override fun getProfessorDisciplines(professor: Professor, offset: Int, limit: Int): ResourcePage<DisciplineListItemDTO> {
+        var pageNumber = (offset / limit) + (offset % limit)
+        val pageReq = PageRequest.of(pageNumber, limit)
         val page = this.disciplineRepo.findByProfessor(professor, pageReq)
         val resultList = mutableListOf<DisciplineListItemDTO>()
         page.forEach {

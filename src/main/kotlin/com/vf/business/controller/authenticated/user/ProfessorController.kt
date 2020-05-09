@@ -31,9 +31,9 @@ class ProfessorController (
 
     @Secured
     @GetMapping("/me/disciplines")
-    fun getUserDisciplines(principal: Principal, @RequestParam("page") page: Int, @RequestParam("limit") limit: Int): ResourcePage<DisciplineListItemDTO> {
+    fun getUserDisciplines(principal: Principal, @RequestParam("offset") offset: Int, @RequestParam("limit") limit: Int): ResourcePage<DisciplineListItemDTO> {
         val professor = userService.getUser(principal) as Professor
-        return professorService.getProfessorDisciplines(professor, page, limit)
+        return professorService.getProfessorDisciplines(professor, offset, limit)
     }
 
     @Secured

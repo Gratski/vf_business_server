@@ -28,7 +28,7 @@ class Discipline (
         open var goal: String,
         open var difficultyLevel: Int,
 
-        open var reviewsScore: Double? = -1.0,
+        open var reviewsScore: Double? = 0.0,
 
         open var active: Boolean? = true,
         open var enabled: Boolean? = false,
