@@ -69,7 +69,7 @@ class DisciplineController(
     /**
      * Changes discipline picture
      */
-    @PutMapping("/{id}/picture")
+    @PostMapping("/{id}/picture")
     fun changeDisciplinePicture(@PathVariable("id") id: Int,
                                 principal: Principal, @RequestParam file: MultipartFile) {
         val professor = (usersService.getUser(principal) as Professor)

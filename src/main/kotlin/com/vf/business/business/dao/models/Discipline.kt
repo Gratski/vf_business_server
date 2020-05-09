@@ -32,6 +32,7 @@ class Discipline (
 
         open var active: Boolean? = true,
         open var enabled: Boolean? = false,
+        open var status: Int,
         createdAt: Date,
         updatedAt: Date
 ) : AbstractEntity(

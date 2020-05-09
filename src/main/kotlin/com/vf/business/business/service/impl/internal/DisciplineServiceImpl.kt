@@ -3,6 +3,7 @@ package com.vf.business.business.service.impl.internal
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.Discipline
+import com.vf.business.business.dao.models.DisciplineStatus
 import com.vf.business.business.dao.repo.CategoryRepository
 import com.vf.business.business.dao.repo.CategoryTranslationRepository
 import com.vf.business.business.dao.repo.DisciplineRepository
@@ -13,9 +14,7 @@ import com.vf.business.business.dto.discipline.UpdateDisciplineDTO
 import com.vf.business.business.dto.discipline.classes.CreateDisciplineClassesDTO
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
 import com.vf.business.business.exception.*
-import com.vf.business.business.service.itf.internal.ClassesService
-import com.vf.business.business.service.itf.internal.DisciplineService
-import com.vf.business.business.service.itf.internal.StorageService
+import com.vf.business.business.service.itf.internal.*
 import com.vf.business.business.utils.mapper.DisciplineMapper
 import com.vf.business.common.PeriodEnum
 import com.vf.business.common.RepetitionTypeEnum
@@ -38,7 +37,8 @@ class DisciplineServiceImpl(
         val disciplineRepo: DisciplineRepository,
         val disciplineClassesService: ClassesService,
         val categoryRepo: CategoryRepository,
-        val languageContextRepo: LanguageContextRepository
+        val languageContextRepo: LanguageContextRepository,
+        val languageService: LanguageContextService
 ) : DisciplineService {
 
     // hour to consider when getting morning classes
@@ -61,11 +61,16 @@ class DisciplineServiceImpl(
 
     override fun getDiscipline(id: Int): DisciplineDTO {
         val discipline = getDisciplineById(id)
-        val categoryTranslation = categoryTranslationRepo.findByCategoryIdAndLanguage(discipline.category?.id!!, discipline.languageContext.language)
-        categoryTranslation.orElseThrow {
+        val language = languageService.getLanguageByCode(Translator.getContextLocaleLanguageCode(LocaleContextHolder.getLocale()))
+        val subCategoryTranslation = categoryTranslationRepo.findByCategoryIdAndLanguage(discipline.category?.id!!, language)
+        val parentCategoryTranslation = categoryTranslationRepo.findByCategoryIdAndLanguage(discipline.category?.parent?.id!!, language)
+        subCategoryTranslation.orElseThrow {
             throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
         }
-        return DisciplineMapper.Mapper.map(discipline, categoryTranslation.get())
+        parentCategoryTranslation.orElseThrow {
+            throw ResourceNotFoundException(Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
+        }
+        return DisciplineMapper.Mapper.map(discipline, ct = subCategoryTranslation.get(), ctParent = parentCategoryTranslation.get())
     }
 
 
@@ -124,7 +129,7 @@ class DisciplineServiceImpl(
         val resultList = arrayListOf<DisciplineDTO>()
 
         resultsPage?.iterator()?.forEach {
-            resultList.add(DisciplineMapper.Mapper.map(it))
+            resultList.add(DisciplineMapper.Mapper.map(it, null, null))
         }
 
         return PageImpl<DisciplineDTO>(resultList, page, resultsPage.totalElements)
@@ -166,7 +171,8 @@ class DisciplineServiceImpl(
                 duration = newDiscipline.duration,
                 enabled = false,
                 createdAt = now,
-                updatedAt = now
+                updatedAt = now,
+                status = DisciplineStatus.WAITING_FOR_APPROVAL.status
         )
 
         disciplineRepo.save(discipline)
@@ -207,6 +213,7 @@ class DisciplineServiceImpl(
         discipline.equipment = dto.equipment
         discipline.calories = dto.calories
         discipline.goal = dto.goal
+        discipline.difficultyLevel = dto.difficultyLevel
         discipline.maxAttendants = dto.maxAttendants
         disciplineRepo.save(discipline)
     }

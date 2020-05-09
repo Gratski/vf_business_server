@@ -1,0 +1,1 @@
+ALTER TABLE discipline ADD COLUMN status int default 1;

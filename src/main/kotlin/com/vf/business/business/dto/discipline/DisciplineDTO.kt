@@ -7,19 +7,23 @@ import java.util.Date
 
 class DisciplineDTO(
         id: Int?,
-        val category: CategoryDTO?,
+        val languageId: Int,
+        val category: CategoryDTO,
+        val parentCategory: CategoryDTO,
         val professor: ProfessorDTO,
-        val designation: String?,
-        val description: String?,
+        val designation: String,
+        val description: String,
         val imageUrl: String?,
         val duration: Int,
         val equipment: String,
         val calories: Double,
-        val goal: String,
+        val goals: String,
         val difficultyLevel: Int,
-        val enabled: Boolean?,
-        createdAt: Date?,
-        updatedAt: Date?
+        val enabled: Boolean,
+        val status: Int,
+        val isActive: Boolean,
+        createdAt: Date,
+        updatedAt: Date
 ) : AbstractDTO(
         id, createdAt, updatedAt
 ) {

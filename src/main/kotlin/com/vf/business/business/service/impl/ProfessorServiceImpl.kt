@@ -224,12 +224,14 @@ class ProfessorServiceImpl(
         page.forEach {
             resultList.add(DisciplineListItemDTO(
                 id = it.id!!,
+                languageId = it.languageContext.language.id!!,
                 designation= it.designation!!,
                 difficultyLevel= it.difficultyLevel,
                 duration = it.duration,
                 isActive= it.active!!,
                 languageCode= it.languageContext.language.code,
-                pictureUrl= it.imageUrl
+                pictureUrl= it.imageUrl,
+                status = it.status
             ))
         }
 
