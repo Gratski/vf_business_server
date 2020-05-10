@@ -36,7 +36,7 @@ class UserController (
     @PutMapping("/me")
     fun updateUserDetails(principal: Principal, @RequestBody dto: UpdatedUserDetailsDTO) {
         val user = userService.getUser(principal)
-        userService.updateUser(user)
+        userService.updateUserPersonalDetails(user, dto)
     }
 
     @Secured

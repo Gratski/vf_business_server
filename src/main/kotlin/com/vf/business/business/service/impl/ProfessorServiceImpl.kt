@@ -4,8 +4,10 @@ import com.vf.business.business.dao.models.*
 import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dao.repo.*
 import com.vf.business.business.dto.ResourcePage
+import com.vf.business.business.dto.category.CategoryDTO
 import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineListItemDTO
+import com.vf.business.business.dto.documents.PictureDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
 import com.vf.business.business.dto.user.professor.*
@@ -42,7 +44,8 @@ class ProfessorServiceImpl(
         val communicationsService: CommunicationsService,
         val languageService: LanguageService,
         val languageContextRepository: LanguageContextRepository,
-        val disciplineRepo: DisciplineRepository
+        val disciplineRepo: DisciplineRepository,
+        val categoryTranslationRepository: CategoryTranslationRepository
 ): ProfessorService {
 
     override fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorPersonalDetailsDTO) {
@@ -238,6 +241,54 @@ class ProfessorServiceImpl(
         }
 
         return ResourcePage(total = page.totalElements, items = resultList)
+    }
+
+    override fun getProfessorProfile(id: Int, languageId: Int): ProfessorProfileDTO {
+        // get professor
+        val profOpt = professorRepository.findById(id)
+        profOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.PROFESSOR_DETAILS)))
+            )
+        }
+        val professor = profOpt.get()
+
+        // get professor details
+        val profDetailsOpt = professorDetailsRepository.findProfessorDetailsByProfessorAndLanguage(languageId, professor)
+        profDetailsOpt.orElseThrow {
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.PROFESSOR_DETAILS)))
+            )
+        }
+        val professorDetails = profDetailsOpt.get()
+
+        // get category translations for those this professor has disciplines already created
+        val categories = categoryTranslationRepository.findByProfessorAndLanguageId(professor, languageId)
+        val teaches = mutableListOf<CategoryDTO>()
+        categories.forEach {
+            teaches.add(
+                    CategoryDTO(
+                        id = it.category.id,
+                        designation = it.designation,
+                        description = it.description,
+                        icon = it.category.icon,
+                        picture = null,
+                        createdAt = it.category.createdAt,
+                        updatedAt = it.category.updatedAt
+                    )
+            )
+        }
+
+        // prepare and send result
+        return ProfessorProfileDTO(
+                id = professor.id!!,
+                firstName = professor.firstName!!,
+                lastName = professor.lastName!!,
+                pictureUrl = professor.pictureUrl,
+                quote = professorDetails.quote,
+                about = professorDetails.description,
+                teaches = teaches
+        )
     }
 
     private fun createDefaultSpeakingLanguage(professor: Professor, languageCode: String) {

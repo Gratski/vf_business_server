@@ -12,6 +12,7 @@ import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
 import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
 import com.vf.business.business.dto.user.professor.ProfessorDetailsDTO
+import com.vf.business.business.dto.user.professor.ProfessorProfileDTO
 import com.vf.business.business.dto.user.professor.UpdateProfessorPersonalDetailsDTO
 import com.vf.business.business.service.itf.internal.ProfessorDetailsService
 import com.vf.business.business.service.itf.internal.ProfessorService
@@ -43,6 +44,11 @@ class ProfessorController (
         var professor = userService.getUser(principal) as Professor
         return professorService.getProfessorNotifications(professor, page, size)
     }
+
+    @Secured
+    @GetMapping("/{id}/{languageId}")
+    fun getProfessorProfile(@PathVariable("id") id: Int, @PathVariable("languageId") languageId: Int): ProfessorProfileDTO =
+            professorService.getProfessorProfile(id, languageId)
 
     /**
      * Gets the languages that are still to be configured to the given professor

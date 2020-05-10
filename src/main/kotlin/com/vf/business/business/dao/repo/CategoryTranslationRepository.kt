@@ -3,6 +3,7 @@ package com.vf.business.business.dao.repo
 import com.vf.business.business.dao.models.Category
 import com.vf.business.business.dao.models.CategoryTranslation
 import com.vf.business.business.dao.models.Language
+import com.vf.business.business.dao.models.Professor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -19,5 +20,11 @@ interface CategoryTranslationRepository: CrudRepository<CategoryTranslation, Int
 
     @Query("SELECT CT FROM CategoryTranslation CT, Category C WHERE C.parent IS NOT null AND C.parent.id = :parentId AND CT.category = C AND CT.language = :language")
     fun findByParentIdAndLanguage(@Param("parentId") parentId: Int, @Param("language") language: Language): List<CategoryTranslation>
+
+    /**
+     * Gets all the category translations for those a professor has already disciplines created for
+     */
+    @Query("SELECT DISTINCT CT FROM CategoryTranslation CT, Category C, Discipline D, LanguageContext LC WHERE CT.language.id = :languageId AND CT.category = C AND C = D.category AND D.status = 2 AND D.languageContext = LC AND LC.professor = :professor")
+    fun findByProfessorAndLanguageId(@Param("professor") professor: Professor, @Param("languageId") languageId: Int): List<CategoryTranslation>
 
 }

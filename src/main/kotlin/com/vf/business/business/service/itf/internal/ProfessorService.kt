@@ -58,4 +58,11 @@ interface ProfessorService {
      */
     fun getProfessorDisciplines(professor: Professor, offset: Int, limit: Int): ResourcePage<DisciplineListItemDTO>
 
+    /**
+     * Gets a professor profile considering the given language
+     * This request is only considered to be valid if the given professor
+     * has a profile registered in the given language
+     */
+    fun getProfessorProfile(id: Int, languageId: Int): ProfessorProfileDTO
+
 }

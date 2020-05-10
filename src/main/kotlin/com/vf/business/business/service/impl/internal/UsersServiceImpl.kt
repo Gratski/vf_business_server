@@ -61,6 +61,9 @@ open class UsersServiceImpl<T: User>(
         val nationalityCountry = countriesService.getCountry(details.nationalityCountryId)
         user.nationality = nationalityCountry
 
+        val livingInCountry = countriesService.getCountry(details.livingInId)
+        user.livingIn = livingInCountry
+
         updateUser(user)
     }
 

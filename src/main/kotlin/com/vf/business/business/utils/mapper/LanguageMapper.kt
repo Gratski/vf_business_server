@@ -15,6 +15,7 @@ class LanguageMapper {
         fun map(lt: LanguageTranslation): LanguageDTO =
                 LanguageDTO(
                         id = lt.language.id,
+                        code = lt.language.code,
                         designation = lt.designation
                 )
 

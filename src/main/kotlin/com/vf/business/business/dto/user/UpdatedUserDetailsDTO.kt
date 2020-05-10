@@ -7,6 +7,7 @@ data class UpdatedUserDetailsDTO (
         val lastName: String,
         val gender: Gender,
         val nationalityCountryId: Int,
+        val livingInId: Int,
         val phoneNumber: String,
         val birthday: Date
         )
