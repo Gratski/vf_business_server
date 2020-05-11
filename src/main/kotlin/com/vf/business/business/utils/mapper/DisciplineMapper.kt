@@ -13,6 +13,7 @@ class DisciplineMapper {
                         id = input.id,
                         rate = input.reviewsScore ?: 0.0,
                         languageId = input.languageContext.language.id!!,
+                        languageCode = input.languageContext.language.code,
                         category = CategoryMapper.Mapper.map(ct),
                         parentCategory = CategoryMapper.Mapper.map(ctParent),
                         professor = ProfessorMapper.Mapper.map(input.languageContext?.professor),

@@ -9,6 +9,7 @@ class DisciplineDTO(
         id: Int?,
         val rate: Double,
         val languageId: Int,
+        val languageCode: String,
         val category: CategoryDTO,
         val parentCategory: CategoryDTO,
         val professor: ProfessorDTO,
