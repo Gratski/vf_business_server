@@ -268,7 +268,7 @@ class DisciplineServiceImpl(
      */
     private fun getDisciplineById(id: Int): Discipline {
         val disciplineOpt = disciplineRepo.findById(id)
-        if ( disciplineOpt.isEmpty || !disciplineOpt.get().active!! ) {
+        if ( !disciplineOpt.isPresent || !disciplineOpt.get().active!! ) {
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.DISCIPLINE))))
         }

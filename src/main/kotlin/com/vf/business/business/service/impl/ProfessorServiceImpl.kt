@@ -5,9 +5,7 @@ import com.vf.business.business.dao.models.wallet.Wallet
 import com.vf.business.business.dao.repo.*
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.category.CategoryDTO
-import com.vf.business.business.dto.discipline.DisciplineDTO
 import com.vf.business.business.dto.discipline.DisciplineListItemDTO
-import com.vf.business.business.dto.documents.PictureDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
 import com.vf.business.business.dto.registration.RegistrationResponseDTO
@@ -171,8 +169,8 @@ class ProfessorServiceImpl(
         }
 
         // check if this professor has an access code given by our team
-        val accessCodeOpt = accessCodeRepo.findByEmail(dto.email)
-        if ( accessCodeOpt.isEmpty ) {
+        val accessCodeOpt: Optional<AccessCode> = accessCodeRepo.findByEmail(dto.email)
+        if ( !accessCodeOpt.isPresent ) {
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.NO_ACCESS_CODE_FOUND)
             )
