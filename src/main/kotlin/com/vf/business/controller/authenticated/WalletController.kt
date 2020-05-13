@@ -3,9 +3,7 @@ package com.vf.business.controller.authenticated
 import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
-import com.vf.business.business.dto.payments.CreatePaymentMethodDTO
-import com.vf.business.business.dto.payments.PaymentMethodDTO
-import com.vf.business.business.dto.payments.TransactionDTO
+import com.vf.business.business.dto.payments.*
 import com.vf.business.business.service.itf.internal.ProfessorService
 import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.service.itf.internal.WalletService
@@ -66,6 +64,26 @@ class WalletController(
     fun deletePaymentMethod(principal: Principal, @PathVariable("id") id: Int) {
         val professor = userService.getUser(principal) as Professor
         return walletService.deletePaymentMethod(professor, id)
+    }
+
+    @Secured
+    @GetMapping("/currencies")
+    fun getCurrencies(): ResourcePage<CurrencyDTO> {
+        return walletService.getCurrencies()
+    }
+
+    @Secured
+    @GetMapping("/me/currency")
+    fun getUserCurrency(principal: Principal): CurrencyDTO {
+        val professor = userService.getUser(principal) as Professor
+        return walletService.getUserCurrency(professor)
+    }
+
+    @Secured
+    @PutMapping("/me/currency")
+    fun updateUserCurrency(principal: Principal, @RequestBody dto: UpdateCurrencyDTO) {
+        val user = userService.getUser(principal)
+        walletService.updateUserCurrency(user, dto)
     }
 
 }

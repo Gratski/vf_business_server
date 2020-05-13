@@ -35,6 +35,7 @@ class MessageCodes {
         val PAYMENT_METHOD = "payment_method"
         val WALLET_NOT_AVAILABLE = "wallet_not_available"
         val WALLET_PAYMENT_METHOD_DUPLICATED = "wallet_payment_method_duplicated"
+        val CURRENCY = "currency"
 
         // NOTIFICATION PREFERENCES RELATED
         val NOTIFICATION_TYPE = "notification_type"

@@ -4,9 +4,7 @@ import com.vf.business.business.dao.models.Professor
 import com.vf.business.business.dao.models.User
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
-import com.vf.business.business.dto.payments.CreatePaymentMethodDTO
-import com.vf.business.business.dto.payments.PaymentMethodDTO
-import com.vf.business.business.dto.payments.TransactionDTO
+import com.vf.business.business.dto.payments.*
 
 interface WalletService {
 
@@ -39,5 +37,20 @@ interface WalletService {
      * Removes a given payment method given its ID
      */
     fun deletePaymentMethod(professor: Professor, paymentMethodId: Int)
+
+    /**
+     * Gets all existing currencies
+     */
+    fun getCurrencies(): ResourcePage<CurrencyDTO>
+
+    /**
+     * Gets the user currency
+     */
+    fun getUserCurrency(user: User): CurrencyDTO
+
+    /**
+     * Updates user currency
+     */
+    fun updateUserCurrency(user: User, dto: UpdateCurrencyDTO)
 
 }

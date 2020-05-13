@@ -10,6 +10,7 @@ import com.vf.business.business.dto.discipline.DisciplineListItemDTO
 import com.vf.business.business.dto.documents.PictureDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
+import com.vf.business.business.dto.registration.RegistrationResponseDTO
 import com.vf.business.business.dto.user.professor.*
 import com.vf.business.business.exception.MissingArgumentsException
 import com.vf.business.business.exception.ResourceConflictException
@@ -24,6 +25,7 @@ import com.vf.business.common.i18n.MessageCodes
 import com.vf.business.config.i18n.Translator
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.transaction.Transactional
@@ -45,7 +47,8 @@ class ProfessorServiceImpl(
         val languageService: LanguageService,
         val languageContextRepository: LanguageContextRepository,
         val disciplineRepo: DisciplineRepository,
-        val categoryTranslationRepository: CategoryTranslationRepository
+        val categoryTranslationRepository: CategoryTranslationRepository,
+        val currencyRepository: CurrencyRepository
 ): ProfessorService {
 
     override fun updateProfessorProfileDetails(professor: Professor, dto: UpdateProfessorPersonalDetailsDTO) {
@@ -122,10 +125,19 @@ class ProfessorServiceImpl(
         )
         professorRepository.save(professor)
 
+        // fetch default currency
+        val currencyOpt = currencyRepository.findByDesignation("US Dollar");
+        currencyOpt.orElseThrow{
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CURRENCY)))
+            )
+        }
+
         // create wallet
         val wallet = Wallet(
                 belongsTo = professor,
                 balance = 0.0,
+                currency =  currencyOpt.get(),
                 createdAt = now,
                 updatedAt = now
         )
@@ -149,7 +161,7 @@ class ProfessorServiceImpl(
     }
 
     @Transactional
-    override fun registValidationProfessor(dto: ProfessorRegistValidationDTO) {
+    override fun registValidationProfessor(dto: ProfessorRegistValidationDTO): RegistrationResponseDTO {
         // check if this email is already registered
         val userOpt = userService.getUserByEmail(dto.email)
         userOpt.orElseThrow {
@@ -183,6 +195,7 @@ class ProfessorServiceImpl(
         user.active = true
         userService.updateUser(user)
 
+        return RegistrationResponseDTO(id = user.id!!)
     }
 
     override fun getAvailableLanguages(langCode: String, professor: Professor): ResourcePage<LanguageDTO> =
@@ -223,7 +236,8 @@ class ProfessorServiceImpl(
 
     override fun getProfessorDisciplines(professor: Professor, offset: Int, limit: Int): ResourcePage<DisciplineListItemDTO> {
         var pageNumber = (offset / limit) + (offset % limit)
-        val pageReq = PageRequest.of(pageNumber, limit)
+        val sort = Sort.by(Sort.Direction.DESC, "id")
+        val pageReq = PageRequest.of(pageNumber, limit, sort)
         val page = this.disciplineRepo.findByProfessor(professor, pageReq)
         val resultList = mutableListOf<DisciplineListItemDTO>()
         page.forEach {

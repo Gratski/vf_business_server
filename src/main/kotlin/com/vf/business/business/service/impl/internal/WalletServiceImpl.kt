@@ -5,13 +5,13 @@ import com.vf.business.business.dao.models.wallet.PaymentMethod
 import com.vf.business.business.dao.models.wallet.TransactionDirection
 import com.vf.business.business.dao.models.wallet.TransactionType
 import com.vf.business.business.dao.models.wallet.WalletTransaction
+import com.vf.business.business.dao.repo.CurrencyRepository
 import com.vf.business.business.dao.repo.PaymentMethodRepository
+import com.vf.business.business.dao.repo.UsersRepository
 import com.vf.business.business.dao.repo.WalletTransactionRepository
 import com.vf.business.business.dto.ResourcePage
 import com.vf.business.business.dto.general.CreateOperationResponseDTO
-import com.vf.business.business.dto.payments.CreatePaymentMethodDTO
-import com.vf.business.business.dto.payments.PaymentMethodDTO
-import com.vf.business.business.dto.payments.TransactionDTO
+import com.vf.business.business.dto.payments.*
 import com.vf.business.business.exception.CriticalSystemException
 import com.vf.business.business.exception.ResourceConflictException
 import com.vf.business.business.exception.ResourceNotFoundException
@@ -29,7 +29,9 @@ import javax.transaction.Transactional
 class WalletServiceImpl(
         val commissionService: CommissionService,
         val transactionRepo: WalletTransactionRepository,
-        val paymentMethodRepo: PaymentMethodRepository
+        val paymentMethodRepo: PaymentMethodRepository,
+        val currencyRepo: CurrencyRepository,
+        val userRepo: UsersRepository
 ): WalletService {
 
     override fun deposit(attendants: Int, user: User) {
@@ -132,6 +134,53 @@ class WalletServiceImpl(
         validatePaymentMethodOwnership(professor, pm)
 
         paymentMethodRepo.delete(pm)
+    }
+
+    override fun getCurrencies(): ResourcePage<CurrencyDTO> {
+        val currencies = this.currencyRepo.findAll()
+        val result = mutableListOf<CurrencyDTO>()
+        currencies.forEach {
+            result.add(
+                    CurrencyDTO(
+                        id = it.id!!,
+                        designation = it.designation,
+                        symbol = it.symbol
+                    )
+            )
+        }
+        return ResourcePage<CurrencyDTO>(total = result.size.toLong(), items = result)
+    }
+
+    override fun getUserCurrency(user: User): CurrencyDTO {
+        if ( user.wallet == null || user.wallet?.currency == null ){
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CURRENCY)))
+            )
+        }
+
+        return CurrencyDTO(
+                id = user.wallet?.currency?.id!!,
+                designation = user.wallet?.currency?.designation!!,
+                symbol = user.wallet?.currency?.symbol!!
+        )
+    }
+
+    override fun updateUserCurrency(user: User, dto: UpdateCurrencyDTO) {
+        if ( user.wallet == null || user.wallet?.currency == null ){
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CURRENCY)))
+            )
+        }
+
+        val newCurrencyOpt = currencyRepo.findById(dto.id)
+        newCurrencyOpt.orElseThrow{
+            throw ResourceNotFoundException(
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.CURRENCY)))
+            )
+        }
+
+        user.wallet?.currency = newCurrencyOpt.get()
+        userRepo.save(user)
     }
 
     private fun validateWalletExistence(professor: Professor) {

@@ -8,6 +8,7 @@ import com.vf.business.business.dto.locatization.LanguageDTO
 import com.vf.business.business.dto.notifications.NotificationTypeDTO
 import com.vf.business.business.dto.notifications.feed.ListItemFeedNotificationDTO
 import com.vf.business.business.dto.notifications.push.NotificationPreferenceDTO
+import com.vf.business.business.dto.registration.RegistrationResponseDTO
 import com.vf.business.business.dto.user.professor.*
 
 interface ProfessorService {
@@ -31,7 +32,7 @@ interface ProfessorService {
      * Validates a professor regist
      * This is the last step of registration for a professor
      */
-    fun registValidationProfessor(dto: ProfessorRegistValidationDTO);
+    fun registValidationProfessor(dto: ProfessorRegistValidationDTO): RegistrationResponseDTO
 
     /**
      * Gets the languages that are not configured by the given professor yet

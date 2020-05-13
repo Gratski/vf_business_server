@@ -21,6 +21,7 @@ import com.vf.business.config.i18n.Translator
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 @Service
@@ -35,7 +36,7 @@ class CategoryServiceImpl(
 
     override fun getAllCategories(): ResourcePage<CategoryDTO> {
         val language = languageService.getLanguageByCode(Translator.getContextLocaleLanguageCode(LocaleContextHolder.getLocale()))
-        val categories = categoryTranslationsRepo.findAllTopCategoriesByLanguage(language);
+        val categories = categoryTranslationsRepo.findAllTopCategoriesByLanguage(language, Sort.by(Sort.Direction.ASC, "designation"));
         val result = arrayListOf<CategoryDTO>()
         categories.forEach {
             it?.let {
@@ -47,7 +48,7 @@ class CategoryServiceImpl(
 
     override fun getSubCategories(id: Int): ResourcePage<CategoryDTO> {
         val language = languageService.getLanguageByCode(Translator.getContextLocaleLanguageCode(LocaleContextHolder.getLocale()))
-        val categories = categoryTranslationsRepo.findByParentIdAndLanguage(id, language)
+        val categories = categoryTranslationsRepo.findByParentIdAndLanguage(id, language, Sort.by(Sort.Direction.ASC, "designation"))
         val result = mutableListOf<CategoryDTO>()
         categories.forEach {
             result.add(CategoryMapper.Mapper.map(it))

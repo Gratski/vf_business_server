@@ -1,5 +1,6 @@
 package com.vf.business.controller.permitted
 
+import com.vf.business.business.dto.registration.RegistrationResponseDTO
 import com.vf.business.business.dto.user.professor.ProfessorRegistValidationDTO
 import com.vf.business.business.dto.user.professor.RegistProfessorAccountDTO
 import com.vf.business.business.service.itf.internal.ProfessorService
@@ -29,8 +30,8 @@ class RegistrationController(
     }
 
     @PostMapping("/professor/validation")
-    fun validateProfessorRegist(@RequestBody dto: ProfessorRegistValidationDTO) {
-        professorService.registValidationProfessor(dto)
+    fun validateProfessorRegist(@RequestBody dto: ProfessorRegistValidationDTO): RegistrationResponseDTO {
+        return professorService.registValidationProfessor(dto)
     }
 
 }
