@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest
 class CustomLocaleResolver : AcceptHeaderLocaleResolver(), WebMvcConfigurer {
     private var LOCALES: List<Locale> = listOf(
             Locale("en"),
-            Locale("pt")
+            Locale("pt"),
+            Locale("es"),
+            Locale("fr")
     )
 
     override fun resolveLocale(request: HttpServletRequest): Locale {

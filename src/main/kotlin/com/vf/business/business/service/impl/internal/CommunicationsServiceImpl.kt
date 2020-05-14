@@ -8,11 +8,16 @@ import com.vf.business.business.dto.comms.invoice.InvoiceMessage
 import com.vf.business.business.dto.comms.support.SupportMessage
 import com.vf.business.business.dto.comms.welcome.ProfessorWelcomeMessage
 import com.vf.business.business.service.itf.internal.CommunicationsService
+import com.vf.business.config.i18n.CustomLocaleResolver
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Service
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.util.*
+import javax.servlet.http.HttpServletRequest
+
 
 @Service
 class CommunicationsServiceImpl(
@@ -79,8 +84,6 @@ class CommunicationsServiceImpl(
                 link = "Dynamiclink"
         )
 
-        // TODO: generate dynamic link here
-
         val props = MessageProperties()
         props.contentType = "json"
         val msg = Message(Gson().toJson(welcomeMessage).toByteArray(), props)
@@ -102,6 +105,14 @@ class CommunicationsServiceImpl(
         val msg = Message(Gson().toJson(invoiceMessage).toByteArray(), props)
         rabbitTemplate.encoding = "application/json"
         rabbitTemplate.convertAndSend("comms.email.invoice", msg)
+    }
+
+    fun getCurrentHttpRequest(): HttpServletRequest? {
+        val requestAttributes = RequestContextHolder.getRequestAttributes()
+        if (requestAttributes is ServletRequestAttributes) {
+            return requestAttributes.request
+        }
+        return null
     }
 
 }

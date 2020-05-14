@@ -47,9 +47,10 @@ class LanguageServiceImpl(
 
     private fun getLanguageByCode(langCode: String): Language {
         val langOpt = langRepo.findFirstByCode(langCode)
-        return langOpt.orElseGet(
+        if (!langOpt.isPresent) {
             return langRepo.findFirstByCode("en").get()
-        )
+        }
+        return langOpt.get()
     }
 
     private fun mapLanguageTranslationToDTO(translations: List<LanguageTranslation>): ResourcePage<LanguageDTO> {
