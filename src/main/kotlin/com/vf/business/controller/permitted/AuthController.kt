@@ -8,6 +8,7 @@ import com.vf.business.business.service.itf.internal.UsersService
 import com.vf.business.business.service.itf.internal.auth.AuthenticationService
 import com.vf.business.business.utils.mapper.ProfessorMapper
 import com.vf.business.business.utils.mapper.StudentMapper
+import org.slf4j.LoggerFactory
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -19,6 +20,8 @@ class AuthController (
         private val usersService: UsersService
         ) {
 
+    val LOGGER = LoggerFactory.getLogger(AuthController::class.java)
+
     /**
      * Gets the authenticated user based on the given token
      */
@@ -26,6 +29,7 @@ class AuthController (
     @GetMapping("/me")
     fun getAuthenticatedUser(principal: Principal): UserDTO {
         val user = usersService.getUser(principal)
+        LOGGER.info("GET Authenticated user by ${user.email}")
         return if( user is Student )
             StudentMapper.Mapper.map(user as Student)
         else
@@ -36,15 +40,19 @@ class AuthController (
      * Signs in a user for a given domain
      */
     @PostMapping("/signin")
-    fun signIn(@RequestBody signInRequest: SignInRequestDTO): SignInResponseDTO =
-            authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
+    fun signIn(@RequestBody signInRequest: SignInRequestDTO): SignInResponseDTO {
+        LOGGER.info("Sign in attempt from ${signInRequest.email}")
+        authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
+    }
 
     /**
      * Triggers the password recover mechanisms
      */
     @PostMapping("/password-recovery")
-    fun passwordRecovery(@RequestBody dto: PasswordRecoveryDTO) =
-            authService.passwordRecovery(dto.email)
+    fun passwordRecovery(@RequestBody dto: PasswordRecoveryDTO) {
+        LOGGER.info("Password Recovery by ${dto.email}")
+        authService.passwordRecovery(dto.email)
+    }
 
     /**
      * Resets the user password
