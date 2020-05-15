@@ -24,7 +24,16 @@ class Application
 
         val dataSourceBuilder = DataSourceBuilder.create()
         dataSourceBuilder.driverClassName("org.postgresql.Driver")
-        dataSourceBuilder.url("jdbc:$dbUrl")
+
+        val tokens = dbUrl.split("//")
+        val subTokens = tokens[1].split("@")
+        val credentials = subTokens[0].split(":")
+        val username = credentials[0]
+        val password = credentials[1]
+        val url = "jdbc:postgresql://${subTokens[1]}"
+        dataSourceBuilder.url(url)
+        dataSourceBuilder.username(username)
+        dataSourceBuilder.password(password)
         val dataSource = dataSourceBuilder.build()
 
         val flyway = Flyway.configure().dataSource(dataSource).load()
