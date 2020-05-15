@@ -42,7 +42,7 @@ class AuthController (
     @PostMapping("/signin")
     fun signIn(@RequestBody signInRequest: SignInRequestDTO): SignInResponseDTO {
         LOGGER.info("Sign in attempt from ${signInRequest.email}")
-        authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
+        return authService.signin(signInRequest.email, signInRequest.password, signInRequest.domain)
     }
 
     /**
