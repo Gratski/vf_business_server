@@ -6,28 +6,28 @@ import com.google.firebase.FirebaseOptions
 import org.flywaydb.core.Flyway
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import java.io.FileInputStream
+import javax.sql.DataSource
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = ["com.vf.business.business.dao.repo"])
 class Application
 
 
     fun main(args: Array<String>) {
         // setup flyway
-        val dbUrl = System.getenv("DB_URL")
+        val dbUrl = System.getenv("DATABASE_URL")
         if( dbUrl == null ) println("Database url must be set")
 
-        val dbUser = System.getenv("DB_USER")
-        if( dbUser == null ) println("Database user must be set")
+        val dataSourceBuilder = DataSourceBuilder.create()
+        dataSourceBuilder.driverClassName("org.postgresql.Driver")
+        dataSourceBuilder.url("jdbc:$dbUrl")
+        val dataSource = dataSourceBuilder.build()
 
-        val dbPwd = System.getenv("DB_PWD")
-        if( dbPwd == null ) println("Database pwd must be set")
-
-        val flyway = Flyway.configure().dataSource(dbUrl, dbUser, dbPwd).load()
+        val flyway = Flyway.configure().dataSource(dataSource).load()
         flyway.baseline()
         flyway.migrate()
 
