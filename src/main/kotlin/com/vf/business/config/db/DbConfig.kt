@@ -1,5 +1,7 @@
 package com.vf.business.config.db
 
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,14 +12,16 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableJpaRepositories(basePackages = ["com.vf.business.business.dao.repo"])
-class DbConfig {
+class DbConfig(val dbProperties: DataSourceProperties) {
 
     @Bean
     fun getDataSource(): DataSource? {
         val dbUrl = System.getenv("DATABASE_URL")
         if( dbUrl == null ) println("Database url must be set")
 
-        val dataSourceBuilder = DataSourceBuilder.create()
+        val dataSourceBuilder = DataSourceBuilder.create(
+                dbProperties.classLoader
+        )
         dataSourceBuilder.driverClassName("org.postgresql.Driver")
 
         val tokens = dbUrl.split("//")

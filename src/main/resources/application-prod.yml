@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
 
 spring:
   application:
@@ -11,7 +11,7 @@ security:
   jwt:
     token:
       secret-key: secret
-      expire-length: 3600000
+      expire-length: 5184000000
 
 api:
   version: api/v1
