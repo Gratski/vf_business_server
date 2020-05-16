@@ -1,0 +1,1 @@
+update language_translation set designation = 'Anglais' where designation = 'Inglais';
