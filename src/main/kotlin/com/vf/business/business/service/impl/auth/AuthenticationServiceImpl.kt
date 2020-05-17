@@ -117,12 +117,12 @@ class AuthenticationServiceImpl (
         // check the passwords match
         if ( user.password != AuthUtils.Instance.hashPassword(dto.oldPassword) ) {
             throw UnauthorizedOperationException(
-                    Translator.toLocale(MessageCodes.UNAUTHORIZED_OPERATION)
+                    Translator.toLocale(MessageCodes.CHANGE_PASSWORD_BAD_PASSWORD)
             )
         }
 
         // check if the new password format is ok
-        if( dto.newPassword.isBlank() ) {
+        if( dto.newPassword.isBlank() || dto.newPassword.length < 8 ) {
             throw BadFormatException(
                     Translator.toLocale(MessageCodes.PASSWORD_TOO_WEAK)
             )

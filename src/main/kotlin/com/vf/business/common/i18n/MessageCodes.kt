@@ -13,6 +13,7 @@ class MessageCodes {
         val BAD_FORMAT = "bad_format" // expects %resource argument to correctly format
         val EMAIL_ALREADY_EXISTS = "email_already_exists"
         val PASSWORD_TOO_WEAK = "password_too_weak"
+        val CHANGE_PASSWORD_BAD_PASSWORD = "change_password_bad_password"
 
         // AUTHENTICATION
         val AUTH_EMAIL_NOT_FOUND = "auth_email_not_found"
