@@ -23,6 +23,7 @@ class MessageCodes {
         // COMMON TERMS
         val WEEK_DAY = "week_day"
         val USER = "user"
+        val EMAIL = "email"
         val COUNTRY = "country"
 
         // CONVERSATIONS

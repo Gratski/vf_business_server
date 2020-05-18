@@ -165,7 +165,7 @@ class ProfessorServiceImpl(
         userOpt.orElseThrow {
             throw ResourceNotFoundException(
                     Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE,
-                            arrayOf(Translator.toLocale(MessageCodes.USER))))
+                            arrayOf(Translator.toLocale(MessageCodes.EMAIL))))
         }
 
         // check if this professor has an access code given by our team
