@@ -137,7 +137,7 @@ class AuthenticationServiceImpl (
         val userOpt = userService.getUserByEmail(email)
         userOpt.orElseThrow {
             throw ResourceNotFoundException(
-                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.USER)))
+                    Translator.toLocale(MessageCodes.UNEXISTING_RESOURCE, arrayOf(Translator.toLocale(MessageCodes.EMAIL)))
             )
         }
         return userOpt.get()
