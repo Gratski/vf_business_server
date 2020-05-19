@@ -1,0 +1,2 @@
+update country_translations set designation = 'Portugués' where language_code = 'es' and country_id IN (select C.id from country C where country_name = 'Portugal');
+update country_translations set designation = 'France' where language_code = 'fr' and country_id IN (select C.id from country C where country_name = 'France');
