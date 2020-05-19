@@ -31,7 +31,7 @@ class SupportServiceImpl(
         supportCoontactRepo.save(supportContact)
 
         // send email to professor confirming this support entry
-        commsService.sendSupportEmail(ticketID, professor, getCurrentLanguageTag())
+        commsService.sendSupportEmail(ticketID, professor, getCurrentLanguageTag(), dto.msg)
     }
 
     private fun getCurrentLanguageTag(): String =

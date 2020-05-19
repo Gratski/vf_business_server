@@ -5,5 +5,6 @@ data class SupportMessage(
         val to: String,
         val languageTag: String,
         val username: String,
-        val ticketId: String? = null
+        val ticketId: String? = null,
+        val message: String
 )

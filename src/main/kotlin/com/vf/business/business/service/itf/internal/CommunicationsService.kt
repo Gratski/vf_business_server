@@ -6,7 +6,7 @@ interface CommunicationsService {
 
     fun sendEmailTo(to: String, content: String)
 
-    fun sendSupportEmail(ticketID: String, professor: Professor, currentLanguageTag: String)
+    fun sendSupportEmail(ticketID: String, professor: Professor, currentLanguageTag: String, msg: String)
 
     fun sendInvitationEmail(to: Array<String>, professor: Professor, languageTag: String)
 

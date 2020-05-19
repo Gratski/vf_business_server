@@ -28,13 +28,14 @@ class CommunicationsServiceImpl(
 
     }
 
-    override fun sendSupportEmail(ticketID: String, professor: Professor, languageTag: String) {
+    override fun sendSupportEmail(ticketID: String, professor: Professor, languageTag: String, msg: String) {
         val supportMessage = SupportMessage(
                 id = professor.id!!,
                 to = professor.email!!,
                 languageTag = languageTag,
                 username = professor.firstName!!,
-                ticketId = ticketID
+                ticketId = ticketID,
+                message = msg
         )
 
         val props = MessageProperties()
