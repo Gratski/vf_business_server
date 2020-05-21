@@ -2,6 +2,7 @@ package com.vf.business.business.dto.user.student
 
 import com.vf.business.business.dto.locatization.CountryDTO
 import com.vf.business.business.dto.locatization.LanguageDTO
+import com.vf.business.business.dto.user.Gender
 import com.vf.business.business.dto.user.UserDTO
 import java.util.Date
 
@@ -10,6 +11,7 @@ class StudentDTO(id: Int? = null,
                  lastName: String?,
                  email: String?,
                  birthday: Date?,
+                 gender: Gender,
                  phoneNumber: String?,
                  pictureUrl: String? = null,
                  nationality: CountryDTO,
@@ -19,7 +21,7 @@ class StudentDTO(id: Int? = null,
                  active: Boolean? = false,
                  enabled: Boolean? = true,
                  createdAt: Date? = null,
-                 updatedAt: Date? = null) : UserDTO(id, firstName, lastName, email, pwd, birthday, phoneNumber, pictureUrl, nationality, livingIn, spokenLanguages, active, enabled, createdAt, updatedAt) {
+                 updatedAt: Date? = null) : UserDTO(id, firstName, lastName, email, pwd, gender, birthday, phoneNumber, pictureUrl, nationality, livingIn, spokenLanguages, active, enabled, createdAt, updatedAt) {
 
     object ModelMapper { }
 

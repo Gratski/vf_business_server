@@ -13,6 +13,7 @@ class StudentMapper {
                         firstName = input.firstName,
                         lastName = input.lastName,
                         email = input.email,
+                        gender = input.gender,
                         birthday = input.birthday,
                         phoneNumber = input?.phoneNumber,
                         pwd = null,

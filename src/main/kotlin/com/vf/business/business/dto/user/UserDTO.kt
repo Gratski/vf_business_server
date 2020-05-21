@@ -10,6 +10,7 @@ open class UserDTO (
         val lastName: String?,
         val email: String?,
         val pwd: String?,
+        val gender: Gender,
         val birthday: Date?,
         val phoneNumber: String?,
         val pictureUrl: String?,

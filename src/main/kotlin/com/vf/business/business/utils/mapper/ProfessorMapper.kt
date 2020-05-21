@@ -13,6 +13,7 @@ class ProfessorMapper {
                         email = input?.email,
                         firstName = input?.firstName,
                         lastName = input?.lastName,
+                        gender = input?.gender!!,
                         birthday = input?.birthday,
                         phoneNumber = input?.phoneNumber,
                         pictureUrl = input?.pictureUrl,

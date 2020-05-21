@@ -9,6 +9,7 @@ class ProfessorDTO(id: Int?,
                lastName: String?,
                email: String?,
                pwd: String? = null,
+               gender: Gender,
                birthday: Date? = null,
                phoneNumber: String?,
                pictureUrl: String? = null,
@@ -18,4 +19,4 @@ class ProfessorDTO(id: Int?,
                active: Boolean? = false,
                enabled: Boolean? = true,
                createdAt: Date?,
-               updatedAt: Date?) : UserDTO(id, firstName, lastName, email, pwd, birthday, phoneNumber, pictureUrl, nationality, livingIn, spokenLanguages, active, enabled, createdAt, updatedAt)
+               updatedAt: Date?) : UserDTO(id, firstName, lastName, email, pwd, gender, birthday, phoneNumber, pictureUrl, nationality, livingIn, spokenLanguages, active, enabled, createdAt, updatedAt)

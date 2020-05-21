@@ -54,6 +54,7 @@ class Student(
                         lastName = student.lastName,
                         email = student.email,
                         birthday = student.birthday,
+                        gender = student.gender,
                         phoneNumber = student.phoneNumber,
                         livingIn = CountryMapper.Mapper.map(student.livingIn!!),
                         nationality = CountryMapper.Mapper.map(student.nationality!!),
